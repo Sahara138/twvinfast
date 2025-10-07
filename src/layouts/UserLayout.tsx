@@ -1,13 +1,10 @@
-import { Outlet, Link, NavLink } from "react-router";
+import { Outlet, NavLink } from "react-router";
 import Logo from "../components/shared/Logo";
 import { InboxSVG } from "../../public/SVG/InboxSVG";
 import { StarSVG } from "../../public/SVG/StarSVG";
-// import { FollowUpSVG } from "../../public/SVG/FollowUpSVG";
-// import { DraftSVG } from "../../public/SVG/DraftSVG";
 import { ArchiveSVG } from "../../public/SVG/ArchiveSVG";
 import { TrashSVG } from "../../public/SVG/TrashSVG";
-// import { UrgentSVG } from "../../public/SVG/UrgentSVG";
-// import { GeneralSVG } from "../../public/SVG/GeneralSVG";
+import {SettingSVG } from "../../public/SVG/SettingSVG";
 
 
 export default function UserLayout() {
@@ -74,9 +71,11 @@ export default function UserLayout() {
   return (
     <div className="min-h-screen flex bg-gray-100 text-gray-900">
       {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-md flex flex-col">
-        <header className="text-xl font-bold border-b border-gray-200">
-          <Logo/>
+      <aside className="w-64 bg-white shadow-md flex flex-col h-screen sticky top-0">
+        <header className="flex items-center gap-3 px-6 py-2 border-b border-gray-200">
+          <div className="w-full">
+            <Logo />
+          </div>
         </header>
         <nav className="flex-1 px-6 py-4 ">
           <ul className="space-y-2">
@@ -101,25 +100,30 @@ export default function UserLayout() {
             ))}
           </ul>
         </nav>
+        {/* Settings link fixed at bottom of sidebar */}
+        <div className="mt-auto border-t border-gray-200 px-6 py-3">
+          <NavLink
+            to="/settings"
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-2 py-2 rounded-md text-sm ${
+                isActive ? "font-semibold text-black" : "text-gray-700 hover:bg-gray-100"
+              }`
+            }
+          >
+            {({ isActive }) => (
+              <>
+                <SettingSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
+                <span>Settings</span>
+              </>
+            )}
+          </NavLink>
+        </div>
       </aside>
 
       {/* Main content area */}
       <div className="flex-1 flex flex-col">
-        {/* Top Navbar */}
-        <header className="bg-white shadow-sm px-6 py-[22px] flex justify-between items-center">
-          <h1 className="text-lg font-semibold">Welcome, User!</h1>
-          <nav className="space-x-4">
-            <Link to="#" className="hover:underline">
-              Notifications
-            </Link>
-            <Link to="#" className="hover:underline">
-              Profile
-            </Link>
-          </nav>
-        </header>
-
         {/* Content injected by routes */}
-        <main className="flex-1 p-6">
+        <main className="flex-1">
           <Outlet />
         </main>
       </div>

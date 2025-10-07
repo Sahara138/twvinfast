@@ -1,5 +1,6 @@
 import { Search, MoreVertical, MessageSquare, ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router";
 
 
 export default function Inbox() {
@@ -56,9 +57,13 @@ export default function Inbox() {
   };
 
   return (
-    <div className="p-6 ">
+    <div className=" ">
       {/* Header */}
-      <div className="flex justify-between items-center mb-6">
+      <header className="bg-white h-22 sticky top-0 z-10 px-6 py-4 shadow-sm ">
+
+      </header>
+      <div className="p-6">
+        <div className="flex justify-between items-center mb-6">
         <div className="flex items-center gap-3">
           <div className="relative">
             <Search className="absolute left-3 top-2.5 text-[#6EC075] w-4 h-4" />
@@ -111,17 +116,18 @@ export default function Inbox() {
                   <img
                     src={email.avatar}
                     alt={email.name}
-                    className="w-8 h-8 rounded-full"
+                    className="w-10 h-10 rounded-full"
                   />
                   <span className="text-sm font-medium text-gray-900">
                     {email.name}
                   </span>
                 </td>
                 <td className="text-sm text-gray-700">
+                  <Link to={`/user/view-email/${index}`} className="hover:underline">
                   {email.message}
                   <div className="flex items-center gap-1 text-gray-400 text-xs mt-1">
                     <MessageSquare size={12} /> {email.messages}
-                  </div>
+                  </div></Link>
                 </td>
                 <td>
                   <span
@@ -198,6 +204,7 @@ export default function Inbox() {
         <button className="p-1 border rounded-full hover:bg-gray-100">
           <ChevronRight size={14} />
         </button>
+      </div>
       </div>
     </div>
   );
