@@ -2,7 +2,8 @@
 import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
 import type { LoginFormInputs } from "../../types/Types";
-import Logo from "../../components/shared/logo";
+import Logo from "../../components/shared/Logo";
+
 
 export default function Login() {
     const {
@@ -72,7 +73,7 @@ export default function Login() {
 
                     <button
                         type="submit"
-                        className="w-full py-2 bg-button text-white font-medium text-xl rounded-md hover:bg-green-600 transition-colors"
+                        className="w-full py-2 bg-[#ED990B] text-white font-medium text-xl rounded-md hover:bg-green-600 transition-colors"
                     >
                         Sign In
                     </button>

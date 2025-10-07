@@ -1,28 +1,6 @@
 @import "tailwindcss";
 
-:root {
 
-	--color-primary: #0ea5e9; 
-	--color-accent: #F9DFB3; 
-	--color-secondary: #ef4444; 
-	--bg-button: #ED990B; 
-}
-
-/* Shortcuts (always available even if Tailwind doesn't run) */
-.bg-background { background-color: var(--bg-background); }
-
-.text-primary { color: var(--color-primary); }
-.bg-button { background-color: var(--bg-button) !important; }
-.btn-primary { background-color: var(--bg-button) !important; color: #fff; }
-
-/* Add these to Tailwind's utilities layer so they behave like utilities when Tailwind processes CSS */
-@layer utilities {
-  .bg-background { background-color: var(--bg-background); }
-  .text-primary { color: var(--color-primary); }
-.bg-button { background-color: var(--bg-button) !important; }
-	.btn-primary { background-color: var(--bg-button) !important; color: #fff; }
-  .text-secondary { color: var(--color-secondary); }
-}
 
 body {
 	font-family: 'Inter', sans-serif;
