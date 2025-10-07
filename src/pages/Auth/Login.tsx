@@ -19,7 +19,7 @@ export default function Login() {
 
     return (
         <div className="min-h-screen bg-[#F9FAFB]">
-            <header className="w-full  h-22 bg-white ">
+            <header className="w-full  h-22 bg-white ml-12">
 
                 <Logo />
             </header>

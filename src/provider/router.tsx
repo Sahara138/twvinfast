@@ -4,6 +4,7 @@ import MainLayout from "../layouts/MainLayout";
 import UserLayout from "../layouts/UserLayout";
 import Inbox from "../pages/User/Inbox";
 import Error from "../components/Error";
+import ViewEmail from "../components/user/ViewEmail";
 
 export const router = createBrowserRouter([
     {
@@ -22,6 +23,8 @@ export const router = createBrowserRouter([
         errorElement: <Error />,
         children: [
             { index: true, Component: Inbox },
+            { path: "view-email/:id", Component: ViewEmail },
+           
         ]
     }
 
