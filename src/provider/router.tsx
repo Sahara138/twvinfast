@@ -5,7 +5,7 @@ import UserLayout from "../layouts/UserLayout";
 import Inbox from "../pages/User/Inbox";
 import Error from "../components/Error";
 import ViewEmail from "../components/user/ViewEmail";
-
+import ComposeEmail from "../components/user/ComposeEmail";
 export const router = createBrowserRouter([
     {
         path: "/",
@@ -24,6 +24,7 @@ export const router = createBrowserRouter([
         children: [
             { index: true, Component: Inbox },
             { path: "view-email/:id", Component: ViewEmail },
+            {path:"compose",Component:ComposeEmail},
            
         ]
     }

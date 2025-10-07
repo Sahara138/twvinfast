@@ -84,9 +84,9 @@ export default function Inbox() {
           </select>
         </div>
 
-        <button className="flex items-center gap-2 bg-[#ED990B] text-white text-xl  font-medium px-4 py-2 rounded-md hover:bg-orange-400 transition">
+        <Link to={'/user/compose'} className="flex items-center gap-2 bg-[#ED990B] text-white text-xl  font-medium px-4 py-2 rounded-md hover:bg-orange-400 transition">
           <Plus className="w-6 h-6 text-white" /> Compose
-        </button>
+        </Link>
       </div>
 
       {/* Table */}
