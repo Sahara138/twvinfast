@@ -6,6 +6,7 @@ import Inbox from "../pages/User/Inbox";
 import Error from "../components/Error";
 import ViewEmail from "../components/user/ViewEmail";
 import ComposeEmail from "../components/user/ComposeEmail";
+import Settings from "../components/settings/Settings";
 export const router = createBrowserRouter([
     {
         path: "/",
@@ -25,6 +26,7 @@ export const router = createBrowserRouter([
             { index: true, Component: Inbox },
             { path: "view-email/:id", Component: ViewEmail },
             {path:"compose",Component:ComposeEmail},
+            {path:"settings",Component:Settings}
            
         ]
     }
