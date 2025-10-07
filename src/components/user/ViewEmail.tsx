@@ -5,6 +5,7 @@ import { ReplySection } from "./ReplaySection";
 import { ForwardSection } from "./ForwardSection";
 import { AiReplySection } from "./AiReplaySection";
 import { AISidebar } from "./AISidebarSection";
+import { Link } from "react-router";
 export default function ViewEmail() {
     const [activeSection, setActiveSection] = useState<string | null>(null);
     const [showAISidebar, setShowAISidebar] = useState(false);
@@ -19,9 +20,9 @@ export default function ViewEmail() {
             <header className="bg-white h-22 sticky top-0 z-10 px-6 shadow-sm border-b border-gray-200">
                 <div className="flex items-center justify-between pt-6">
                     <div className="flex items-center space-x-4">
-                        <button className="hover:bg-gray-100 rounded-lg transition-colors">
+                        <Link to={'/user'} className="hover:bg-gray-100 rounded-lg transition-colors">
                             <MoveLeft className="w-5 h-5 text-gray-600" />
-                        </button>
+                        </Link>
                         <div>
                             <h1 className="text-lg font-medium text-[#212B36]">Q4 Marketing Strategy Review</h1>
                         </div>
