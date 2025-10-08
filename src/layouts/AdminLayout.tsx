@@ -1,4 +1,5 @@
 import { Outlet, NavLink } from "react-router";
+import { ShieldUser, Search } from 'lucide-react';
 import Logo from "../components/shared/Logo";
 import { DashboardSVG } from "../../public/SVG/DashboardSVG";
 import { BusinessInfoSVG } from "../../public/SVG/BusinessInfoSVG";
@@ -21,7 +22,7 @@ export default function AdminLayout() {
         },
         {
             label: "Business Info",
-            path: "/business-info",
+            path: "business-info",
             renderIcon: (isActive: boolean) => (
                 <BusinessInfoSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
             ),
@@ -116,6 +117,33 @@ export default function AdminLayout() {
 
             {/* Main content area */}
             <div className="flex-1 flex flex-col">
+                {/* Top navbar for admin pages */}
+                <header className="bg-white h-22 sticky top-0 z-10 px-6 py-5 shadow-sm ">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
+                                <ShieldUser className="w-6 h-6 text-gray-600" />
+                            </div>
+                            <div>
+                                <h1 className="text-lg font-medium text-gray-900">TecFlow Solution</h1>
+                                <p className="text-sm text-[#6A6A6A]">Admin</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <div className="relative min-w-sm">
+                                <input
+                                    type="text"
+                                    placeholder="Search..."
+                                    className="w-full pl-4 pr-12 py-2 border border-[#6EC075]/70 rounded-full focus:outline-none focus:ring focus:ring-[#3BB515] text-gray-700"
+                                />
+                                <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#6EC075]" />
+                            </div>
+
+
+                        </div>
+                    </div>
+                </header>
+
                 {/* Content injected by routes */}
                 <main className="flex-1">
                     <Outlet />

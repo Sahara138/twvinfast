@@ -9,6 +9,7 @@ import ComposeEmail from "../components/user/ComposeEmail";
 import Settings from "../components/settings/Settings";
 import AdminLayout from "../layouts/AdminLayout";
 import AdminDAshboard from "../pages/Admin/AdminDashboard/AdminDAshboard";
+import BusinessInfo from "../pages/Admin/BusinessInfo/BusinessInfo";
 export const router = createBrowserRouter([
     {
         path: "/",
@@ -38,6 +39,7 @@ export const router = createBrowserRouter([
         errorElement: <Error />,
         children: [
             { index: true, Component: AdminDAshboard },
+            {path:"business-info",Component:BusinessInfo},
         ]
     }
 

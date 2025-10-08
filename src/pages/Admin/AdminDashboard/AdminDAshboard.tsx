@@ -1,4 +1,4 @@
-import { Users, MessageSquare, Clock, Search, Bell, ShieldUser, Shield } from 'lucide-react';
+import { Users, MessageSquare, Clock, Shield } from 'lucide-react';
 import { Doughnut } from 'react-chartjs-2';
 import type {ResponseCategory, KnowledgeBaseItem, Activity } from '../../../types/Admin/Dashboard';
 
@@ -58,35 +58,8 @@ export default function AdminDashboard() {
 
     return (
         <div className="min-h-screen ">
-            {/* Header */}
-            <header className="bg-white h-22 sticky top-0 z-10 px-6 py-5 shadow-sm ">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
-                            <ShieldUser className="w-6 h-6 text-gray-600" />
-                        </div>
-                        <div>
-                            <h1 className="text-lg font-medium text-gray-900">TecFlow Solution</h1>
-                            <p className="text-sm text-[#6A6A6A]">Admin</p>
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-4">
-                        <div className="relative min-w-sm">
-                            <input
-                                type="text"
-                                placeholder="Search..."
-                                className="w-full pl-4 pr-12 py-2 border border-[#6EC075]/70 rounded-full focus:outline-none focus:ring focus:ring-[#3BB515] text-gray-700"
-                            />
-                            <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#6EC075]" />
-                        </div>
-                        <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors relative">
-                            <Bell className="w-5 h-5 text-[#3BB515]" />
-                            <span className="absolute top-1 right-1 w-2 h-2 bg-orange-500 rounded-full"></span>
-                        </button>
-
-                    </div>
-                </div>
-            </header>
+           
+           
 
             {/* Main Content */}
             <main className="px-8 lg:px-12 py-6">
