@@ -15,7 +15,7 @@ export default function AdminLayout() {
     const menuItems = [
         {
             label: "Dashboard",
-            path: "/Admin",
+            path: "/admin",
             renderIcon: (isActive: boolean) => (
                 <DashboardSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
             ),
@@ -36,7 +36,7 @@ export default function AdminLayout() {
         },
         {
             label: "AI Learning",
-            path: "/ai-learning",
+            path: "ai-learning",
             renderIcon: (isActive: boolean) => (
                 < AILearningSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
             ),
