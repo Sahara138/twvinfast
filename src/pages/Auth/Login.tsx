@@ -19,11 +19,11 @@ export default function Login() {
 
     return (
         <div className="min-h-screen bg-[#F9FAFB]">
-            <header className="w-full  h-22 bg-white ml-12">
+            <header className="w-full  h-22 bg-white pl-12">
 
                 <Logo />
             </header>
-            <div className=" max-w-xl mx-auto  p-8 flex flex-col justify-center min-h-[calc(100vh-5.5rem)]">
+            <div className="  max-w-xl mx-auto  p-8 flex flex-col justify-center min-h-[calc(100vh-5.5rem)]">
 
                 <h2 className="text-left text-3xl font-semibold mb-6 ">
                     Get Started with Replii.AI
