@@ -12,6 +12,7 @@ import AdminDAshboard from "../pages/Admin/AdminDashboard/AdminDAshboard";
 import BusinessInfo from "../pages/Admin/BusinessInfo/BusinessInfo";
 import UserManagement from "../components/Admin/UserManagement/UserManagement";
 import AILearning from "../pages/Admin/AILearning/AILearning";
+import Customers from "../pages/Admin/Customer/Customers";
 export const router = createBrowserRouter([
     {
         path: "/",
@@ -44,6 +45,7 @@ export const router = createBrowserRouter([
             {path:"business-info",Component:BusinessInfo},
             {path:"user-management",Component:UserManagement},
             {path:"ai-learning",Component:AILearning},
+            {path:"customers",Component:Customers}
         ]
     }
 

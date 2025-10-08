@@ -43,7 +43,7 @@ export default function AdminLayout() {
         },
         {
             label: "Customers",
-            path: "/customers",
+            path: "customers",
             renderIcon: (isActive: boolean) => (
                 < CustomersSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
             ),
