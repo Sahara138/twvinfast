@@ -99,7 +99,7 @@ export default function AdminLayout() {
                 {/* Settings link fixed at bottom of sidebar */}
                 <div className="mt-auto border-t border-gray-200 px-6 py-3">
                     <NavLink
-                        to="/admin/settings"
+                        to="admin-settings"
                         className={({ isActive }) =>
                             `flex items-center gap-3 px-2 py-2 rounded-md text-sm ${isActive ? "  font-semibold  bg-[#F9DFB3] text-[#000000]" : " text-[#454F5B]  hover:bg-gray-100"
                             }`
