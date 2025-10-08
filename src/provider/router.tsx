@@ -7,6 +7,8 @@ import Error from "../components/Error";
 import ViewEmail from "../components/user/ViewEmail";
 import ComposeEmail from "../components/user/ComposeEmail";
 import Settings from "../components/settings/Settings";
+import AdminLayout from "../layouts/AdminLayout";
+import AdminDAshboard from "../pages/Admin/AdminDashboard/AdminDAshboard";
 export const router = createBrowserRouter([
     {
         path: "/",
@@ -17,7 +19,6 @@ export const router = createBrowserRouter([
         ]
     },
     //user layout routes
-
     {
         path: "/user",
         Component: UserLayout,
@@ -28,6 +29,15 @@ export const router = createBrowserRouter([
             {path:"compose",Component:ComposeEmail},
             {path:"settings",Component:Settings}
            
+        ]
+    },
+    // admin layout routes
+    {
+        path: "/admin",
+        Component: AdminLayout,
+        errorElement: <Error />,
+        children: [
+            { index: true, Component: AdminDAshboard },
         ]
     }
 
