@@ -29,7 +29,7 @@ export default function AdminLayout() {
         },
         {
             label: "User Management",
-            path: "/user-management",
+            path: "user-management",
             renderIcon: (isActive: boolean) => (
                 <UserManagementSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
             ),
@@ -118,7 +118,7 @@ export default function AdminLayout() {
             {/* Main content area */}
             <div className="flex-1 flex flex-col">
                 {/* Top navbar for admin pages */}
-                <header className="bg-white h-22 sticky top-0 z-10 px-6 py-5 shadow-sm ">
+                <header className="bg-white h-[89px] sticky top-0 z-10 px-6 py-5 border-b border-l border-gray-200 ">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">

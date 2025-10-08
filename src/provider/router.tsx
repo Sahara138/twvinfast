@@ -10,6 +10,7 @@ import Settings from "../components/settings/Settings";
 import AdminLayout from "../layouts/AdminLayout";
 import AdminDAshboard from "../pages/Admin/AdminDashboard/AdminDAshboard";
 import BusinessInfo from "../pages/Admin/BusinessInfo/BusinessInfo";
+import UserManagement from "../components/Admin/UserManagement/UserManagement";
 export const router = createBrowserRouter([
     {
         path: "/",
@@ -40,6 +41,7 @@ export const router = createBrowserRouter([
         children: [
             { index: true, Component: AdminDAshboard },
             {path:"business-info",Component:BusinessInfo},
+            {path:"user-management",Component:UserManagement},
         ]
     }
 
