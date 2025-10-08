@@ -13,6 +13,7 @@ import BusinessInfo from "../pages/Admin/BusinessInfo/BusinessInfo";
 import UserManagement from "../components/Admin/UserManagement/UserManagement";
 import AILearning from "../pages/Admin/AILearning/AILearning";
 import Customers from "../pages/Admin/Customer/Customers";
+import CustomerViewEmail from "../components/Admin/Customer/CustomerViewEmail";
 export const router = createBrowserRouter([
     {
         path: "/",
@@ -45,7 +46,8 @@ export const router = createBrowserRouter([
             {path:"business-info",Component:BusinessInfo},
             {path:"user-management",Component:UserManagement},
             {path:"ai-learning",Component:AILearning},
-            {path:"customers",Component:Customers}
+            {path:"customers",Component:Customers},
+            {path:"customers/view-email/:id",Component:CustomerViewEmail}
         ]
     }
 

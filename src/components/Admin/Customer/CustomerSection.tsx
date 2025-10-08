@@ -1,13 +1,14 @@
-
+import type { Customer } from "../../../types/Admin/Customer";
 export default function CustomerSection() {
 
-    const customerData = [
-        { name: 'Mike Jones', email: 'mike@example.com', contact: '+1 (555) 123-4567', status: 'New', leadScore: 85, value: '$500', lastContact: '2024-01-15', assigned: 'John Smith', activity: 'Just Now' },
-        { name: 'Aka Johnson', email: 'aka@example.com', contact: '+1 (555) 123-4567', status: 'Opened', leadScore: 85, value: '$700', lastContact: '2024-01-15', assigned: 'Tom Latham', activity: '1h ago' },
-        { name: 'Mike Chen', email: 'mike.chen@example.com', contact: '+1 (555) 123-4567', status: 'Won', leadScore: 85, value: '$820', lastContact: '2024-01-15', assigned: 'John Smith', activity: '2h ago' },
-        { name: 'Lisa Wang', email: 'lisa@example.com', contact: '+1 (555) 123-4567', status: 'Lead', leadScore: 85, value: '$820', lastContact: '2024-01-15', assigned: 'Alan Ross', activity: '4h ago' },
-        { name: 'David Miller', email: 'david@example.com', contact: '+1 (555) 123-4567', status: 'Active', leadScore: 85, value: '$840', lastContact: '2024-01-15', assigned: 'Harry Kane', activity: '7h ago' },
-        { name: 'George Eliot', email: 'george@example.com', contact: '+1 (555) 123-4567', status: 'Lost', leadScore: 85, value: '$600', lastContact: '2024-01-15', assigned: 'Tom Bruch', activity: '1d ago' },
+
+    const customerData: Customer[] = [
+        { name: 'Mike Jones', email: 'mike@example.com', contact: '+1 (555) 123-4567', status: 'New', leadScore: 85, value: '$500', lastContact: '2024-01-15' },
+        { name: 'Aka Johnson', email: 'aka@example.com', contact: '+1 (555) 123-4567', status: 'Opened', leadScore: 85, value: '$700', lastContact: '2024-01-15' },
+        { name: 'Mike Chen', email: 'mike.chen@example.com', contact: '+1 (555) 123-4567', status: 'Won', leadScore: 85, value: '$820', lastContact: '2024-01-15' },
+        { name: 'Lisa Wang', email: 'lisa@example.com', contact: '+1 (555) 123-4567', status: 'Lead', leadScore: 85, value: '$820', lastContact: '2024-01-15' },
+        { name: 'David Miller', email: 'david@example.com', contact: '+1 (555) 123-4567', status: 'Active', leadScore: 85, value: '$840', lastContact: '2024-01-15' },
+        { name: 'George Eliot', email: 'george@example.com', contact: '+1 (555) 123-4567', status: 'Lost', leadScore: 85, value: '$600', lastContact: '2024-01-15' },
     ];
     return (
         <div className="">
