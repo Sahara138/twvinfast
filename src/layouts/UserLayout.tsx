@@ -5,6 +5,10 @@ import { StarSVG } from "../../public/SVG/StarSVG";
 import { ArchiveSVG } from "../../public/SVG/ArchiveSVG";
 import { TrashSVG } from "../../public/SVG/TrashSVG";
 import {SettingSVG } from "../../public/SVG/SettingSVG";
+import {GeneralSVG } from "../../public/SVG/GeneralSVG";
+import {FollowUpSVG } from "../../public/SVG/FollowUpSVG";
+import {DraftSVG } from "../../public/SVG/DraftSVG";
+import {UrgentSVG } from "../../public/SVG/UrgentSVG";
 
 
 export default function UserLayout() {
@@ -37,35 +41,35 @@ export default function UserLayout() {
         <TrashSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
       ),
     },
-    // {
-    //   label: "Follow up",
-    //   path: "/follow-up",
-    //   renderIcon: (isActive: boolean) => (
-    //     <FollowUpSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
-    //   ),
-    // },
-    // {
-    //   label: "Drafts",
-    //   path: "/drafts",
-    //   renderIcon: (isActive: boolean) => (
-    //     <DraftSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
-    //   ),
-    // },
+    {
+      label: "Follow up",
+      path: "/follow-up",
+      renderIcon: (isActive: boolean) => (
+        <FollowUpSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
+      ),
+    },
+    {
+      label: "Drafts",
+      path: "/drafts",
+      renderIcon: (isActive: boolean) => (
+        <DraftSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
+      ),
+    },
      
-    // {
-    //   label: "Urgent",
-    //   path: "/urgent",
-    //   renderIcon: (isActive: boolean) => (
-    //     <UrgentSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
-    //   ),
-    // },
-    // {
-    //   label: "General",
-    //   path: "/general",
-    //   renderIcon: (isActive: boolean) => (
-    //     <GeneralSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
-    //   ),
-    // },
+    {
+      label: "Urgent",
+      path: "/urgent",
+      renderIcon: (isActive: boolean) => (
+        <UrgentSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
+      ),
+    },
+    {
+      label: "General",
+      path: "/general",
+      renderIcon: (isActive: boolean) => (
+        <GeneralSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
+      ),
+    },
   ];
 
   return (
