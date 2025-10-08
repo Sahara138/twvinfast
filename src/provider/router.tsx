@@ -14,6 +14,7 @@ import UserManagement from "../components/Admin/UserManagement/UserManagement";
 import AILearning from "../pages/Admin/AILearning/AILearning";
 import Customers from "../pages/Admin/Customer/Customers";
 import CustomerViewEmail from "../components/Admin/Customer/CustomerViewEmail";
+import Analytics from "../pages/Admin/Analytics/Analytics";
 export const router = createBrowserRouter([
     {
         path: "/",
@@ -47,7 +48,8 @@ export const router = createBrowserRouter([
             {path:"user-management",Component:UserManagement},
             {path:"ai-learning",Component:AILearning},
             {path:"customers",Component:Customers},
-            {path:"customers/view-email/:id",Component:CustomerViewEmail}
+            {path:"customers/view-email/:id",Component:CustomerViewEmail},
+            {path:"analytics",Component:Analytics},
         ]
     }
 

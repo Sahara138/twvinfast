@@ -50,7 +50,7 @@ export default function AdminLayout() {
         },
         {
             label: "Analytics",
-            path: "/analytics",
+            path: "analytics",
             renderIcon: (isActive: boolean) => (
                 < AnalyticsSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
             ),
