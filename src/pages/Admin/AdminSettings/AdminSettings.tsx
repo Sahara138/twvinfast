@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Upload, Eye, Edit2, Trash2 } from "lucide-react";
+
 
 // -------------------- Interfaces --------------------
 
@@ -117,7 +117,7 @@ const AdminSettings: React.FC = () => {
     slackWebhook: "www.slack.com",
   });
 
-  const [roles, setRoles] = useState<Role[]>([
+  const [roles] = useState<Role[]>([
     {
       id: 1,
       name: "Admin",
@@ -156,7 +156,7 @@ const AdminSettings: React.FC = () => {
     <button
       onClick={onChange}
       className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-        checked ? "bg-orange-500" : "bg-gray-300"
+        checked ? "bg-primary" : "bg-gray-300"
       }`}
     >
       <span
@@ -213,7 +213,7 @@ const AdminSettings: React.FC = () => {
               type="text"
               value={value}
               onChange={(e) => handleBrandingChange(key as keyof BrandingData, e.target.value)}
-              className="border border-gray-300 rounded-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="border border-gray-300 rounded-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
         ))}
@@ -319,9 +319,7 @@ const AdminSettings: React.FC = () => {
               Configure system settings, branding, notifications, and access permissions
             </p>
           </div>
-          <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
-            <div className="w-3 h-3 bg-white rounded-full" />
-          </div>
+      
         </div>
 
         <div className="flex gap-2 mb-6">
@@ -331,7 +329,7 @@ const AdminSettings: React.FC = () => {
               onClick={() => setActiveTab(tab.id)}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 activeTab === tab.id
-                  ? "bg-orange-500 text-white"
+                  ? "bg-primary text-white"
                   : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50"
               }`}
             >
