@@ -1,6 +1,10 @@
 @import "tailwindcss";
 
-
+@theme {
+  --color-primary: #ED990B;
+  --color-tahiti: #3ab7bf;
+  --color-bermuda: #78dcca;
+}
 
 body {
 	font-family: 'Inter', sans-serif;
@@ -8,3 +12,4 @@ body {
 button{
     cursor: pointer;
 }
+
