@@ -28,7 +28,7 @@ export default function ComposeEmail() {
                             <Save className="w-4 h-4" />
                             Save Draft
                         </button>
-                        <button className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-[#ED990B] hover:bg-orange-400 rounded-lg transition-colors shadow-sm">
+                        <button className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-primary2 hover:bg-teal-400 rounded-lg transition-colors shadow-sm">
                             <Send className="w-4 h-4" />
                             Send
                         </button>
@@ -66,7 +66,7 @@ export default function ComposeEmail() {
                             <div className="bg-[#F9FAFB] rounded-xl shadow-2xl w-full max-w-md  transform will-change-transform">
                                 <div className="flex items-center justify-between p-6 border-b border-gray-200">
                                     <div className="flex items-center gap-2">
-                                        <Sparkles className="w-5 h-5 text-orange-300" />
+                                        <Sparkles className="w-5 h-5 text-primary2" />
                                         <h2 className="text-lg font-semibold text-gray-900">AI Composer</h2>
                                     </div>
                                     <button onClick={() => setIsAiOpen(false)} className="text-gray-400 hover:text-gray-600 transition-colors">
@@ -91,7 +91,7 @@ export default function ComposeEmail() {
                                         </select>
                                     </div>
 
-                                    <button className="w-full bg-[#ED990B] hover:bg-orange-300 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-medium py-3 rounded-lg transition-colors flex items-center justify-center gap-2">
+                                    <button className="w-full bg-primary2 hover:bg-teal-300 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-medium py-3 rounded-lg transition-colors flex items-center justify-center gap-2">
                                         <Sparkles className="w-4 h-4" />
                                         Generate Email
                                     </button>

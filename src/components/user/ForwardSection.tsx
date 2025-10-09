@@ -13,7 +13,7 @@ export function ForwardSection({ onClose }: { onClose: () => void }) {
             </div>
             <input 
                 type='email' 
-                className='w-full p-3 mb-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ED990B] focus:border-transparent'
+                className='w-full p-3 mb-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary2 focus:border-transparent'
                 placeholder='To: demo@gmail.com'
             />
             <div className='p-4 rounded-lg mb-4 text-sm text-gray-600'>
@@ -23,11 +23,11 @@ export function ForwardSection({ onClose }: { onClose: () => void }) {
                 <p>To: you@company.com</p>
             </div>
             <textarea 
-                className='w-full h-32 p-4  bg-gray-50  rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ED990B] focus:border-transparent resize-none'
+                className='w-full h-32 p-4  bg-gray-50  rounded-lg focus:outline-none focus:ring-2 focus:ring-primary2 focus:border-transparent resize-none'
                 placeholder='Add a message...'
             />
             <div className='flex gap-x-4 mt-4'>
-               <button className='bg-[#ED990B] px-6 py-2 text-white rounded-lg hover:bg-[#D88009] transition-colors flex items-center gap-x-2'>
+               <button className='bg-primary2 px-6 py-2 text-white rounded-lg hover:bg-[#D88009] transition-colors flex items-center gap-x-2'>
                     <SendHorizontal size={20} /> Send
                 </button>
                 

@@ -53,7 +53,7 @@ export default function Settings() {
                   type="text"
                   value={profileData.fullName}
                   onChange={(e) => setProfileData({ ...profileData, fullName: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ED990B] focus:border-transparent outline-none transition-all"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary2 focus:border-transparent outline-none transition-all"
                 />
               </div>
 
@@ -65,7 +65,7 @@ export default function Settings() {
                   type="email"
                   value={profileData.email}
                   onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ED990B] focus:border-transparent outline-none transition-all"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary2 focus:border-transparent outline-none transition-all"
                 />
               </div>
 
@@ -77,7 +77,7 @@ export default function Settings() {
                   type="tel"
                   value={profileData.phone}
                   onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ED990B] focus:border-transparent outline-none transition-all"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary2 focus:border-transparent outline-none transition-all"
                 />
               </div>
 
@@ -88,7 +88,7 @@ export default function Settings() {
                 <select
                   value={profileData.timezone}
                   onChange={(e) => setProfileData({ ...profileData, timezone: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ED990B] focus:border-transparent outline-none transition-all bg-white"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary2 focus:border-transparent outline-none transition-all bg-white"
                 >
                   <option>Eastern Time (UTC-5)</option>
                   <option>Central Time (UTC-6)</option>
@@ -106,7 +106,7 @@ export default function Settings() {
                 value={profileData.signature}
                 onChange={(e) => setProfileData({ ...profileData, signature: e.target.value })}
                 rows={6}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ED990B] focus:border-transparent outline-none transition-all resize-none"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary2 focus:border-transparent outline-none transition-all resize-none"
               />
             </div>
           </div>
@@ -125,7 +125,7 @@ export default function Settings() {
                 </div>
                 <button
                   onClick={() => setNotifications({ ...notifications, emailAlerts: !notifications.emailAlerts })}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${notifications.emailAlerts ? 'bg-[#ED990B]' : 'bg-gray-300'
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${notifications.emailAlerts ? 'bg-primary2' : 'bg-gray-300'
                     }`}
                 >
                   <span
@@ -142,7 +142,7 @@ export default function Settings() {
                 </div>
                 <button
                   onClick={() => setNotifications({ ...notifications, desktopNotifications: !notifications.desktopNotifications })}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${notifications.desktopNotifications ? 'bg-[#ED990B]' : 'bg-gray-300'
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${notifications.desktopNotifications ? 'bg-primary2' : 'bg-gray-300'
                     }`}
                 >
                   <span
@@ -159,7 +159,7 @@ export default function Settings() {
                 </div>
                 <button
                   onClick={() => setNotifications({ ...notifications, soundNotifications: !notifications.soundNotifications })}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${notifications.soundNotifications ? 'bg-[#ED990B]' : 'bg-gray-300'
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${notifications.soundNotifications ? 'bg-primary2' : 'bg-gray-300'
                     }`}
                 >
                   <span
@@ -176,7 +176,7 @@ export default function Settings() {
                 </div>
                 <button
                   onClick={() => setNotifications({ ...notifications, weekendNotifications: !notifications.weekendNotifications })}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${notifications.weekendNotifications ? 'bg-[#ED990B]' : 'bg-gray-300'
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${notifications.weekendNotifications ? 'bg-primary2' : 'bg-gray-300'
                     }`}
                 >
                   <span
@@ -193,7 +193,7 @@ export default function Settings() {
                 </div>
                 <button
                   onClick={() => setNotifications({ ...notifications, urgentOnly: !notifications.urgentOnly })}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${notifications.urgentOnly ? 'bg-[#ED990B]' : 'bg-gray-300'
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${notifications.urgentOnly ? 'bg-primary2' : 'bg-gray-300'
                     }`}
                 >
                   <span
@@ -220,7 +220,7 @@ export default function Settings() {
                   <select
                     value={preferences.language}
                     onChange={(e) => setPreferences({ ...preferences, language: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ED990B] focus:border-transparent outline-none transition-all bg-white"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary2 focus:border-transparent outline-none transition-all bg-white"
                   >
                     <option>English</option>
                     <option>Spanish</option>
@@ -236,7 +236,7 @@ export default function Settings() {
                   <select
                     value={preferences.emailsPerPage}
                     onChange={(e) => setPreferences({ ...preferences, emailsPerPage: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ED990B] focus:border-transparent outline-none transition-all bg-white"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary2 focus:border-transparent outline-none transition-all bg-white"
                   >
                     <option value="08">08</option>
                     <option value="10">10</option>
@@ -253,7 +253,7 @@ export default function Settings() {
                 </div>
                 <button
                   onClick={() => setPreferences({ ...preferences, autoSaveDrafts: !preferences.autoSaveDrafts })}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${preferences.autoSaveDrafts ? 'bg-[#ED990B]' : 'bg-gray-300'
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${preferences.autoSaveDrafts ? 'bg-primary2' : 'bg-gray-300'
                     }`}
                 >
                   <span
@@ -270,7 +270,7 @@ export default function Settings() {
                 </div>
                 <button
                   onClick={() => setPreferences({ ...preferences, readReceipts: !preferences.readReceipts })}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${preferences.readReceipts ? 'bg-[#ED990B]' : 'bg-gray-300'
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${preferences.readReceipts ? 'bg-primary2' : 'bg-gray-300'
                     }`}
                 >
                   <span
@@ -301,7 +301,7 @@ export default function Settings() {
                     value={security.currentPassword}
                     onChange={(e) => setSecurity({ ...security, currentPassword: e.target.value })}
                     placeholder="Eastern Time (UTC-5)"
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ED990B] focus:border-transparent outline-none transition-all pr-10"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary2 focus:border-transparent outline-none transition-all pr-10"
                   />
                   <button
                     onClick={() => setShowCurrentPassword(!showCurrentPassword)}
@@ -321,7 +321,7 @@ export default function Settings() {
                     type="password"
                     value={security.newPassword}
                     onChange={(e) => setSecurity({ ...security, newPassword: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ED990B] focus:border-transparent outline-none transition-all"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary2 focus:border-transparent outline-none transition-all"
                   />
                 </div>
 
@@ -333,7 +333,7 @@ export default function Settings() {
                     type="password"
                     value={security.confirmPassword}
                     onChange={(e) => setSecurity({ ...security, confirmPassword: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ED990B] focus:border-transparent outline-none transition-all"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary2 focus:border-transparent outline-none transition-all"
                   />
                 </div>
               </div>
@@ -347,7 +347,7 @@ export default function Settings() {
                 </div>
                 <button
                   onClick={() => setSecurity({ ...security, twoFactorAuth: !security.twoFactorAuth })}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${security.twoFactorAuth ? 'bg-[#ED990B]' : 'bg-gray-300'
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${security.twoFactorAuth ? 'bg-primary2' : 'bg-gray-300'
                     }`}
                 >
                   <span
@@ -365,7 +365,7 @@ export default function Settings() {
                 <select
                   value={security.sessionTimeout}
                   onChange={(e) => setSecurity({ ...security, sessionTimeout: e.target.value })}
-                  className="ml-4 px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ED990B] focus:border-transparent outline-none transition-all bg-white text-sm"
+                  className="ml-4 px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary2 focus:border-transparent outline-none transition-all bg-white text-sm"
                 >
                   <option value="01h">01h</option>
                   <option value="02h">02h</option>
@@ -383,7 +383,7 @@ export default function Settings() {
                 </div>
                 <button
                   onClick={() => setSecurity({ ...security, loginAlerts: !security.loginAlerts })}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${security.loginAlerts ? 'bg-[#ED990B]' : 'bg-gray-300'
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${security.loginAlerts ? 'bg-primary2' : 'bg-gray-300'
                     }`}
                 >
                   <span
@@ -412,7 +412,7 @@ export default function Settings() {
             <h1 className="text-xl font-semibold text-gray-900">Settings</h1>
           </div>
 
-          <button className="flex items-center gap-2 bg-[#ED990B] hover:bg-orange-600 text-white px-4 py-2.5 rounded-lg transition-colors font-medium">
+          <button className="flex items-center gap-2 bg-primary2 hover:bg-orange-600 text-white px-4 py-2.5 rounded-lg transition-colors font-medium">
             <Save size={18} />
             Save Changes
           </button>
@@ -427,7 +427,7 @@ export default function Settings() {
           <button
             onClick={() => setActiveTab('profile')}
             className={`flex items-center gap-2 px-4 py-2.5 font-medium transition-all relative ${activeTab === 'profile'
-                ? 'bg-[#ED990B] text-white rounded-lg'
+                ? 'bg-primary2 text-white rounded-lg'
                 : 'text-gray-600 hover:text-gray-900 border border-[#DFE3E8] rounded-lg'
               }`}
           >
@@ -438,7 +438,7 @@ export default function Settings() {
           <button
             onClick={() => setActiveTab('notification')}
             className={`flex items-center gap-2 px-4 py-2.5 font-medium transition-all relative ${activeTab === 'notification'
-                ? 'bg-[#ED990B] text-white rounded-lg'
+                ? 'bg-primary2 text-white rounded-lg'
                 : 'text-gray-600 hover:text-gray-900 border border-[#DFE3E8] rounded-lg'
               }`}
           >
@@ -449,7 +449,7 @@ export default function Settings() {
           <button
             onClick={() => setActiveTab('preference')}
             className={`flex items-center gap-2 px-4 py-2.5 font-medium transition-all relative ${activeTab === 'preference'
-                ? 'bg-[#ED990B] text-white rounded-lg'
+                ? 'bg-primary2 text-white rounded-lg'
                 : 'text-gray-600 hover:text-gray-900 border border-[#DFE3E8] rounded-lg'
               }`}
           >
@@ -460,7 +460,7 @@ export default function Settings() {
           <button
             onClick={() => setActiveTab('security')}
             className={`flex items-center gap-2 px-4 py-2.5 font-medium transition-all relative ${activeTab === 'security'
-                ? 'bg-[#ED990B] text-white rounded-lg'
+                ? 'bg-primary2 text-white rounded-lg'
                 : 'text-gray-600 hover:text-gray-900 border border-[#DFE3E8] rounded-lg'
               }`}
           >

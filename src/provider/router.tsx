@@ -16,6 +16,9 @@ import Customers from "../pages/Admin/Customer/Customers";
 import CustomerViewEmail from "../components/Admin/Customer/CustomerViewEmail";
 import Analytics from "../pages/Admin/Analytics/Analytics";
 import AdminSettings from "../pages/Admin/AdminSettings/AdminSettings";
+import Starred from "../pages/User/Starred";
+import Archive from "../pages/User/Archive";
+import Trash from "../pages/User/Trash";
 export const router = createBrowserRouter([
     {
         path: "/",
@@ -34,6 +37,9 @@ export const router = createBrowserRouter([
             { index: true, Component: Inbox },
             { path: "view-email/:id", Component: ViewEmail },
             {path:"compose",Component:ComposeEmail},
+            {path:"starred",Component:Starred},
+            {path:"archive",Component:Archive},
+            {path:"trash",Component:Trash},
             {path:"settings",Component:Settings}
            
         ]

@@ -15,7 +15,7 @@ export function AiReplySection({ onClose }: { onClose: () => void }) {
 
             <div className='bg-gray-50 p-4 rounded-lg mb-4'>
                 <div className='flex items-center gap-2 mb-3'>
-                    <Sparkles size={18} className='text-[#ED990B]' />
+                    <Sparkles size={18} className='text-primary2' />
                     <span className='text-sm font-medium text-gray-700'>AI Assistant</span>
                 </div>
                 <div className='space-y-3 text-gray-700 text-sm leading-relaxed'>
@@ -28,7 +28,7 @@ export function AiReplySection({ onClose }: { onClose: () => void }) {
 
 
             <div className='flex gap-x-4'>
-                <button className='bg-[#ED990B] px-6 py-2 text-white rounded-lg hover:bg-[#D88009] transition-colors'>
+                <button className='bg-primary2 px-6 py-2 text-white rounded-lg hover:bg-[#D88009] transition-colors'>
                     Use This Reply
                 </button>
                 <button className='px-6 py-2 text-gray-700 border border-[#DFE3E8] rounded-lg hover:bg-gray-50 transition-colors'>

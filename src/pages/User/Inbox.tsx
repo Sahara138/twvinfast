@@ -1,5 +1,14 @@
-import { Archive, ChevronLeft, ChevronRight, Mail, Star, Tag, Trash2 } from "lucide-react";
+import {
+  Archive,
+  ChevronLeft,
+  ChevronRight,
+  Mail,
+  Star,
+  Tag,
+  Trash2,
+} from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router";
 
 type Status = "New" | "Opened" | "Won" | "Replied" | "Lost";
 type Tag = "None" | "Urgent" | "Demo" | "Billing" | "sales" | "253";
@@ -17,8 +26,7 @@ interface Email {
 }
 
 export default function Inbox() {
-  
-    const [emails, setEmails] = useState<Email[]>(() => [
+  const [emails, setEmails] = useState<Email[]>(() => [
     {
       id: 0,
       name: "Mike Jonson",
@@ -101,7 +109,9 @@ export default function Inbox() {
 
   const toggleStar = (id: number) => {
     setEmails((prev) =>
-      prev.map((email) => (email.id === id ? { ...email, starred: !email.starred } : email))
+      prev.map((email) =>
+        email.id === id ? { ...email, starred: !email.starred } : email
+      )
     );
   };
 
@@ -184,7 +194,9 @@ export default function Inbox() {
           <div className="flex items-center lg:w-1/2  gap-3">
             <input
               type="checkbox"
-              checked={selectedEmails.size === emails.length && emails.length > 0}
+              checked={
+                selectedEmails.size === emails.length && emails.length > 0
+              }
               onChange={toggleAllSelect}
               className="w-4 h-4 accent-teal-500 cursor-pointer"
             />
@@ -203,30 +215,38 @@ export default function Inbox() {
         {/* Action Bar */}
         {selectedEmails.size > 0 && (
           <div className="mb-4 flex  gap-x-10 items-center gap-3 text-sm text-gray-700 bg-gray-50 p-4 rounded-md border border-gray-200">
-            <span className="font-medium">{selectedEmails.size} email selected</span>
+            <span className="font-medium">
+              {selectedEmails.size} email selected
+            </span>
             <div className="flex items-center gap-2 ">
               <button className="flex items-center gap-1 gap-x-2 px-3 py-2 bg-white border border-[#0000001A] rounded-lg transition text-gray-700">
-                <span><Archive size={18} /></span>
+                <span>
+                  <Archive size={18} />
+                </span>
                 <span>Archive</span>
               </button>
               <button className="flex items-center gap-1 gap-x-2 px-3 py-2 bg-white border border-[#0000001A] rounded-lg transition text-gray-700">
-                <span><Trash2 size={18} /></span>
+                <span>
+                  <Trash2 size={18} />
+                </span>
                 <span>Delete</span>
               </button>
               <button className="flex items-center gap-1 gap-x-2 px-3 py-2 bg-white border border-[#0000001A] rounded-lg transition text-gray-700">
-                <span><Mail size={18} /></span>
+                <span>
+                  <Mail size={18} />
+                </span>
                 <span>Mark as Read</span>
               </button>
               <button className="flex items-center gap-1 gap-x-2 px-3 py-2 bg-white border border-[#0000001A] rounded-lg transition text-gray-700">
-                <span><Tag size={18} /></span>
+                <span>
+                  <Tag size={18} />
+                </span>
                 <span>Tag</span>
               </button>
               <button className="flex items-center gap-1 gap-x-2 px-3 py-2 bg-white border border-[#0000001A] rounded-lg transition text-gray-700">
-               
                 <span>Won</span>
               </button>
               <button className="flex items-center gap-1 gap-x-2 px-3 py-2 bg-white border border-[#0000001A] rounded-lg transition text-gray-700">
-             
                 <span>Lost</span>
               </button>
             </div>
@@ -240,34 +260,52 @@ export default function Inbox() {
               key={email.id}
               className="flex items-center  p-4 hover:bg-gray-50 rounded-lg-lg border-b border-gray-100 transition"
             >
-             <div className="flex items-center gap-3 w-1/2"> 
-              <input
-                type="checkbox"
-                checked={selectedEmails.has(email.id)}
-                onChange={() => toggleEmailSelect(email.id)}
-                className="w-4 h-4 accent-teal-500 cursor-pointer"
-              />
+              <div className="flex items-center gap-3 w-1/2">
+                <input
+                  type="checkbox"
+                  checked={selectedEmails.has(email.id)}
+                  onChange={() => toggleEmailSelect(email.id)}
+                  className="w-4 h-4 accent-teal-500 cursor-pointer"
+                />
 
-              <button
-                onClick={() => toggleStar(email.id)}
-                className="text-gray-400 hover:text-teal-500 transition flex-shrink-0"
-              >
-                {email.starred ? <span className="text-lg"><Star size={18} className="text-teal-400" /></span> : <span className="text-lg"><Star size={18} className="text-gray-400" /></span>}
-              </button>
+                <button
+                  onClick={() => toggleStar(email.id)}
+                  className="text-gray-400 hover:text-teal-500 transition flex-shrink-0"
+                >
+                  {email.starred ? (
+                    <span className="text-lg">
+                      <Star size={18} className="text-teal-400" />
+                    </span>
+                  ) : (
+                    <span className="text-lg">
+                      <Star size={18} className="text-gray-400" />
+                    </span>
+                  )}
+                </button>
 
-              <img
-                src={email.avatar}
-                alt={email.name}
-                className="w-10 h-10 rounded-full flex-shrink-0"
-              />
+                <img
+                  src={email.avatar}
+                  alt={email.name}
+                  className="w-10 h-10 rounded-full flex-shrink-0"
+                />
 
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <span className="font-medium text-gray-900 ">{email.name}</span>
-                  <span className="text-xs text-gray-400 bg-gray-50 px-1 rounded-xl">{email.replies} replies</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-gray-900 ">
+                      {email.name}
+                    </span>
+                    <span className="text-xs text-gray-400 bg-gray-50 px-1 rounded-xl">
+                      {email.replies} replies
+                    </span>
+                  </div>
+                  <Link
+                    to={`view-email/${email.id}`}
+                    className="text-sm text-gray-400 truncate"
+                  >
+                    {email.message}
+                  </Link>
                 </div>
-                <p className="text-sm text-gray-400 truncate">{email.message}</p>
-              </div></div>
+              </div>
 
               <div className="flex items-center justify-center w-1/2 gap-x-24  ">
                 <span
@@ -282,44 +320,50 @@ export default function Inbox() {
                   {email.tags.map((tag, i) => (
                     <span
                       key={i}
-                      className={`px-2 py-1 rounded-lg text-xs font-medium whitespace-nowrap ${getTagColor(tag)}`}
+                      className={`px-2 py-1 rounded-lg text-xs font-medium whitespace-nowrap ${getTagColor(
+                        tag
+                      )}`}
                     >
                       {tag}
                     </span>
                   ))}
                 </div>
 
-                <span className="text-xs text-gray-500 whitespace-nowrap w-16 text-right">{email.time}</span>
+                <span className="text-xs text-gray-500 whitespace-nowrap w-16 text-right">
+                  {email.time}
+                </span>
               </div>
             </div>
           ))}
         </div>
         {/* pagination button */}
-      <div className="flex w-fit ml-auto items-center justify-between my-6 gap-x-3 text-sm text-gray-600">
-
-      <button
-        
-        className={`flex items-center gap-2 px-4 py-3 bg-white border border-[#0000001A] rounded-lg transition "
+        <div className="flex w-fit ml-auto items-center justify-between my-6 gap-x-3 text-sm text-gray-600">
+          <button
+            className={`flex items-center gap-2 px-4 py-3 bg-white border border-[#0000001A] rounded-lg transition "
         `}
-      >
-        <ChevronLeft className="w-4 h-4" />
-        <span>Previous</span>
-      </button>
+          >
+            <ChevronLeft className="w-4 h-4" />
+            <span>Previous</span>
+          </button>
 
-      <button
-   
-        
-        className={`flex items-center gap-2 px-4 py-3 bg-white border border-[#0000001A] rounded-lg transition hover:bg-gray-50`}
-      >
-        <span>Next</span>
-        <ChevronRight className="w-4 h-4" />
-      </button>
-    </div>
-
-        <button className="flex items-center text-end justify-end gap-1 gap-x-2 px-4 py-3 bg-primary2 border border-[#0000001A] rounded-lg transition text-white mt-16 ml-auto ">  
-          <span><Mail size={18} /></span>
-          <span>New Email</span>
-        </button>
+          <button
+            className={`flex items-center gap-2 px-4 py-3 bg-white border border-[#0000001A] rounded-lg transition hover:bg-gray-50`}
+          >
+            <span>Next</span>
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+        <div className="w-fit ml-auto">
+          <Link
+            to={"compose"}
+            className="flex items-center text-end justify-end gap-1 gap-x-2 px-4 py-3 bg-primary2 border border-[#0000001A] rounded-lg transition text-white mt-16 ml-auto "
+          >
+            <span>
+              <Mail size={18} />
+            </span>
+            <span>New Email</span>
+          </Link>
+        </div>
       </div>
     </div>
   );

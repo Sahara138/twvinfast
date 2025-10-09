@@ -13,11 +13,11 @@ export function ReplySection({ onClose }: { onClose: () => void }) {
                 </button>
             </div>
             <textarea
-                className='w-full h-40 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ED990B] focus:border-transparent resize-none'
+                className='w-full h-40 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary2 focus:border-transparent resize-none'
                 placeholder='Type your reply...'
             />
             <div className='flex gap-x-4 mt-4'>
-                <button className='bg-[#ED990B] px-6 py-2 text-white rounded-lg hover:bg-[#D88009] transition-colors flex items-center gap-x-2'>
+                <button className='bg-primary2 px-6 py-2 text-white rounded-lg hover:bg-primary2 transition-colors flex items-center gap-x-2'>
                     <SendHorizontal size={20} /> Send
                 </button>
                 <button className='px-6 py-2 text-gray-700 border border-[#DFE3E8] rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-x-2'>
