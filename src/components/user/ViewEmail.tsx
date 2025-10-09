@@ -89,7 +89,7 @@ export default function ViewEmail() {
                         <button 
                             onClick={() => handleSectionToggle('reply')}
                             className={`px-4 py-3 flex gap-x-2  rounded-lg transition-colors ${
-                                activeSection === 'reply' ? 'bg-[#ED990B] text-white ' : 'text-black border border-[#DFE3E8] hover:bg-gray-50'
+                                activeSection === 'reply' ? 'bg-prima text-white ' : 'text-black border border-[#DFE3E8] hover:bg-gray-50'
                             }`}
                         >
                             <CornerUpLeft size={20} /> <p>Write a reply</p>
@@ -98,7 +98,7 @@ export default function ViewEmail() {
                             onClick={() => handleSectionToggle('forward')}
                             className={`px-4 py-3 flex gap-x-2 rounded-lg transition-colors ${
                                 activeSection === 'forward' 
-                                    ? 'bg-[#ED990B] text-white ' 
+                                    ? 'bg-prima text-white ' 
                                     : 'text-black border border-[#DFE3E8] hover:bg-gray-50'
                             }`}
                         >
@@ -108,7 +108,7 @@ export default function ViewEmail() {
                             onClick={() => handleSectionToggle('ai')}
                             className={`px-4 py-3 flex gap-x-2 rounded-lg transition-colors ${
                                 activeSection === 'ai' 
-                                    ? 'bg-[#ED990B] text-white ' 
+                                    ? 'bg-prima text-white ' 
                                     : 'text-black border border-[#DFE3E8] hover:bg-gray-50'
                             }`}
                         >

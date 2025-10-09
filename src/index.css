@@ -1,10 +1,6 @@
 @import "tailwindcss";
 
-@theme {
-  --color-primary: #ED990B;
-  --color-tahiti: #3ab7bf;
-  --color-bermuda: #78dcca;
-}
+
 
 body {
 	font-family: 'Inter', sans-serif;
@@ -13,3 +9,9 @@ button{
     cursor: pointer;
 }
 
+@theme {
+  --color-primary: #ED990B;
+  --color-primary2: #3BCBC8;
+  --color-tahiti: #3ab7bf;
+  --color-bermuda: #78dcca;
+}

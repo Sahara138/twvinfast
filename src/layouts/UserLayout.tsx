@@ -75,8 +75,8 @@ export default function UserLayout() {
   return (
     <div className="min-h-screen flex bg-gray-100 text-gray-900">
       {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-md flex flex-col h-screen sticky top-0">
-        <header className="flex items-center gap-3 px-6 py-2 border-b border-gray-200">
+      <aside className="w-64 bg-white shadow-md flex flex-col border-r border-gray-200 h-screen sticky top-0">
+        <header className="flex items-center gap-3 h-22 px-6 py-2 border-b border-gray-200">
           <div className="w-full">
             <Logo />
           </div>
