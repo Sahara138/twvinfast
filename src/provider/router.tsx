@@ -20,6 +20,11 @@ import Starred from "../pages/User/Starred";
 import Archive from "../pages/User/Archive";
 import Trash from "../pages/User/Trash";
 import Integrations from "../pages/Admin/Integrations/Integrations";
+import SuperAdminLayout from "../layouts/SuperAdminLayout";
+import SuperAdminDashboard from "../pages/SuperAdmin/SuperAdminDashboard/SuperAdminDashboard";
+import CustomerManagement from "../pages/SuperAdmin/CustomerManagement/CustomerManagement";
+import SuperUserManagement from "../pages/SuperAdmin/UserManagement/SuperUserManagement";
+
 export const router = createBrowserRouter([
     {
         path: "/",
@@ -60,6 +65,17 @@ export const router = createBrowserRouter([
             {path:"analytics",Component:Analytics},
             {path:"integrations",Component:Integrations},
             {path:"admin-settings",Component:AdminSettings}
+        ]
+    },
+    //super admin layout routes
+    {
+        path: "/super-admin",
+        Component: SuperAdminLayout,
+        errorElement: <Error />,
+        children: [
+            { index: true, Component: SuperAdminDashboard },
+            {path:"customer-management",Component:CustomerManagement},
+            {path:"user-management",Component:SuperUserManagement}
         ]
     }
 
