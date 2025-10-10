@@ -4,6 +4,7 @@ import CompanyProfile from '../../../components/Admin/BusinessInfo/CompanyProfil
 import KnowledgeBase from '../../../components/Admin/BusinessInfo/KnowledgeBase';
 import Policies from '../../../components/Admin/BusinessInfo/Policies';
 import Products from '../../../components/Admin/BusinessInfo/Products';
+import Heading from '../../../components/Admin/Heading';
 
 type TabType = 'company-profile' | 'knowledge-base' | 'policies' | 'products';
 
@@ -34,18 +35,11 @@ export default function BusinessInfo() {
 
     return (
         <div className="min-h-screen ">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className=" main-container">
                 {/* Header */}
-                <div className="flex items-start justify-between mb-6">
-                    <div>
-                        <h1 className="text-2xl font-semibold text-gray-900 mb-1">Business Information</h1>
-                        <p className="text-sm text-gray-600">
-                            Manage your company profile, knowledge base, and product catalogue Company Profile
-                        </p>
-                    </div>
 
-                </div>
-
+                <Heading heading1="Business Information" heading2="Manage your company profile, knowledge base, and product catalogue Company Profile" />
+               
                 <div className='border-b my-8 border-[#C4CDD5]' />
 
                 {/* Tabs */}

@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import Heading from "../../../components/Admin/Heading";
 
 
 // -------------------- Interfaces --------------------
@@ -310,16 +311,14 @@ const AdminSettings: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen ">
+      <div className="main-container">
         <div className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Admin Settings</h1>
-            <p className="text-sm text-gray-600 mt-1">
-              Configure system settings, branding, notifications, and access permissions
-            </p>
-          </div>
-      
+
+          <Heading
+            heading1="Admin Settings"
+            heading2="Configure system settings, branding, notifications, and access permissions"
+          />
         </div>
 
         <div className="flex gap-2 mb-6">

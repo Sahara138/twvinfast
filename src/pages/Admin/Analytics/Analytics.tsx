@@ -5,6 +5,7 @@ import AIMetrics from "../../../components/Admin/Analytics/AIMetrics";
 import ResponseTimes from "../../../components/Admin/Analytics/ResponseTimes";
 import EmailVolume from "../../../components/Admin/Analytics/EmailVolume";
 import TeamProductivity from "../../../components/Admin/Analytics/TeamProductivity";
+import Heading from "../../../components/Admin/Heading";
 const Analytic = () => {
   const [activeTab, setActiveTab] = useState<
     "ai-metrics" | "response-times" | "email-volume" | "team-productivity"
@@ -65,17 +66,14 @@ const Analytic = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen ">
+      <div className="main-container">
         <div className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">
-              Analytics & Reports
-            </h1>
-            <p className="text-sm text-gray-600 mt-1">
-              Monitor AI performance, response metrics, and team productivity
-            </p>
-          </div>
+          <Heading
+            heading1="Analytics & Reports"
+            heading2="Monitor AI performance, response metrics, and team productivity"
+          />
+         
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">

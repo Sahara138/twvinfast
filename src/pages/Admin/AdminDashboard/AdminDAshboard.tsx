@@ -1,6 +1,7 @@
 import { Users, MessageSquare, Clock, Shield } from 'lucide-react';
 import { Doughnut } from 'react-chartjs-2';
 import type {ResponseCategory, KnowledgeBaseItem, Activity } from '../../../types/Admin/Dashboard';
+import Heading from '../../../components/Admin/Heading';
 
 export default function AdminDashboard() {
   
@@ -62,12 +63,10 @@ export default function AdminDashboard() {
            
 
             {/* Main Content */}
-            <main className="px-8 lg:px-12 py-6">
+            <main className=" main-container">
                 {/* Title Section */}
-                <div className="mb-8">
-                    <h2 className="text-2xl font-bold text-gray-900 mb-1">Global Overview</h2>
-                    <p className="text-gray-600 text-sm">Manage your platform with complete administrative control</p>
-                </div>
+                <Heading heading1="Global Overview" heading2="Manage your platform with complete administrative control"/>
+              
 
                 {/* Stats Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">

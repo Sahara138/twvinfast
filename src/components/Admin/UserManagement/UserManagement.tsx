@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Search } from 'lucide-react';
 import AddUserModal from './AddUserModal';
 import type { TeamMember, UserFormData } from '../../../types/Admin/UserManagement';
+import Heading from '../Heading';
 
 const initialTeamMembers: TeamMember[] = [
     {
@@ -114,12 +115,12 @@ export default function UserManagement() {
     });
 
     return (
-        <div className="p-6 lg:p-12">
-            <div className="flex items-start justify-between mb-6">
-                <div className=''>
-                    <h2 className="text-2xl font-semibold text-gray-900 mb-1">User Management</h2>
-                    <p className="text-sm text-gray-600">Manage team members, roles, and permissions</p>
-                </div>
+        <div className="min-h-screen ">
+            <main className=' main-container'>
+ <div className="flex items-start justify-between mb-8 border-b border-[#C4CDD5] ">
+                   
+                   <Heading heading1="User Management" heading2="Manage team members, roles, and permissions" />
+                
                 <button
                     onClick={() => setIsModalOpen(true)}
                     className="px-5 py-2 text-sm font-medium text-white bg-[#ED990B] rounded-lg hover:bg-orange-500 transition-colors"
@@ -128,7 +129,7 @@ export default function UserManagement() {
                 </button>
             </div>
 
-            <div className="flex gap-3 mb-6">
+            <div className="flex gap-3 mb-6 ">
                 <div className="flex-1 relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                     <input
@@ -243,6 +244,8 @@ export default function UserManagement() {
                     ))}
                 </div>
             </div>
+            </main>
+           
 
             <AddUserModal
                 isOpen={isModalOpen}
