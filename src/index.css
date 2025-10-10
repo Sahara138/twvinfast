@@ -23,10 +23,15 @@ button{
   padding-bottom: 1.5rem;
 }
 
-/* Large screens (≥1024px) */
 @media (min-width: 1024px) {
   .main-container {
     padding-left: 3rem;
     padding-right: 3rem;
   }
+}
+
+.label {
+  display: block;
+  color: #000000; 
+  margin-bottom: 0.75rem; 
 }

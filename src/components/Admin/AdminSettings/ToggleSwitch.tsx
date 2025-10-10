@@ -1,5 +1,3 @@
-import React from "react";
-
 interface ToggleSwitchProps {
   checked: boolean;
   onChange: () => void;
@@ -19,5 +17,4 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ checked, onChange }) => (
     />
   </button>
 );
-
 export default ToggleSwitch;
