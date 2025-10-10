@@ -19,6 +19,7 @@ import AdminSettings from "../pages/Admin/AdminSettings/AdminSettings";
 import Starred from "../pages/User/Starred";
 import Archive from "../pages/User/Archive";
 import Trash from "../pages/User/Trash";
+import Integrations from "../pages/Admin/Integrations/Integrations";
 export const router = createBrowserRouter([
     {
         path: "/",
@@ -57,6 +58,7 @@ export const router = createBrowserRouter([
             {path:"customers",Component:Customers},
             {path:"customers/view-email/:id",Component:CustomerViewEmail},
             {path:"analytics",Component:Analytics},
+            {path:"integrations",Component:Integrations},
             {path:"admin-settings",Component:AdminSettings}
         ]
     }

@@ -195,15 +195,15 @@ const AdminSettings: React.FC = () => {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-6 border-b border-gray-200">
+        <div className="flex gap-2 gap-x-4 mb-6 ">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-3 text-sm font-medium transition-colors border-b-2 ${
+              className={`px-4 py-2.5 text-sm font-medium transition-all relative ${
                 activeTab === tab.id
-                  ? "text-orange-600 border-orange-600"
-                  : "text-gray-600 border-transparent hover:text-gray-800"
+                  ? "text-gray-900 bg-[#ED990B] rounded-lg"
+                  : "text-gray-600 hover:text-gray-900 border-[#DFE3E8] hover:bg-gray-100 rounded-lg border"
               }`}
             >
               {tab.label}

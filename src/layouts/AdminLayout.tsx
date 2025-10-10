@@ -57,7 +57,7 @@ export default function AdminLayout() {
         },
         {
             label: "Integrations",
-            path: "/integrations",
+            path: "integrations",
             renderIcon: (isActive: boolean) => (
                 < IntegrationsSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
             ),
