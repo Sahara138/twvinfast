@@ -95,6 +95,7 @@ export default function UserLayout() {
               <li key={item.path}>
                 <NavLink
                   to={item.path}
+                  end={item.path === "/user"}
                   className={({ isActive }) =>
                     `relative flex items-center px-4 py-2 gap-x-4 rounded transition text-lg ${
                       isActive
@@ -136,6 +137,7 @@ export default function UserLayout() {
               <li key={item.path}>
                 <NavLink
                   to={item.path}
+                  end={item.path === "/user"}
                   className={({ isActive }) =>
                     `relative flex items-center px-4 py-2 gap-x-4 rounded transition text-lg ${
                       isActive
@@ -193,17 +195,21 @@ export default function UserLayout() {
         <div className="mt-auto border-t border-gray-200 px-6 py-3">
           <NavLink
             to="/user/settings"
+            end
             className={({ isActive }) =>
-              `flex items-center gap-3 px-2 py-2 rounded-md text-sm ${
+              `relative flex items-center px-4 py-2 gap-x-4 rounded transition text-lg ${
                 isActive
-                  ? "font-semibold text-black"
-                  : "text-gray-700 hover:bg-gray-100"
+                  ? "font-medium text-lg bg-white shadow text-[#000000]"
+                  : "text-[#454F5B] hover:bg-gray-100"
               }`
             }
           >
             {({ isActive }) => (
               <>
-                <SettingSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
+                {isActive && (
+                  <span className="absolute left-0 top-0 h-full w-1 bg-[#58D5D3] shadow-[4px_0_6px_#58D5D3] rounded-r"></span>
+                )}
+                <SettingSVG strokeColor={isActive ? "#3BCBC8" : "#454F5B"} />
                 <span>Settings</span>
               </>
             )}

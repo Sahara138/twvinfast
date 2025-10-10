@@ -80,6 +80,7 @@ export default function AdminLayout() {
                             <li key={item.path}>
                                 <NavLink
                                     to={item.path}
+                                    end={item.path === "/admin"}
                                     className={({ isActive }) =>
                                         `flex items-center px-4 py-2 gap-x-4 rounded transition text-lg  ${isActive ? "  font-semibold  bg-[#F9DFB3] text-[#000000]" : " text-[#454F5B]  hover:bg-gray-100"
                                         }`
@@ -100,6 +101,7 @@ export default function AdminLayout() {
                 <div className="mt-auto border-t border-gray-200 px-6 py-3">
                     <NavLink
                         to="admin-settings"
+                        end
                         className={({ isActive }) =>
                             `flex items-center gap-3 px-2 py-2 rounded-md text-sm ${isActive ? "  font-semibold  bg-[#F9DFB3] text-[#000000]" : " text-[#454F5B]  hover:bg-gray-100"
                             }`
