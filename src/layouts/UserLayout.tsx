@@ -50,28 +50,28 @@ export default function UserLayout() {
   const triageItems = [
     {
       label: "Follow up",
-      path: "/follow-up",
+      path: "follow-up",
       renderIcon: (isActive: boolean) => (
         <FollowUpSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
       ),
     },
     {
       label: "Drafts",
-      path: "/drafts",
+      path: "drafts",
       renderIcon: (isActive: boolean) => (
         <DraftSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
       ),
     },
     {
       label: "Urgent",
-      path: "/urgent",
+      path: "urgent",
       renderIcon: (isActive: boolean) => (
         <UrgentSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
       ),
     },
     {
       label: "General",
-      path: "/general",
+      path: "general",
       renderIcon: (isActive: boolean) => (
         <GeneralSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
       ),

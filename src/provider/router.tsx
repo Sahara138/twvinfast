@@ -24,6 +24,10 @@ import SuperAdminLayout from "../layouts/SuperAdminLayout";
 import SuperAdminDashboard from "../pages/SuperAdmin/SuperAdminDashboard/SuperAdminDashboard";
 import CustomerManagement from "../pages/SuperAdmin/CustomerManagement/CustomerManagement";
 import SuperUserManagement from "../pages/SuperAdmin/UserManagement/SuperUserManagement";
+import FollowUp from "../pages/User/FollowUp";
+import Drafts from "../pages/User/Drafts";
+import Urgent from "../pages/User/Urgent";
+import General from "../pages/User/General";
 
 export const router = createBrowserRouter([
     {
@@ -46,6 +50,10 @@ export const router = createBrowserRouter([
             {path:"starred",Component:Starred},
             {path:"archive",Component:Archive},
             {path:"trash",Component:Trash},
+            {path:"follow-up",Component:FollowUp},
+            {path:"drafts",Component:Drafts},
+            {path:"urgent",Component:Urgent},
+            {path:"general",Component:General},
             {path:"settings",Component:Settings}
            
         ]
