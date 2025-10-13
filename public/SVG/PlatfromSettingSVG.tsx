@@ -1,5 +1,4 @@
 
-
 export function PlatfromSettingSVG({
   strokeColor = "#454F5B",
 }: {

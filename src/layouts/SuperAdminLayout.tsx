@@ -1,14 +1,14 @@
 import { Outlet, NavLink } from "react-router";
-import { ShieldUser, Search } from 'lucide-react';
+import {  Search } from 'lucide-react';
 import Logo from "../components/shared/Logo";
 import { DashboardSVG } from "../../public/SVG/DashboardSVG";
 import { UserManagementSVG } from "../../public/SVG/UserManagementSVG";
 import { AILearningSVG } from "../../public/SVG/AILearningSVG";
-import { CustomersSVG } from "../../public/SVG/CustomersSVG";
+import { BusinessSVG } from "../../public/SVG/BusinessSVG";
 import { AnalyticsSVG } from "../../public/SVG/AnalyticsSVG";
-import { IntegrationsSVG } from "../../public/SVG/IntegrationsSVG";
+import { BillingSVG } from "../../public/SVG/BillingSVG";
 import { CustomerManagementSVG } from "../../public/SVG/CustomerManagementSVG";
-
+import { PlatfromSettingSVG } from '../../public/SVG/PlatfromSettingSVG';
 
 export default function SuperAdminLayout() {
     const menuItems = [
@@ -34,41 +34,49 @@ export default function SuperAdminLayout() {
             ),
         },
         {
-            label: "AI Learning",
-            path: "ai-learning",
+            label: "AI Model Management",
+            path: "ai-model-management",
             renderIcon: (isActive: boolean) => (
                 < AILearningSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
             ),
         },
         {
-            label: "Customers",
-            path: "customers",
+            label: "Business Control",
+            path: "business-control",
             renderIcon: (isActive: boolean) => (
-                < CustomersSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
+                < BusinessSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
             ),
         },
         {
-            label: "Analytics",
-            path: "analytics",
+            label: "Billing & Subscription",
+            path: "billing-subscription",
+            renderIcon: (isActive: boolean) => (
+                < BillingSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
+            ),
+        },
+        {
+            label: "Platform Settings",
+            path: "platfrom-settings",
+            renderIcon: (isActive: boolean) => (
+                < PlatfromSettingSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
+            ),
+        },
+        {
+            label:"Analytics & Reports",
+            path: "analytics-reports",
             renderIcon: (isActive: boolean) => (
                 < AnalyticsSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
             ),
         },
-        {
-            label: "Integrations",
-            path: "integrations",
-            renderIcon: (isActive: boolean) => (
-                < IntegrationsSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
-            ),
-        },
+     
 
     ];
 
     return (
         <div className="min-h-screen flex bg-gray-100 text-gray-900">
             {/* Sidebar */}
-            <aside className="w-78 bg-white shadow-md flex flex-col h-screen sticky top-0">
-                <header className="flex items-center gap-3 px-6 py-2 border-b border-gray-200">
+            <aside className="w-81 bg-white shadow-md flex flex-col h-screen border-r border-[#C4CDD5] sticky top-0">
+                <header className="flex items-center gap-3 px-6 py-2 border-b border-[#C4CDD5]">
                     <div className="w-full">
                         <Logo />
                     </div>
@@ -102,11 +110,11 @@ export default function SuperAdminLayout() {
             {/* Main content area */}
             <div className="flex-1 flex flex-col">
                 {/* Top navbar for admin pages */}
-                <header className="bg-white h-[89px] sticky top-0 z-10 px-6 py-5 border-b border-l border-gray-200 ">
+                <header className="bg-white h-[89px] sticky top-0 z-10 px-6 py-5 border-b  border-[#C4CDD5]">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
-                                <ShieldUser className="w-6 h-6 text-gray-600" />
+                            <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+                                <img src="https://i.pravatar.cc/40?img=5" className="h-full w-full rounded-full" />
                             </div>
                             <div>
                                 <h1 className="text-lg font-medium text-gray-900">Super Admin</h1>
@@ -129,7 +137,7 @@ export default function SuperAdminLayout() {
                 </header>
 
                 {/* Content injected by routes */}
-                <main className="flex-1">
+                <main className="flex-1 main-container bg-white ">
                     <Outlet />
                 </main>
             </div>
