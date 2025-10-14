@@ -1,5 +1,6 @@
 // SuperUserManagement/LoginHistoryTab.tsx
 import type{ LoginRecord } from '../../../types/SuperAdmin/SuperUserManagement';
+import Heading2 from '../../shared/Heading2';
 
 interface Props {
   records: LoginRecord[];
@@ -11,21 +12,19 @@ export default function LoginHistoryTab({ records, onSelect }: Props) {
     status === 'Success' ? 'text-green-600 font-medium' : 'text-red-600 font-medium';
 
   return (
-    <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-      <div className="p-6 border-b border-gray-200">
-        <h2 className="text-lg font-semibold text-gray-900 mb-2">Login History</h2>
-        <p className="text-gray-600 text-sm">Recent login attempts across the platform</p>
-      </div>
-
-      <div className="w-full overflow-x-auto">
+    <div className="">
+      <Heading2 heading1='Login History' heading2='Recent login attempts across the platform'/>
+     
+     <div className='border border-[#DFE3E8] p-6 rounded-lg'> 
+ <div className="w-full rounded-lg overflow-x-auto">
         <table className="w-full min-w-max">
           <thead>
             <tr className="border-b border-gray-200 bg-gray-50">
-              <th className="text-left px-6 py-4 font-semibold text-gray-700">User</th>
-              <th className="text-left px-6 py-4 font-semibold text-gray-700">Timestamp</th>
-              <th className="text-left px-6 py-4 font-semibold text-gray-700">Location</th>
-              <th className="text-left px-6 py-4 font-semibold text-gray-700">IP Address</th>
-              <th className="text-left px-6 py-4 font-semibold text-gray-700">Status</th>
+              <th className="text-left px-6 py-4  text-[#6B7280]">User</th>
+              <th className="text-left px-6 py-4  text-[#6B7280]">Timestamp</th>
+              <th className="text-left px-6 py-4  text-[#6B7280]">Location</th>
+              <th className="text-left px-6 py-4  text-[#6B7280]">IP Address</th>
+              <th className="text-left px-6 py-4  text-[#6B7280]">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -53,6 +52,8 @@ export default function LoginHistoryTab({ records, onSelect }: Props) {
           </tbody>
         </table>
       </div>
+     </div>
+     
     </div>
   );
 }

@@ -91,13 +91,13 @@ export default function AllUsersTab({
         <table className="w-full  rounded-lg ">
           <thead>
             <tr className="border-b border-gray-200 bg-gray-50">
-              <th className="text-left px-6 py-4 font-semibold text-gray-700">User</th>
-              <th className="text-left px-6 py-4 font-semibold text-gray-700">Company</th>
-              <th className="text-left px-6 py-4 font-semibold text-gray-700">Role</th>
-              <th className="text-left px-6 py-4 font-semibold text-gray-700">Status</th>
-              <th className="text-left px-6 py-4 font-semibold text-gray-700">2FA</th>
-              <th className="text-left px-6 py-4 font-semibold text-gray-700">Last Login</th>
-              <th className="text-left px-6 py-4 font-semibold text-gray-700">Location</th>
+              <th className="text-left px-6 py-4 text-[#6B7280]">User</th>
+              <th className="text-left px-6 py-4 text-[#6B7280]">Company</th>
+              <th className="text-left px-6 py-4 text-[#6B7280]">Role</th>
+              <th className="text-left px-6 py-4 text-[#6B7280]">Status</th>
+              <th className="text-left px-6 py-4 text-[#6B7280]">2FA</th>
+              <th className="text-left px-6 py-4 text-[#6B7280]">Last Login</th>
+              <th className="text-left px-6 py-4 text-[#6B7280]">Location</th>
             </tr>
           </thead>
           <tbody>

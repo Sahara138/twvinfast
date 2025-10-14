@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import type{ LogDetails, LoginRecord, User } from "../../../types/SuperAdmin/SuperUserManagement";
 import AllUsersTab from "../../../components/SuperAdmin/SuperUserManagement/AllUsersTab";
 import LoginHistoryTab from "../../../components/SuperAdmin/SuperUserManagement/LoginHistoryTab";

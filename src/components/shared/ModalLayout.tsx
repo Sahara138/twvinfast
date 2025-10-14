@@ -1,6 +1,7 @@
 import { X } from "lucide-react";
 import type { ReactNode } from "react";
-import Heading from "../Admin/Heading";
+
+import Heading2 from "./Heading2";
 
 interface ModalLayoutProps {
   isOpen: boolean;
@@ -30,7 +31,7 @@ export default function ModalLayout({
       >
         {/* Header */}
         <div className="flex justify-between items-start px-6 pt-4 border-b border-gray-200 sticky top-0 z-10 bg-white/90 backdrop-blur-sm">
-          <Heading heading1={`${title}`} heading2={`${subtitle}`} />
+          <Heading2 heading1={`${title}`} heading2={`${subtitle}`} />
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 transition-colors"
