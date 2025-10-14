@@ -34,6 +34,28 @@ export default function SuperUserManagement() {
       lastLogin: "2025-10-10 6:45 PM",
       location: "Dhaka, Bangladesh",
     },
+    {
+      id: 3,
+      name: "John Doe",
+      email: "john@example.com",
+      company: "TechNova",
+      role: "Admin",
+      status: "Active",
+      twoFa: true,
+      lastLogin: "2025-10-12 10:30 AM",
+      location: "New York, USA",
+    },
+    {
+      id: 4,
+      name: "Sarah Khan",
+      email: "sarah@example.com",
+      company: "BrightEdge",
+      role: "User",
+      status: "Suspended",
+      twoFa: false,
+      lastLogin: "2025-10-10 6:45 PM",
+      location: "Dhaka, Bangladesh",
+    },
   ]);
 
   const [loginHistory] = useState<LoginRecord[]>([
@@ -55,6 +77,24 @@ export default function SuperUserManagement() {
       ipAddress: "192.168.0.5",
       status: "Failed",
     },
+    {
+      id: 3,
+      user: "John Doe",
+      email: "john@example.com",
+      timestamp: "2025-10-12 10:30 AM",
+      location: "New York, USA",
+      ipAddress: "192.168.0.1",
+      status: "Success",
+    },
+    {
+      id: 4,
+      user: "Sarah Khan",
+      email: "sarah@example.com",
+      timestamp: "2025-10-10 6:45 PM",
+      location: "Dhaka, Bangladesh",
+      ipAddress: "192.168.0.5",
+      status: "Failed",
+    },
   ]);
 
   const [activeTab, setActiveTab] = useState<"All Users" | "Login History" | "Security">(
@@ -64,7 +104,6 @@ export default function SuperUserManagement() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All Status");
   const [roleFilter, setRoleFilter] = useState("All Roles");
-
   const [twoFaEnabled, setTwoFaEnabled] = useState(true);
   const [failedLoginAlert, setFailedLoginAlert] = useState(true);
   const [ipWhitelist, setIpWhitelist] = useState(false);
