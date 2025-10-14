@@ -1,33 +1,9 @@
-import { ShieldUser,User, TrendingUp, Bot} from "lucide-react";
+
 import Heading from "../../../components/Admin/Heading";
+import StatsCards from "../../../components/SuperAdmin/SuperAdminDashboard/StatsCards";
 
 export default function SuperAdminDashboard() {
-  const stats = [
-    {
-      label: "Total Customer",
-      value: "25",
-      subtext: "235 excluded status",
-      icon: ShieldUser,
-    },
-    {
-      label: "Total User",
-      value: "10,234",
-      subtext: "1,234 last month",
-      icon: User,
-    },
-    {
-      label: "Monthly Revenue",
-      value: "$12,350",
-      subtext: "+8.5% from last month",
-      icon: TrendingUp,
-    },
-    {
-      label: "AI Requests",
-      value: "34,921",
-      subtext: "2,342 last month",
-      icon: Bot,
-    },
-  ];
+  
 
   const segmentData = [
     { label: "Pro 47%", value: 47, color: "#3b82f6" }, // Tailwind blue-500
@@ -111,44 +87,7 @@ export default function SuperAdminDashboard() {
       {/* Main Content */}
       <div className="">
         {/* Stats Cards */}
-        <div className="grid grid-cols-4 gap-6 mb-8">
-          {stats.map((stat, idx) => {
-            const Icon = stat.icon;
-            return (
-              <div
-                key={idx}
-                className="bg-white rounded-lg border border-gray-200 p-6"
-              >
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <p className="text-sm font-medium text-[#2D2D2D] mb-2">{stat.label}</p>
-                   
-                  </div>
-                  
-                  <div className="flex items-center justify-center">
-                    <Icon className="w-6 h-6 text-[#454F5B]" />
-                  </div>
-                </div>  <p
-  className={`text-2xl font-bold ${
-    stat.value === "TotalTotal"
-      ? "text-[#2F80ED]"
-      : stat.value === "Total User"
-      ? "text-[#27AE60]"
-      : stat.value === "Montly Revenue"
-      ? "text-[#F2994A]"
-      : stat.value === "AI Request"
-      ? "text-[#9B51E0]"
-      : "text-gray-700" // default color
-  }`}
->
-  {stat.value}
-</p>
-
-                <p className="text-xs mt-1 text-[#454F5B]">{stat.subtext}</p>
-              </div>
-            );
-          })}
-        </div>
+        <StatsCards/>
 
         {/* Charts Row */}
         <div className="grid grid-cols-3 gap-6 mb-8">
