@@ -1,10 +1,9 @@
-
+import {  ShieldUser } from "lucide-react";
 import Heading from "../../../components/Admin/Heading";
+import Heading2 from "../../../components/shared/Heading2";
 import StatsCards from "../../../components/SuperAdmin/SuperAdminDashboard/StatsCards";
 
 export default function SuperAdminDashboard() {
-  
-
   const segmentData = [
     { label: "Pro 47%", value: 47, color: "#3b82f6" }, // Tailwind blue-500
     { label: "Enterprise 37%", value: 37, color: "#10b981" }, // Tailwind green-500
@@ -81,26 +80,25 @@ export default function SuperAdminDashboard() {
 
   return (
     <div className="min-h-screen ">
-   
-      <Heading heading1="Global Overview" heading2="   Manage your platform with complete administrative control" />
+      <Heading
+        heading1="Global Overview"
+        heading2="   Manage your platform with complete administrative control"
+      />
 
       {/* Main Content */}
       <div className="">
         {/* Stats Cards */}
-        <StatsCards/>
+        <StatsCards />
 
         {/* Charts Row */}
         <div className="grid grid-cols-3 gap-6 mb-8">
           {/* Customer Segments */}
           <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h3 className="text-sm font-semibold text-gray-900 mb-1">
-              Customer Segments
-            </h3>
-            <p className="text-xs text-gray-500 mb-6">
-              Distribution by subscription plan
-            </p>
+            <Heading2
+              heading1="Customer Segments"
+              heading2="Distribution by subscription plan"
+            />
 
-            {/* SVG Doughnut Chart */}
             <div className="flex justify-center mb-6">
               <svg
                 width="160"
@@ -108,7 +106,6 @@ export default function SuperAdminDashboard() {
                 viewBox="0 0 160 160"
                 className="drop-shadow-sm"
               >
-                {/* Background Circle */}
                 <circle
                   cx="80"
                   cy="80"
@@ -155,31 +152,34 @@ export default function SuperAdminDashboard() {
 
           {/* Top Performing Businesses */}
           <div className="bg-white rounded-lg border border-gray-200 p-6 col-span-2">
-            <h3 className="text-sm font-semibold text-gray-900 mb-1">
-              Top Performing Businesses
-            </h3>
-            <p className="text-xs text-gray-500 mb-6">
-              Highest revenue generating customers
-            </p>
+            <Heading2
+              heading1=" Top Performing Businesses"
+              heading2="   Highest revenue generating customers"
+            />
 
             <div className="space-y-3">
               {topBusinesses.map((biz) => (
                 <div
                   key={biz.rank}
-                  className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0"
+                  className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0 hover:bg-[#FDF5E7] px-4 rounded-xl"
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                      <span className="text-xs font-bold text-blue-600">
-                        {biz.rank}
-                      </span>
+                  <div className="flex items-center gap-3 ">
+                    <div className="w-12 h-12 bg-[#DFE3E8] rounded-lg flex items-center justify-center">
+                      <span className="text-lg font-semibold">{biz.rank}</span>
                     </div>
-                    <span className="text-sm text-gray-900 font-medium">
+                    <span className="text-lg text-[#161C24] font-medium flex flex-col">
                       {biz.name}
+                      <span className="text-[#454F5B] mt-0.5 text-sm">
+                        145 user
+                      </span>
                     </span>
                   </div>
-                  <span className="text-sm font-bold text-gray-900">
+                  <span className="text-base font-medium flex flex-col">
                     {biz.revenue}
+
+                    <span className="text-[#ED990B] text-sm mt-0.5 ">
+                      +12.2%
+                    </span>
                   </span>
                 </div>
               ))}
@@ -189,12 +189,12 @@ export default function SuperAdminDashboard() {
 
         {/* Recent Customers */}
         <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h3 className="text-sm font-semibold text-gray-900 mb-1">
-            Recent Customers
-          </h3>
-          <p className="text-xs text-gray-500 mb-6">
-            Latest customer registrations and status
-          </p>
+          <Heading2
+            heading1="            Recent Customers
+"
+            heading2="             Latest customer registrations and status
+"
+          />
 
           <div className="space-y-0">
             {recentCustomers.map((customer, idx) => (
@@ -204,25 +204,18 @@ export default function SuperAdminDashboard() {
               >
                 {/* Customer Info */}
                 <div className="flex items-center gap-3 flex-1">
-                  <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+                  <div className="w-12 h-12 bg-[#D9D9D9] rounded-full flex items-center justify-center">
                     <span className="text-xs font-semibold text-gray-700">
-                      {customer.name.charAt(0)}
-                      {customer.name.charAt(
-                        customer.name.lastIndexOf(" ") + 1
-                      )}
+                      <ShieldUser />
                     </span>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-900">
+                    <p className="text-lg font-medium text-[#161C24]">
                       {customer.name}
                     </p>
-                    <div className="flex items-center gap-4 mt-1">
-                      <span className="text-xs text-gray-500">
-                        {customer.views}
-                      </span>
-                      <span className="text-xs text-gray-500">
-                        {customer.time}
-                      </span>
+                    <div className="flex items-center text-[#454F5B] text-sm gap-4 mt-1">
+                      <span className=" ">{customer.views}</span>
+                      <span className=" ">{customer.time}</span>
                     </div>
                   </div>
                 </div>
@@ -231,7 +224,7 @@ export default function SuperAdminDashboard() {
                 <div className="flex items-center gap-3">
                   {/* Badge */}
                   <span
-                    className={`text-xs font-semibold px-3 py-1 rounded-full ${
+                    className={`text-sm font-semibold px-3 py-1.5 rounded-xl ${
                       customer.badge === "Enterprise"
                         ? "bg-purple-100 text-purple-700"
                         : customer.badge === "Pro"
@@ -247,7 +240,7 @@ export default function SuperAdminDashboard() {
                     {customer.actions.map((action, i) => (
                       <button
                         key={i}
-                        className={`text-xs font-semibold px-3 py-1 rounded transition ${
+                        className={`text-sm font-semibold px-3 py-1.5 rounded-xl transition ${
                           action === "Subscribe"
                             ? "bg-red-500 text-white hover:bg-red-600"
                             : "bg-gray-200 text-gray-700 hover:bg-gray-300"
