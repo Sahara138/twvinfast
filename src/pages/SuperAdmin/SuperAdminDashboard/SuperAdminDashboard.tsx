@@ -1,7 +1,7 @@
 import {  ShieldUser } from "lucide-react";
 import Heading from "../../../components/Admin/Heading";
 import Heading2 from "../../../components/shared/Heading2";
-import StatsCards from "../../../components/SuperAdmin/SuperAdminDashboard/StatsCards";
+import StatsCards from "../../../components/SuperAdmin/SuperAdminDashboard/DashboardStatsCards";
 
 export default function SuperAdminDashboard() {
   const segmentData = [

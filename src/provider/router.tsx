@@ -28,11 +28,11 @@ import FollowUp from "../pages/User/FollowUp";
 import Drafts from "../pages/User/Drafts";
 import Urgent from "../pages/User/Urgent";
 import General from "../pages/User/General";
-import AIModelManagement from "../pages/SuperAdmin/AIModelManagement/AIModelManagement.tsx";
 import BusinessControl from "../pages/SuperAdmin/BusinessControl/BusinessControl.tsx";
 import BillingSubscription from "../pages/SuperAdmin/BillingSubscription/BillingSubscription.tsx";
 import PlatformSettings from "../pages/SuperAdmin/PlatfromSettings/PlatformSettings.tsx";
 import AnalyticsReports from "../pages/SuperAdmin/AnalyticsReports/AnalyticsReports.tsx";
+import AIModelManagement from "../pages/SuperAdmin/AIModelManagement/AIModelManagement.tsx";
 
 export const router = createBrowserRouter([
     {

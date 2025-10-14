@@ -5,7 +5,7 @@ import LoginHistoryTab from "../../../components/SuperAdmin/SuperUserManagement/
 import SecurityTab from "../../../components/SuperAdmin/SuperUserManagement/SecurityTab";
 import LogDetailModal from "../../../components/SuperAdmin/SuperUserManagement/LogDetailModal";
 import Heading from "../../../components/Admin/Heading";
-import StatsCards from "../../../components/SuperAdmin/SuperUserManagement/StatsCards";
+import StatsCards from "../../../components/SuperAdmin/SuperUserManagement/UserManagementStatsCards";
 
 export default function SuperUserManagement() {
 

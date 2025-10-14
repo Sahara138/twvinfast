@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Search } from "lucide-react";
 import Heading from "../../../components/Admin/Heading";
-import StatsCards from "../../../components/SuperAdmin/CustomerManagement/StatsCards";
+import StatsCards from "../../../components/SuperAdmin/CustomerManagement/CustomerManagementStatsCards";
 import Heading2 from "../../../components/shared/Heading2";
 import CreateAccountModal from "./CreateAccountModal";
 import CustomerManagmentTable from "./CustomerManagmentTable";
