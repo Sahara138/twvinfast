@@ -104,7 +104,7 @@ export default function CustomerManagement() {
     <div className="">
       <div className=" mx-auto">
         {/* Header */}
-        <div className="flex justify-between items-start mb-8">
+        <div className="flex justify-between items-start">
           <Heading
             heading1="Customer Management"
             heading2="Manage your platform with complete administrative control"
