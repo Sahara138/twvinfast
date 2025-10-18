@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 
 
@@ -12,9 +13,13 @@ button{
 @theme {
   --color-primary: #ED990B;
   --color-primary2: #3BCBC8;
+  --color-inputboxcolor: #DEDFE4 ;
   --color-tahiti: #3ab7bf;
   --color-bermuda: #78dcca;
+  --color-black01: #454F5B;
+
 }
+
 
 .main-container {
   padding-left: 2rem;

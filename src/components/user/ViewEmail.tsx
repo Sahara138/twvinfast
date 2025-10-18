@@ -79,8 +79,8 @@ export default function ViewEmail() {
             </div>
             <div className="space-y-1 text-black">
               <h3 className="font-medium text-lg">Mike Johnson</h3>
-              <p className="text-sm">sarah@company.com</p>
-              <p className="text-sm">To: you@company.com</p>
+              <p className="text-sm font-normal text-black01">sarah@company.com</p>
+              <p className="text-sm font-normal text-black01">To: you@company.com</p>
             </div>
           </div>
           <div className="flex gap-x-4">
@@ -103,55 +103,65 @@ export default function ViewEmail() {
 
         {/* Email Section */}
         <div className="p-4 border border-[#DFE3E8] rounded-lg shadow-sm space-y-4">
-          <p className="text-gray-700 leading-7">Hi Team,</p>
-          <p className="text-gray-700 leading-7 mt-4">
+          <p className="text-sm text-black leading-7">Hi Team,</p>
+          <p className="text-sm text-black leading-7 mt-4">
             I hope this email finds you well. As we approach the end of Q3, it's
             crucial that we start preparing for our Q4 marketing strategy
             review. This review will help us assess our current strategies and
             make necessary adjustments to ensure we meet our year-end goals.
           </p>
-          <p className="text-gray-700 leading-7 mt-4">
+          <p className="text-sm text-black leading-7 mt-4">
             Please come prepared with insights on your respective campaigns,
             including performance metrics, challenges faced, and opportunities
             for improvement. We will also discuss new initiatives and ideas to
             enhance our marketing efforts in the upcoming quarter.
           </p>
-          <p className="text-gray-700 leading-7 mt-4">
+          <p className="text-sm text-black leading-7 mt-4">
             Looking forward to a productive discussion.
           </p>
-          <p className="text-gray-700 leading-7 mt-4">Best regards,</p>
-          <p className="text-gray-700 leading-7 mt-2">Mike Johnson</p>
+          <p className="text-sm text-black leading-7 mt-4">Best regards,</p>
+          <p className="text-sm text-black leading-7 mt-2">Mike Johnson</p>
 
           <div className="flex gap-x-6 mt-6">
             <button
               onClick={() => handleSectionToggle("reply")}
-              className={`px-4 py-3 flex gap-x-2  rounded-lg transition-colors ${
+              className={`px-4 py-2 flex gap-x-2  rounded-lg transition-colors hover:text-white hover:bg-primary2 transition duration-300 ease-in-out ${
                 activeSection === "reply"
                   ? "bg-primary2 text-white "
                   : "text-black border border-[#DFE3E8] hover:bg-gray-50"
               }`}
             >
-              <CornerUpLeft size={20} /> <p>Write a reply</p>
+              <div className="flex items-center gap-x-[10px]">
+                <CornerUpLeft size={24} />
+                <p className="text-lg font-normal">Write a reply</p>
+
+              </div>
             </button>
             <button
               onClick={() => handleSectionToggle("forward")}
-              className={`px-4 py-3 flex gap-x-2 rounded-lg transition-colors ${
+              className={`px-4 py-3 flex gap-x-2 rounded-lg transition-colors hover:text-white hover:bg-primary2 transition duration-300 ease-in-out ${
                 activeSection === "forward"
                   ? "bg-primary2 text-white "
                   : "text-black border border-[#DFE3E8] hover:bg-gray-50"
               }`}
             >
-              <CornerUpRight size={20} /> <p>Forward a reply</p>
+              <div className="flex items-center gap-x-[10px]">
+                <CornerUpRight size={24} /> 
+                <p className="text-lg font-normal">Forward a reply</p>
+              </div>
             </button>
             <button
               onClick={() => handleSectionToggle("ai")}
-              className={`px-4 py-3 flex gap-x-2 rounded-lg transition-colors ${
+              className={`px-4 py-3 flex gap-x-2 rounded-lg transition-colors hover:text-white hover:bg-primary2 transition duration-300 ease-in-out ${
                 activeSection === "ai"
                   ? "bg-primary2 text-white "
                   : "text-black border border-[#DFE3E8] hover:bg-gray-50"
               }`}
             >
-              <Bot size={20} /> <p>AI reply</p>
+            <div className="flex items-center gap-x-[10px] ">
+              <Bot size={24} />
+              <p className="text-lg font-normal">AI reply</p>
+            </div>
             </button>
           </div>
         </div>
@@ -167,6 +177,7 @@ export default function ViewEmail() {
           <AiReplySection onClose={() => setActiveSection(null)} />
         )}
       </div>
+      
 
       {/* AI Assistant Sidebar */}
       <AISidebar

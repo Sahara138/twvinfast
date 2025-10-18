@@ -307,20 +307,22 @@ export default function Inbox() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-center w-1/2 gap-x-24  ">
-                <span
-                  className={`px-2 py-1 rounded-lg text-xs font-medium whitespace-nowrap ${getStatusColor(
-                    email.status
-                  )}`}
-                >
-                  {email.status}
-                </span>
+              <div className="grid grid-cols-3 w-1/2 gap-x-24">
+                <div className="">
+                  <span
+                    className={`px-2 py-1 rounded-xl text-xs font-medium whitespace-nowrap ${getStatusColor(
+                      email.status
+                    )}`}
+                  >
+                    {email.status}
+                  </span>
+                </div>
 
                 <div className="flex gap-1">
                   {email.tags.map((tag, i) => (
                     <span
                       key={i}
-                      className={`px-2 py-1 rounded-lg text-xs font-medium whitespace-nowrap ${getTagColor(
+                      className={`px-2 py-1 rounded-xl text-xs font-medium whitespace-nowrap ${getTagColor(
                         tag
                       )}`}
                     >

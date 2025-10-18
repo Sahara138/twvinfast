@@ -63,6 +63,7 @@ export default function PipeLineSection() {
                     <div className="flex flex-col gap-y-1 items-center"><span className="text-[#ED990B] text-3xl font-bold">{pipelineData.lostThisMonth}</span> Lost This Month </div>
                     <div className="flex flex-col gap-y-1 items-center"><span className="text-[#3BB515] text-3xl font-bold">{pipelineData.activeLeads}</span> Active Leads </div>
                 </div>
+                
             </div>
 
         </div>
