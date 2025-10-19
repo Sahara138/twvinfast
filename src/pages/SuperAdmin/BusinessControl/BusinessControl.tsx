@@ -436,19 +436,19 @@ const [auditLogs] = useState<AuditLog[]>([
           ))}
         </div>
 
-      {/* AI Models Tab */}
+      {/* Business Account Tab */}
       {activeTab === 'Business Account' && (
         <BusinessTab accounts={accounts} searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}  />
       )}
 
-      {/* System Prompts Tab */}
+      {/* Datasets Tab */}
       {activeTab === 'Datasets' && (
         <AllDatasetTab datasets={datasets} />
 
       )}
 
-      {/* Content Filtering Tab */}
+      {/* Audit Logs Tab */}
       {activeTab === 'Audit Logs' && (
 
         <AllAuditLogsTab auditLogs={auditLogs} />
