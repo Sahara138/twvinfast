@@ -1,8 +1,16 @@
 import { useState } from "react";
 import Heading2 from "../../../components/shared/Heading2";
-import RevenueGrowthTab from "../../../components/SuperAdmin/BillingManagement/RevenueGrowthChart";
+import RevenueGrowthTab from "../../../components/SuperAdmin/BillingManagement/component/RevenueGrowthChart";
 import AllSubscriptionTab from "../../../components/SuperAdmin/BillingManagement/SubscriptionsTab";
-import type { Subscription } from "../../../types/SuperAdmin/Billing&Subscription";
+import type { Payment, Subscription } from "../../../types/SuperAdmin/Billing&Subscription";
+import SubscriptionPlanTab from "../../../components/SuperAdmin/BillingManagement/SubscriptionPlanTab";
+import { pricingPlans } from "../../../components/SuperAdmin/BillingManagement/component/pricingData";
+import PaymentTab from "../../../components/SuperAdmin/BillingManagement/PaymentTab";
+import { mockPayments } from "../../../components/SuperAdmin/BillingManagement/component/paymentData";
+import { mockInvoices } from "../../../components/SuperAdmin/BillingManagement/component/invoicesData";
+import InvoicesTab from "../../../components/SuperAdmin/BillingManagement/InvoicesTab";
+import AddPlanModal from "../../../components/SuperAdmin/BillingManagement/component/AddPlan";
+import AddUserModal from "../../../components/Admin/UserManagement/AddUserModal";
 
 export default function BillingSubscription() {
   const segmentData = [
@@ -123,10 +131,14 @@ export default function BillingSubscription() {
   }
 ]);
 
-  const [activeTab, setActiveTab] = useState<'Revenue Overview' | 'Subscriptions' | 'Subscription Plans | Invoices | Payment Processing'>('Revenue Overview');
+  const [activeTab, setActiveTab] = useState<'Revenue Overview' | 'Subscriptions' | 'Subscription Plans' | 'Invoices' | 'Payment Processing'>('Revenue Overview');
 const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All Status");
-
+  const [payment, setPayment] = useState<Payment[]>(mockPayments);
+  const [invoices, setInvoices] = useState(mockInvoices);
+  const [PricingPlan, setPricingPlan] = useState(pricingPlans);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   interface SegmentPath {
     color: string;
     dasharray: number;
@@ -157,9 +169,15 @@ const [searchQuery, setSearchQuery] = useState("");
   return (
     <div>
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Billing & Subscription</h1>
-        <p className="text-gray-600">Manage your platform with complete administrative control</p>
+      <div className="flex justify-between flex-start items-center">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Billing & Subscription</h1>
+          <p className="text-gray-600">Manage your platform with complete administrative control</p>
+        </div>
+        <button onClick={() => setIsModalOpen(true)} className="px-[28px] py-[9px] bg-primary text-white rounded-[8px] hover:bg-primary-dark transition-colors">
+          Add Plan
+        </button>
+
       </div>
       <hr className="my-[28px] border-[#C4CDD5]" />
       
@@ -258,22 +276,29 @@ const [searchQuery, setSearchQuery] = useState("");
         
 
 
-      {/* AI Models Tab */}
+      {/* Subscriptions Tab */}
       {activeTab === 'Subscriptions' && (
             <AllSubscriptionTab subscriptions={subscriptions} searchQuery={searchQuery} setSearchQuery={setSearchQuery} statusFilter={statusFilter} setStatusFilter={setStatusFilter}/>
           )}
 
-      {/* System Prompts Tab */}
-      {/* {activeTab === 'Datasets' && (
-            <AllDatasetTab datasets={datasets} />
-    
-          )} */}
+      {/* Subscriptions Plan Tab */}
+      {activeTab === 'Subscription Plans' && (
+        <SubscriptionPlanTab pricingPlans={pricingPlans} />
+          )}
 
-      {/* Content Filtering Tab */}
-      {/* {activeTab === 'Audit Logs' && (
-    
-            <AllAuditLogsTab auditLogs={auditLogs} />
-          )} */}
+      {/* Invoices Tab */}
+      {activeTab === 'Invoices' && (
+            <InvoicesTab
+              invoices={invoices}
+              statusFilter={statusFilter}
+              setStatusFilter={setStatusFilter}
+            />
+          )} 
+      {/* Payment Tab */}
+      {activeTab === 'Payment Processing' && (
+            <PaymentTab  payment={payment} setPayment={setPayment} />
+          )}
+    <AddPlanModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}  />
     </div>
   )
 }

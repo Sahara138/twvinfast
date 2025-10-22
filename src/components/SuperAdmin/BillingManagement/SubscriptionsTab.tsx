@@ -105,7 +105,7 @@ export default function AllSubscriptionTab({
                   </span>
                 </td>
                 <td className="px-6 py-4">
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(subscription.status)}`}>
+                  <span className={`px-[11px] py-[6px] rounded-lg text-sm font-medium ${getStatusColor(subscription.status)}`}>
                     {subscription.status}
                   </span>
                 </td>
