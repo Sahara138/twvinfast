@@ -94,13 +94,14 @@ const handleChange: UploadProps['onChange'] =(info) => {
     <div className=" overflow-hidden">    
 
       {/* White-label Branding */}
+    <form action="">
       <div className='border border-[#DFE3E8] p-6 rounded-lg '>
         <div className="headerBox mb-5">
             <h6 className='text-lg font-normal mt-1'>White-label Branding</h6>
             <p className='text-sm font-normal text-gray-500'>Access and manage all business admin dashboards</p>
         </div>
-        <form action="">
-            <div className="grid grid-cols-2 items-end gap-6">
+
+            <div className="grid grid-cols-2 items-end gap-6 mb-12">
                 <div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-3">
@@ -149,20 +150,52 @@ const handleChange: UploadProps['onChange'] =(info) => {
                         beforeUpload={beforeUpload}
                         onChange={handleChange}
 >
-    {imageUrl ? (
-        <img draggable={false} src={imageUrl} alt="avatar" style={{ width: '100%' }} />
-    ) : (
-        uploadButton
-    )}
-</Upload>
-
-
+                        {imageUrl ? (
+                            <img draggable={false} src={imageUrl} alt="avatar" style={{ width: '100%' }} />
+                        ) : (
+                            uploadButton
+                        )}
+                    </Upload>
                 </div>
             </div>
-        </form>
-        
+            <hr  className="w-full border-[#C4CDD5] mb-6"/>
+            <div className="grid grid-cols-3 items-center justify-between gap-[21px]">
+              <div >
+                  <label className="text-[16px] font-normal">Primary Colour</label>
+                  <div className="flex justify-between items-center border border-[#C4CDD5] rounded-[8px] p-2 mt-4">
+                    <p className="text-[14px] font-normal ">#ED990B</p>
+                    <div className="w-[29px] h-[27px] bg-primary "></div>
+                  </div>
+              </div>
+              <div >
+                  <label className="text-[16px] font-normal">Secondary Colour</label>
+                  <div className="flex justify-between items-center border border-[#C4CDD5] rounded-[8px] p-2  mt-4">
+                    <p className={`text-[14px] font-normal`}>#000000</p>
+                    <div className="w-[29px] h-[27px] bg-black "></div>
+                  </div>
+              </div>
+              <div >
+                  <label className="text-[16px] font-normal">Accent Colour</label>
+                  <div className="flex justify-between items-center border border-[#C4CDD5] rounded-[8px] p-2 mt-4">
+                    <p className="text-[14px] font-normal ">#C4CDD5</p>
+                    <div className="w-[29px] h-[27px] bg-[#C4CDD5] "></div>
+                  </div>
+              </div>
+            </div>
       </div>
-    
+      <div className="flex items-center gap-3 mt-[46px]">
+          <button
+            className="px-[28px] py-[6px] bg-primary text-white rounded hover:bg-primary-dark transition text-sm font-medium"
+          >
+            Save Changes
+          </button>
+          <button
+            className="px-[28px] py-[6px] bg-[#F9DFB3] rounded transition text-sm font-medium hover:bg-[#F9E4C4]"
+          >
+            Reset to Default
+          </button>
+        </div>
+    </form>
     </div>
   );
 }

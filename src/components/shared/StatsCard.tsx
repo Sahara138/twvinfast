@@ -5,7 +5,7 @@ interface StatsCardProps {
   label: string;
   value: string | number;
   subtext?: string;
-  icon: LucideIcon;
+  icon: React.ElementType | LucideIcon;
   color?: string; 
   borderColor?: string; 
 }

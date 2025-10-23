@@ -49,7 +49,8 @@ const Analytic = () => {
   ];
 
 
-
+ 
+  
   const renderContent = () => {
     switch (activeTab) {
       case "ai-metrics":

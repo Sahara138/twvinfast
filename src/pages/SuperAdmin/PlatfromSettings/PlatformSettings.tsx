@@ -1,23 +1,139 @@
 import { useState } from "react";
 import WhiteLabelingTab from "../../../components/SuperAdmin/PlatformSettings/WhiteLabelingTab";
+import ApiManagementTab from "../../../components/SuperAdmin/PlatformSettings/ApiManagementTab";
+import type { APIKey, ComplianceData, ComplianceProps, ComplianceSettings, PlatformSecuritySettings, SystemData, SystemSettings } from "../../../types/SuperAdmin/PlatformSettings";
+import SecurityTab from "../../../components/SuperAdmin/PlatformSettings/SecurityTab";
+import ComplianceTab from "../../../components/SuperAdmin/PlatformSettings/ComplianceTab";
+import SystemTab from "../../../components/SuperAdmin/PlatformSettings/SystemTab";
 
 
 export default function PlatformSettings() {
-  const [whiteLabels, setWhiteLabels] = useState([])
   const [activeTab, setActiveTab] = useState<'White-labeling' | 'API Management' | 'Security' | 'Compliance' | 'System'>('White-labeling');
+  const [whiteLabels, setWhiteLabels] = useState([])
+
+  const [compliancedata, setComplianceData] = useState<ComplianceData>({
+        privacyPolicyUrl: "http://platform.com/privacy",
+        serviceUrl: "https://platform.com/terms",
+        dataRetentionPeriod: "1 Year"
+  })
+
+  const [securitySettings, setSecuritySettings] = useState<PlatformSecuritySettings>({
+      httpMode: true,
+      ratelimiting: "1 hr",
+      ipWhitelisting: true,
+      ddoSProtection: false,
+      firewallMode: false,
+    });
+    const handlePlatformSecurityToggle = (field: keyof PlatformSecuritySettings) => {
+        setSecuritySettings((prev) => ({ ...prev, [field]: !prev[field] }));
+      };
+
+    const [complianceSettings, setComplianceSettings] = useState<ComplianceSettings>({
+      gdprMode: true,
+      cgpaMode: true,
+      hipaaMode: false,
+      soxMode: false,
+    });
+
+    const handleComplianceToggle = (field: keyof ComplianceSettings) => {
+        setComplianceSettings((prev) => ({ ...prev, [field]: !prev[field] }));
+      };
+
+      const handleComplianceChange = (field: keyof ComplianceData, value: string) => {
+          setComplianceData((prev) => ({ ...prev, [field]: value }));
+        };
+        const [systemSettings, setSystemSettings] = useState({
+  maintenanceMode: true,
+  autoScaling: true,
+  errorReporting: true,
+});
+
+const [systemData, setSystemData] = useState({
+  serverRegion: "US East",
+  backupFrequency: "Daily",
+  logRetention: "90 Days",
+});
+
+const handleSystemToggle = (field: keyof SystemSettings) => {
+  setSystemSettings((prev) => ({ ...prev, [field]: !prev[field] }));
+};
+
+const handleSystemChange = (field: keyof SystemData, value: string) => {
+  setSystemData((prev) => ({ ...prev, [field]: value }));
+};
+
+  
+  
+      const [apikeys] = useState<APIKey[]>([
+  {
+    id: 1,
+    name: "Production Admin Key",
+    apiKey: "pk_live***************",
+    permissions: "Write",
+    created: "2024-12-15",
+    lastUsed: "2025-10-21",
+    status: "Active",
+  },
+  {
+    id: 2,
+    name: "Development API Key",
+    apiKey: "pk_live***************",
+    permissions: "Read",
+    created: "2025-01-20",
+    lastUsed: "2025-10-19",
+    status: "Active",
+  },
+  {
+    id: 3,
+    name: "Mobile App Key",
+    apiKey: "pk_live***************",
+    permissions: "Read", 
+    created: "2025-03-05",
+    lastUsed: "2025-09-28",
+    status: "Inactive",
+  },
+  {
+    id: 4,
+    name: "Production API Key",
+    apiKey: "pk_live***************",
+    permissions: "Admin",
+    created: "2025-02-14",
+    lastUsed: "2025-05-30",
+    status: "Revoked",
+  },
+  {
+    id: 5,
+    name: "Legacy Integration",
+    apiKey: "pk_live***************",
+    permissions: "Update",
+    created: "2025-05-02",
+    lastUsed: "2025-10-20",
+    status: "Active",
+  },
+]);
+  
   
   return (
     <div>
       {/* Header */}
-      <div className="flex justify-between flex-start items-center">
-        <div className="mb-8">
+      <div className="flex justify-between items-center">
+        <div className="">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Platform Settings</h1>
           <p className="text-gray-600">Manage your platform with complete administrative control</p>
         </div>
+        {
+          activeTab !== "White-labeling" && (
+              <button
+              // onClick={}
+              className="px-[28px] py-[9px] bg-primary text-white rounded hover:bg-primary-dark transition text-xl font-medium"
+            >
+              Generate API Keys
+            </button>
+          )
+        } 
       </div>
       <hr className="my-[28px] border-[#C4CDD5]" />
-      
-
+    
       {/* Tabs */}
       <div className="flex flex-wrap gap-3 mb-6">
         {["White-labeling", "API Management", "Security", "Compliance", "System"].map((tab) => (
@@ -42,23 +158,35 @@ export default function PlatformSettings() {
         <WhiteLabelingTab whiteLabels={whiteLabels} />
       )}
 
-      {/* Subscriptions Plan Tab */}
-      {/* {activeTab === 'Subscription Plans' && (
-        <SubscriptionPlanTab pricingPlans={pricingPlans} />
-          )} */}
+      {/* API Key Management Tab */}
+      {activeTab === 'API Management' && (
+        <ApiManagementTab apikeys={apikeys} />
+          )}
 
-      {/* Invoices Tab */}
-      {/* {activeTab === 'Invoices' && (
-            <InvoicesTab
-              invoices={invoices}
-              statusFilter={statusFilter}
-              setStatusFilter={setStatusFilter}
+      {/* Security Tab */}
+      {activeTab === 'Security' && (
+            <SecurityTab
+            securitySettings ={securitySettings}
+            onPlatformToggle={handlePlatformSecurityToggle}
+              
             />
-          )}  */}
+          )} 
+      {/* Compliance Tab */}
+      {activeTab === 'Compliance' && (
+            <ComplianceTab
+            complianceData={compliancedata}
+            complianceSettings={complianceSettings}
+            onComplianceChange={handleComplianceChange}
+            onComplianceToggle={handleComplianceToggle}/>
+          )}
       {/* Payment Tab */}
-      {/* {activeTab === 'Payment Processing' && (
-            <PaymentTab  payment={payment} setPayment={setPayment} />
-          )} */}
+      {activeTab === 'System' && (
+            <SystemTab
+            systemData={systemData}
+            systemSettings={systemSettings}
+            onSystemChange={handleSystemChange}
+            onSystemToggle={handleSystemToggle}/>
+          )}
     </div>
   )
 }
