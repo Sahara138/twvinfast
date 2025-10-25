@@ -10,9 +10,17 @@ import { AnalyticsSVG } from "../../public/SVG/AnalyticsSVG";
 import { IntegrationsSVG } from "../../public/SVG/IntegrationsSVG";
 import { SettingSVG } from "../../public/SVG/SettingSVG";
 import { UserManagementSVG } from "../../public/SVG/UserManagementSVG";
+import { useState } from "react";
+import { FaBars } from "react-icons/fa";
 
 
 export default function AdminLayout() {
+    const [sidebarOpen, setSidebarOpen] = useState(true);
+
+    const handleTogglebar = () => {
+        setSidebarOpen(prev => !prev);
+
+    }
     const menuItems = [
         {
             label: "Dashboard",
@@ -67,10 +75,11 @@ export default function AdminLayout() {
     ];
 
     return (
-        <div className="min-h-screen flex bg-gray-100 text-gray-900">
+        <div className=" min-h-screen flex bg-white text-gray-900">
             {/* Sidebar */}
-            <aside className="w-72 bg-white shadow-md flex flex-col h-screen sticky top-0">
-                <header className="flex items-center gap-3 px-6 py-2 border-b border-gray-200">
+            <aside className={`min-h-screen bg-white shadow-md flex flex-col border-r border-gray-200 sticky top-0 left-0 transition-all ${sidebarOpen ? "w-81" : "w-[104px]"}`}>
+                <header className="flex items-center h-22 px-6 py-2 border-b border-gray-200">
+                    <FaBars size={20} onClick={handleTogglebar} className="cursor-pointer" />
                     <div className="w-full">
                         <Logo />
                     </div>
@@ -90,7 +99,21 @@ export default function AdminLayout() {
                                     {({ isActive }) => (
                                         <>
                                             {item.renderIcon(isActive)}
-                                            <span>{item.label}</span>
+                                            {/* <span>{item.label}</span> */}
+                                            {
+                                                sidebarOpen ?
+                                                    (
+                                                        <>
+
+                                                            <span>{item.label}</span>
+
+                                                        </>
+                                                    )
+                                                    :
+                                                    <span className="absolute left-full ml-2 whitespace-nowrap bg-gray-700 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
+                                                        <span>{item.label}</span>
+                                                    </span>
+                                            }
                                         </>
                                     )}
                                 </NavLink>
@@ -99,7 +122,7 @@ export default function AdminLayout() {
                     </ul>
                 </nav>
                 {/* Settings link fixed at bottom of sidebar */}
-                <div className="mt-auto border-t border-gray-200 px-6 py-3">
+                <div className={`mt-auto border-t border-gray-200 px-6 py-3 ${!sidebarOpen && "mx-auto"} `}>
                     <NavLink
                         to="admin-settings"
                         end
@@ -111,7 +134,22 @@ export default function AdminLayout() {
                         {({ isActive }) => (
                             <>
                                 <SettingSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
-                                <span>Settings</span>
+                                {/* <span>Settings</span> */}
+                                {
+                                    sidebarOpen ?
+                                        (
+                                            <>
+
+                                                <span>Settings</span>
+
+                                            </>
+                                        )
+                                        :
+                                        <span className="absolute left-full ml-2 whitespace-nowrap bg-gray-700 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
+                                            <span>Settings</span>
+                                        </span>
+                                }
+
                             </>
                         )}
                     </NavLink>
@@ -121,19 +159,20 @@ export default function AdminLayout() {
             {/* Main content area */}
             <div className="flex-1 flex flex-col">
                 {/* Top navbar for admin pages */}
-                <header className="bg-white h-[89px] sticky top-0 z-10 px-6 py-5 border-b border-l border-gray-200 ">
-                    <div className="flex items-center justify-between">
+                <header className="bg-white sticky top-0 z-10 px-6 py-5 border-b border-l border-gray-200 ">
+                    <div className="md:flex items-center justify-between">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
                                 <ShieldUser className="w-6 h-6 text-gray-600" />
                             </div>
                             <div>
-                                <h1 className="text-lg font-medium text-gray-900">TecFlow Solution</h1>
+                                <h1 className=" text-base md:text-lg font-medium text-gray-900">TecFlow Solution</h1>
                                 <p className="text-sm text-[#6A6A6A]">Admin</p>
                             </div>
                         </div>
-                        <div className="flex items-center gap-4">
-                            <div className="relative min-w-sm">
+                        <div className="flex items-center gap-4 
+                         mt-4 md:mt-0">
+                            <div className=" w-full relative">
                                 <input
                                     type="text"
                                     placeholder="Search..."
@@ -148,7 +187,7 @@ export default function AdminLayout() {
                 </header>
 
                 {/* Content injected by routes */}
-                <main className="flex-1">
+                <main className="flex-1 ">
                     <Outlet />
                 </main>
             </div>

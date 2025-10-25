@@ -8,7 +8,7 @@ export default function TeamProductivity() {
     { name: "Sarah J.", responses: 16, accuracy: 92, status: "Active" },
   ];
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
+    <div className="bg-white w-[99%] md:w-[100%] rounded-lg border border-gray-200 p-6">
       <h3 className="text-lg font-semibold text-gray-900 mb-2">
         Team Productivity Comparison
       </h3>
@@ -19,7 +19,7 @@ export default function TeamProductivity() {
         {teamMembers.map((member, idx) => (
           <div
             key={idx}
-            className="flex items-center gap-4 p-4 border border-gray-200 rounded-lg"
+            className="md:flex items-center gap-4 p-4 border border-gray-200 rounded-lg"
           >
             <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-semibold">
               {member.name.charAt(0)}
@@ -30,12 +30,12 @@ export default function TeamProductivity() {
                 {member.responses} responses this week
               </p>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="md:flex items-center gap-4 mt-2">
               <div className="text-right">
                 <p className="text-sm font-medium text-gray-700">
                   {member.accuracy}% accuracy
                 </p>
-                <div className="w-48 h-2 bg-gray-200 rounded-full mt-1">
+                <div className="w-48 h-2 bg-gray-200 rounded-full mt-1 mb-3 md:mb-0">
                   <div
                     className="h-full bg-gray-700 rounded-full"
                     style={{ width: `${member.accuracy}%` }}
@@ -43,7 +43,7 @@ export default function TeamProductivity() {
                 </div>
               </div>
               <span
-                className={`px-3 py-1 rounded-full text-xs font-medium ${
+                className={`px-3 py-1 mb-2 rounded-full text-xs font-medium ${
                   member.status === "Active"
                     ? "bg-gray-900 text-white"
                     : "bg-red-500 text-white"

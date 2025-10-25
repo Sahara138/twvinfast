@@ -11,14 +11,14 @@ const products: Product[] = [
 
 export default function Products() {
     return (
-        <div className="p-6">
-            <div className="flex items-start justify-between mb-6">
-                <div>
-                    <h2 className="text-lg font-semibold text-gray-900 mb-1">Products & Services Catalogue</h2>
-                    <p className="text-sm text-gray-600">Manage your product and service offerings</p>
+        <div className="p-3 md:p-6">
+            <div className="md:flex items-start justify-between mb-6">
+                <div className=''>
+                    <h2 className="text-base md:text-lg font-semibold text-gray-900 mb-1">Products & Services Catalogue</h2>
+                    <p className="text-xs md:text-sm text-gray-600">Manage your product and service offerings</p>
                 </div>
-                <div className="flex gap-2">
-                    <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                <div className="flex flex-col gap-2 mt-5">
+                    <button className="p-2 md:px-4 md:py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
                         Import Catalogue
                     </button>
                     <button className="px-4 py-2 text-sm font-medium text-white bg-[#ED990B] rounded-lg hover:bg-orange-400 transition-colors">

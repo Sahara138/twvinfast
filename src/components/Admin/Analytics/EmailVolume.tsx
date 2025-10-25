@@ -54,7 +54,7 @@ export default function EmailVolume() {
   }, []);
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
+    <div className="bg-white w-[99%] md:w-[100%] rounded-lg border border-gray-200 p-6">
       <h3 className="text-lg font-semibold text-gray-900 mb-2">
         Email Volume Trends
       </h3>

@@ -40,7 +40,7 @@ const Customers = () => {
   };
 
   return (
-    <div className="min-h-screen main-container">
+    <div className="min-h-screen main-container overflow-hidden">
       <div className="flex items-start justify-between mb-6">
         <Heading
           heading1="Customer Management"
@@ -49,12 +49,12 @@ const Customers = () => {
       </div>
 
       <div className="border-b my-8 border-[#C4CDD5]" />
-      <div className="flex space-x-4 my-10">
+      <div className="md:flex  space-x-4 my-10">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`flex items-center space-x-2 px-4 py-2 rounded ${
+            className={`flex items-center space-x-2 mb-3 md:mb-0 px-4 py-2 rounded ${
               activeTab === tab.id
                 ? "text-gray-900 bg-[#ED990B] rounded-lg"
                 : "text-gray-600 hover:text-gray-900 border-[#DFE3E8] hover:bg-gray-100 rounded-lg border"

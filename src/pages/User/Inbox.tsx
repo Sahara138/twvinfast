@@ -147,12 +147,12 @@ export default function Inbox() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white overflow-hidden">
       {/* Top Bar */}
-      <header className="sticky top-0 z-20 h-22 bg-white border-b border-gray-200">
-        <div className="px-6 pt-6 flex items-center justify-between">
-          <div className="flex items-center gap-3 flex-1">
-            <div className="relative w-[650px]">
+      <header className="sticky top-0 z-20 lg:h-22 bg-white border-b border-gray-200">
+        <div className="px-6 pt-6 flex flex-wrap items-center  gap-3">
+          <div className="md:flex md:items-center gap-3 block lg:flex-1">
+            <div className="relative w-[180px] lg:w-[650px]">
               <svg
                 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
                 fill="none"
@@ -172,7 +172,7 @@ export default function Inbox() {
                 className="w-full pl-9 pr-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-teal-500 bg-gray-50"
               />
             </div>
-            <select className="px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-teal-500 bg-white">
+            <select className="px-3 py-2 my-3 lg:my-0 border border-gray-200 rounded-lg text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-teal-500 bg-white">
               <option>All Status</option>
               <option>New</option>
               <option>Opened</option>
@@ -181,8 +181,11 @@ export default function Inbox() {
               <option>Lost</option>
             </select>
           </div>
-          <div className="w-10 h-10 rounded-full bg-teal-500 text-white flex items-center justify-center text-xs font-medium">
-            D
+          <div className="hidden md:block md:ml-auto">
+
+            <div className="w-8 h-8  rounded-full bg-teal-500 text-white flex items-center justify-center text-xs font-medium mb-5 md:mb-0">
+              D
+            </div>
           </div>
         </div>
       </header>
@@ -191,7 +194,7 @@ export default function Inbox() {
       <div className="p-6">
         {/* Sort Bar */}
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center lg:w-1/2  gap-3">
+          <div className="flex items-center w-1/2 gap-3">
             <input
               type="checkbox"
               checked={
@@ -205,10 +208,10 @@ export default function Inbox() {
               <option>Sort: Oldest</option>
             </select>
           </div>
-          <div className="text-sm w-1/2 flex justify-center   text-gray-400 space-x-24 ">
+          <div className="text-sm w-1/2 flex justify-center   text-gray-400 md:space-x-20 lg:space-x-24 mt-10 hidden lg:block">
             <span>STATUS</span>
             <span>TAGS</span>
-            <span>ACTIVITY</span>
+            <span className="">ACTIVITY</span>
           </div>
         </div>
 
@@ -254,11 +257,11 @@ export default function Inbox() {
         )}
 
         {/* Emails List */}
-        <div className="space-y-2">
+        <div className="space-y-2 overflow-x-auto ">
           {emails.map((email) => (
             <div
               key={email.id}
-              className="flex items-center  p-4 hover:bg-gray-50 rounded-lg-lg border-b border-gray-100 transition"
+              className="lg:flex items-center p-6 lg:p-4 hover:bg-gray-50 rounded-lg-lg border-b border-gray-100 transition"
             >
               <div className="flex items-center gap-3 w-1/2">
                 <input
@@ -294,7 +297,7 @@ export default function Inbox() {
                     <span className="font-medium text-gray-900 ">
                       {email.name}
                     </span>
-                    <span className="text-xs text-gray-400 bg-gray-50 px-1 rounded-xl">
+                    <span className="text-xs text-gray-400 bg-gray-50 px-6 py-2 md:px-3 rounded-xl">
                       {email.replies} replies
                     </span>
                   </div>
@@ -307,7 +310,7 @@ export default function Inbox() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 w-1/2 gap-x-24">
+              <div className=" grid grid-cols-3 w-1/2 items-center gap-x-16 lg:gap-x-24 mt-5 lg:mt-0">
                 <div className="">
                   <span
                     className={`px-2 py-1 rounded-xl text-xs font-medium whitespace-nowrap ${getStatusColor(
@@ -339,31 +342,31 @@ export default function Inbox() {
           ))}
         </div>
         {/* pagination button */}
-        <div className="flex w-fit ml-auto items-center justify-between my-6 gap-x-3 text-sm text-gray-600">
+        <div className="flex w-fit ml-auto items-center justify-between my-6 gap-x-2 lg:gap-x-3 text-sm text-gray-600">
           <button
-            className={`flex items-center gap-2 px-4 py-3 bg-white border border-[#0000001A] rounded-lg transition "
+            className={`flex items-center gap-2 p-2 lg:px-4 lg:py-3bg-white border border-[#0000001A] rounded-lg transition "
         `}
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-3 h-3 lg:w-4 lg:w-4" />
             <span>Previous</span>
           </button>
 
           <button
-            className={`flex items-center gap-2 px-4 py-3 bg-white border border-[#0000001A] rounded-lg transition hover:bg-gray-50`}
+            className={`flex items-center gap-2 p-2 lg:px-4 lg:py-3 bg-white border border-[#0000001A] rounded-lg transition hover:bg-gray-50`}
           >
             <span>Next</span>
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-3 h-3 lg:w-4 lg:w-4" />
           </button>
         </div>
         <div className="w-fit ml-auto">
           <Link
             to={"compose"}
-            className="flex items-center text-end justify-end gap-1 gap-x-2 px-4 py-3 bg-primary2 border border-[#0000001A] rounded-lg transition text-white mt-16 ml-auto "
+            className="flex items-center text-end justify-end gap-1 gap-x-2 p-2 lg:px-4 lg:py-3 bg-primary2 border border-[#0000001A] rounded-lg transition text-white lg:mt-16 ml-auto "
           >
             <span>
               <Mail size={18} />
             </span>
-            <span>New Email</span>
+            <span className="text-sm lg:text-base">New Email</span>
           </Link>
         </div>
       </div>

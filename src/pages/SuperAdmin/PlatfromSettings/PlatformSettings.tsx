@@ -5,11 +5,14 @@ import type { APIKey, ComplianceData, ComplianceProps, ComplianceSettings, Platf
 import SecurityTab from "../../../components/SuperAdmin/PlatformSettings/SecurityTab";
 import ComplianceTab from "../../../components/SuperAdmin/PlatformSettings/ComplianceTab";
 import SystemTab from "../../../components/SuperAdmin/PlatformSettings/SystemTab";
+import GenerateApiModal from "../../../components/SuperAdmin/PlatformSettings/GenerateApiModal";
 
 
 export default function PlatformSettings() {
   const [activeTab, setActiveTab] = useState<'White-labeling' | 'API Management' | 'Security' | 'Compliance' | 'System'>('White-labeling');
   const [whiteLabels, setWhiteLabels] = useState([])
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   const [compliancedata, setComplianceData] = useState<ComplianceData>({
         privacyPolicyUrl: "http://platform.com/privacy",
@@ -124,7 +127,7 @@ const handleSystemChange = (field: keyof SystemData, value: string) => {
         {
           activeTab !== "White-labeling" && (
               <button
-              // onClick={}
+              onClick={() => setIsModalOpen(true)}
               className="px-[28px] py-[9px] bg-primary text-white rounded hover:bg-primary-dark transition text-xl font-medium"
             >
               Generate API Keys
@@ -187,6 +190,8 @@ const handleSystemChange = (field: keyof SystemData, value: string) => {
             onSystemChange={handleSystemChange}
             onSystemToggle={handleSystemToggle}/>
           )}
+        <GenerateApiModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}  />
+
     </div>
   )
 }

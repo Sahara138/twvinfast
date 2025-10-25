@@ -16,17 +16,17 @@ export function ReplySection({ onClose }: { onClose: () => void }) {
                 className='w-full h-40 bg-gray-100 p-4  rounded-lg focus:outline-none focus:ring-2 focus:ring-primary2 focus:border-transparent resize-none'
                 placeholder='Type your reply...'
             />
-            <div className='flex gap-x-4 mt-4'>
-                <button className='bg-primary2 px-6 py-2 text-white rounded-lg hover:bg-primary2 transition-colors flex items-center gap-x-2 '>
+            <div className='md:flex gap-x-4 mt-4'>
+                <button className='bg-primary2 px-6 mb-2 md:mb-0 py-2 text-white rounded-lg hover:bg-primary2 transition-colors flex items-center gap-x-2 '>
                     <div className="flex items-center gap-x-[10px] ">
                         <SendHorizontal size={14} /> 
-                        <p className="text-base font-normal">Send</p>
+                        <p className="text-sm md:text-base font-normal">Send</p>
                     </div>
                 </button>
                 <button className='px-6 py-2 text-gray-700 border border-[#DFE3E8] rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-x-2'>
                     <div className="flex items-center gap-x-[10px] ">
                         <CircleSlash size={18} /> 
-                        <p className="text-base font-normal">Save Draft</p>
+                        <p className="text-sm md:text-base font-normal">Save Draft</p>
                     </div>
                 </button>
             </div>

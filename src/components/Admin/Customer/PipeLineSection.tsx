@@ -15,7 +15,7 @@ export default function PipeLineSection() {
     return (
         <div className="p-4">
 
-            <div className="grid grid-cols-4 gap-4 mb-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
                 <div className="bg-white p-4 space-y-2 rounded-lg border border-[#DFE3E8] ">
                     <h3 className="font-medium">Lead</h3>
                     <p className="text-2xl font-semibold flex items-center gap-x-2"><Users className="w-4 h-4" />  {pipelineData.lead.count}</p>
@@ -58,10 +58,10 @@ export default function PipeLineSection() {
                     </div>
                     <p className="text-sm text-gray-600">{pipelineData.conversionRate}</p>
                 </div>
-                <div className="flex justify-between mt-4 p-6 border-t border-[#C4CDD5] pt-12">
-                    <div className="flex flex-col gap-y-1 items-center"> <span className="text-[#2F80ED] text-3xl font-bold">{pipelineData.wonThisMonth}</span>Won This Month </div>
-                    <div className="flex flex-col gap-y-1 items-center"><span className="text-[#ED990B] text-3xl font-bold">{pipelineData.lostThisMonth}</span> Lost This Month </div>
-                    <div className="flex flex-col gap-y-1 items-center"><span className="text-[#3BB515] text-3xl font-bold">{pipelineData.activeLeads}</span> Active Leads </div>
+                <div className="md:flex justify-between mt-4 p-6 border-t border-[#C4CDD5] pt-12">
+                    <div className="flex flex-col gap-y-1 items-center mb-5 md:mb-0"> <span className="text-[#2F80ED] text-3xl font-bold">{pipelineData.wonThisMonth}</span>Won This Month </div>
+                    <div className="flex flex-col gap-y-1 items-center mb-5 md:mb-0"><span className="text-[#ED990B] text-3xl font-bold">{pipelineData.lostThisMonth}</span> Lost This Month </div>
+                    <div className="flex flex-col gap-y-1 items-center mb-5 md:mb-0"><span className="text-[#3BB515] text-3xl font-bold">{pipelineData.activeLeads}</span> Active Leads </div>
                 </div>
                 
             </div>

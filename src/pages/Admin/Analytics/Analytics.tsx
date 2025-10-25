@@ -77,7 +77,7 @@ const Analytic = () => {
          
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-[99%] md:w-[100%] gap-4 mb-6 mr-4 md:mr-0">
           {metricCards.map((card, idx) => (
             <div
               key={idx}
@@ -101,7 +101,7 @@ const Analytic = () => {
           ))}
         </div>
 
-        <div className="flex gap-2 mb-6">
+        <div className="flex flex-wrap gap-2 mb-6">
           {tabs.map((tab) => (
             <button
               key={tab.id}

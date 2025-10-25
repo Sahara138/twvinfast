@@ -71,7 +71,7 @@ export default function ResponseTimes() {
   }, []);
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
+    <div className="bg-white rounded-lg border border-gray-200 w-[99%] md:w-[100%] p-6">
       <h3 className="text-lg font-semibold text-gray-900 mb-2">
         Average Response Times
       </h3>

@@ -38,15 +38,15 @@ export default function Internal() {
       {internalTools.map((tool) => (
         <div
           key={tool.id}
-          className="bg-white rounded-lg border border-[#DFE3E8] p-6"
+          className="bg-white rounded-lg border border-[#DFE3E8] p-2 md:p-6"
         >
-          <div className="flex  items-center gap-3 mb-4 px-4">
-            <div className="">{tool.icon}</div>
+          <div className="flex items-center gap-3 mb-4 px-1 md:px-3">
+            <div className="w-8 h-8 rounded-lg">{tool.icon}</div>
             <div className="flex flex-col min-w-0">
-              <h3 className="text-lg font-semibold text-[#161C24]">
+              <h3 className="text-base md:text-lg font-semibold text-[#161C24]">
                 {tool.name}
               </h3>
-              <p className="text-sm text-[#454F5B] mt-1">{tool.description}</p>
+              <p className="text-xs cmd:text-sm text-[#454F5B] mt-1">{tool.description}</p>
             </div>
           </div>
 
@@ -74,7 +74,7 @@ export default function Internal() {
                 </div>
               </div>
 
-              <div className="flex gap-2 mt-4">
+              <div className="flex flex-wrap gap-2 mt-4">
                 <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors">
                   <SettingsIcon size={14} />
                   Configure

@@ -139,7 +139,7 @@ export default function AIMetrics() {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <div className="bg-white w-[99%] md:w-[100%] rounded-lg border border-gray-200 p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-2">
             Response Categories
           </h3>
@@ -147,7 +147,7 @@ export default function AIMetrics() {
             Distribution of response types
           </p>
           <div className="flex items-center justify-center mb-6">
-            <div className="w-64 h-64">
+            <div className="w-32 h-32 md:w-64 md:h-64">
               <canvas ref={doughnutRef}></canvas>
             </div>
           </div>
@@ -166,7 +166,7 @@ export default function AIMetrics() {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <div className="bg-white w-[99%] md:w-[100%] rounded-lg border border-gray-200 p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-2">
             AI Accuracy Over Time
           </h3>

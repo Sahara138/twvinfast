@@ -298,6 +298,7 @@ const [searchQuery, setSearchQuery] = useState("");
       {activeTab === 'Payment Processing' && (
             <PaymentTab  payment={payment} setPayment={setPayment} />
           )}
+          {/* Add Subscription Plan Model */}
     <AddPlanModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}  />
     </div>
   )

@@ -12,9 +12,16 @@ import { FollowUpSVG } from "../../public/SVG/FollowUpSVG";
 import { DraftSVG } from "../../public/SVG/DraftSVG";
 import { UrgentSVG } from "../../public/SVG/UrgentSVG";
 import ManageModal from "../components/ManageModal";
+import { FaBars } from "react-icons/fa";
 
 export default function UserLayout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const handleTogglebar = () =>{
+        setSidebarOpen(prev => !prev);
+
+  }
 
   const menuItems = [
     {
@@ -79,10 +86,11 @@ export default function UserLayout() {
   ];
 
   return (
-    <div className="min-h-screen flex bg-gray-100 text-gray-900">
+    <div className="min-h-screen flex bg-gray-100 text-gray-900 overflow-hidden">
       {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-md flex flex-col border-r border-gray-200 h-screen sticky top-0">
-        <header className="flex items-center gap-3 h-22 px-6 py-2 border-b border-gray-200">
+      <aside className={`bg-white shadow-md flex flex-col border-r border-gray-200 sticky top-0 left-0 transition-all ${sidebarOpen ? "w-81" : "w-[104px]"}`}>
+        <header className="flex items-center h-22 px-6 py-2 border-b border-gray-200">
+          <FaBars size={20} onClick={handleTogglebar} className="cursor-pointer" />
           <div className="w-full">
             <Logo />
           </div>
@@ -110,7 +118,12 @@ export default function UserLayout() {
                         <span className="absolute left-0 top-0 h-full w-1 bg-[#58D5D3] shadow-[4px_0_6px_#58D5D3] rounded-r"></span>
                       )}
                       <span>{item.renderIcon(isActive)}</span>
-                      <span>{item.label}</span>
+                      {
+                        sidebarOpen ?
+                        (
+                          <>
+
+                            <span>{item.label}</span>
                       <span
                         className={`mr-2 text-sm ${
                           isActive
@@ -120,6 +133,23 @@ export default function UserLayout() {
                       >
                         12
                       </span>
+                        </>
+                        )
+                        :
+                      <span className="absolute left-full ml-2 whitespace-nowrap bg-gray-700 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
+                       <span>{item.label}</span>
+                      <span
+                        className={`mr-2 text-sm ${
+                          isActive
+                            ? "ml-auto p-1 px-1.5 text-[#58D5D3] text-xs rounded-full bg-[#58D5D31A]"
+                            : "ml-auto p-1 px-1.5 text-[#6A7282] text-xs rounded-full bg-[#F3F4F6]"
+                        }`}
+                      >
+                        12
+                      </span>
+                      </span>
+                      }
+
                     </>
                   )}
                 </NavLink>
@@ -152,7 +182,12 @@ export default function UserLayout() {
                         <span className="absolute left-0 top-0 h-full w-1 bg-[#58D5D3] shadow-[4px_0_6px_#58D5D3] rounded-r"></span>
                       )}
                       <span>{item.renderIcon(isActive)}</span>
-                      <span>{item.label}</span>
+                      {
+                        sidebarOpen ?
+                        (
+                          <>
+
+                            <span>{item.label}</span>
                       <span
                         className={`mr-2 text-sm ${
                           isActive
@@ -162,6 +197,23 @@ export default function UserLayout() {
                       >
                         12
                       </span>
+                        </>
+                        )
+                        :
+                      <span className="absolute left-full ml-2 whitespace-nowrap bg-gray-700 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
+                       <span>{item.label}</span>
+                      <span
+                        className={`mr-2 text-sm ${
+                          isActive
+                            ? "ml-auto p-1 px-1.5 text-[#58D5D3] text-xs rounded-full bg-[#58D5D31A]"
+                            : "ml-auto p-1 px-1.5 text-[#6A7282] text-xs rounded-full bg-[#F3F4F6]"
+                        }`}
+                      >
+                        12
+                      </span>
+                      </span>
+                      }
+
                     </>
                   )}
                 </NavLink>
@@ -186,7 +238,21 @@ export default function UserLayout() {
               <span className="text-sm text-gray-400">
                 <Plus />
               </span>
-              <span>Manage Labels</span>
+              {
+                        sidebarOpen ?
+                        (
+                          <>
+
+                            <span>Manage Labels</span>
+                      
+                        </>
+                        )
+                        :
+                      <span className="absolute left-full ml-2 whitespace-nowrap bg-gray-700 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
+                       <span>Manage Labels</span>
+                      </span>
+                      }
+              {/* <span>Manage Labels</span> */}
             </button>
           </ul>
         </nav>
@@ -210,7 +276,22 @@ export default function UserLayout() {
                   <span className="absolute left-0 top-0 h-full w-1 bg-[#58D5D3] shadow-[4px_0_6px_#58D5D3] rounded-r"></span>
                 )}
                 <SettingSVG strokeColor={isActive ? "#3BCBC8" : "#454F5B"} />
-                <span>Settings</span>
+                {
+                        sidebarOpen ?
+                        (
+                          <>
+
+                            <span>Settings</span>
+                      
+                        </>
+                        )
+                        :
+                      <span className="absolute left-full ml-2 whitespace-nowrap bg-gray-700 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
+                       <span>Settings</span>
+                      </span>
+                      }
+
+                
               </>
             )}
           </NavLink>
@@ -218,7 +299,7 @@ export default function UserLayout() {
       </aside>
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col overflow-x-auto">
         <main className="flex-1">
           <Outlet />
         </main>
@@ -228,5 +309,6 @@ export default function UserLayout() {
 
       <ManageModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
     </div>
+
   );
 }

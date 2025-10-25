@@ -167,7 +167,7 @@ export default function UserManagement() {
                 <h3 className="text-base font-semibold text-gray-900 mb-1">Team Members</h3>
                 <p className="text-sm text-gray-600 mb-4">Manage your team members and their access levels</p>
 
-                <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+                {/* <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
                     <table className="w-full">
                         <thead className="bg-gray-50 border-b border-gray-200">
                             <tr>
@@ -227,7 +227,73 @@ export default function UserManagement() {
                             ))}
                         </tbody>
                     </table>
-                </div>
+                </div> */}
+                <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+                    <div className="overflow-x-auto">
+                        <table className="w-full min-w-[700px]">
+                        <thead className="bg-gray-50 border-b border-gray-200">
+                            <tr>
+                            <th className="text-left px-4 py-3 text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                User
+                            </th>
+                            <th className="text-left px-4 py-3 text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                Company
+                            </th>
+                            <th className="text-left px-4 py-3 text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                Role
+                            </th>
+                            <th className="text-left px-4 py-3 text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                Status
+                            </th>
+                            <th className="text-left px-4 py-3 text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                Last Login
+                            </th>
+                            <th className="text-left px-4 py-3 text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                Location
+                            </th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-200">
+                            {filteredMembers.map((member) => (
+                            <tr key={member.id} className="hover:bg-gray-50 transition-colors">
+                                <td className="px-4 py-3">
+                                <div className="flex items-center gap-3">
+                                    <img
+                                    alt="profile"
+                                    src="https://i.pravatar.cc/40?img=7"
+                                    className="w-10 h-10 rounded-full"
+                                    />
+                                    <div>
+                                    <p className="text-sm font-medium text-gray-900">{member.full_name}</p>
+                                    <p className="text-xs text-gray-500">{member.email}</p>
+                                    </div>
+                                </div>
+                                </td>
+                                <td className="px-4 py-3 text-sm text-gray-700">{member.company || '-'}</td>
+                                <td className="px-4 py-3 text-sm text-gray-700">{member.role}</td>
+                                <td className="px-4 py-3">
+                                <span
+                                    className={`inline-flex px-2.5 py-1 text-xs font-medium rounded-full ${
+                                    member.status === 'Active'
+                                        ? 'bg-gray-900 text-white'
+                                        : 'bg-red-100 text-red-700'
+                                    }`}
+                                >
+                                    {member.status}
+                                </span>
+                                </td>
+                                <td className="px-4 py-3 text-sm text-gray-700">
+                                {getTimeAgo(member.last_login)}
+                                </td>
+                                <td className="px-4 py-3 text-sm text-gray-700">{member.location || '-'}</td>
+                            </tr>
+                            ))}
+                        </tbody>
+                        </table>
+                    </div>
+                 </div>
+
+
             </div>
 
             <div className="mt-8 bg-white border border-gray-200 rounded-lg p-6">

@@ -7,19 +7,19 @@ export default function ComposeEmail() {
     return (
         <div className="">
             {/* Header */}
-            <header className="bg-white h-22 sticky top-0 z-10 px-6  border-b border-gray-200">
+            <header className="bg-white h-22 sticky top-0 z-10 lg:px-6  border-b border-gray-200">
                 <div className='flex items-center justify-between h-full'>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center lg:gap-3">
                         <Link to={'/user'}
                             className="p-1 hover:bg-gray-100 rounded-full transition-colors"
                             aria-label="Go back"
                         >
                             <ArrowLeft className="w-5 h-5 text-gray-700" />
                         </Link>
-                        <h1 className="text-lg  text-gray-900">Compose Email</h1>
+                        <h1 className="text-sm md:text-lg text-gray-900">Compose Email</h1>
                     </div>
 
-                    <div className="flex items-center gap-3">
+                    <div className="hidden md:flex items-center gap-3">
                         <button onClick={() => setIsAiOpen(true)} className="flex items-center border border-[#C4CDD5]  gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
                             <Sparkles className="w-4 h-4" />
                             AI Composer
@@ -33,19 +33,34 @@ export default function ComposeEmail() {
                             Send
                         </button>
                     </div>
+                    <div className="flex md:hidden items-center gap-0 md:gap-3">
+                        <button onClick={() => setIsAiOpen(true)} className="px-2 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                            <Sparkles className="w-4 h-4" />
+                        </button>
+                        <button className=" px-2 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                            <Save className="w-4 h-4" />
+                        </button>
+                        <button className="px-2 py-2 text-sm font-medium text-white bg-primary2 hover:bg-teal-400 rounded-lg transition-colors shadow-sm">
+                            <Send className="w-4 h-4" />
+                            
+                        </button>
+                    </div>
                 </div>
             </header>
 
             {/* Email Form */}
             <div className="p-6 lg:p-14 xl:p-18 mx-auto max-w-7xl">
-                <div className="flex items-center gap-4 pb-4 border-b border-gray-100">
-                    <label className=" font-medium  w-20">To:</label>
-                    <input
-                        type="text"
-                        placeholder="Recipients"
-                        className="flex-1 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 bg-gray-50 border border-transparent rounded-lg focus:outline-none focus:bg-white focus:border-gray-300 transition-colors"
-                    />
-                    <div className="flex items-center gap-2">
+                <div className="w-full md:flex items-center md:gap-4 md:pb-4 border-b border-gray-100">
+                    <div>
+                        <label className=" font-medium w-20 mr-8 md:mr-5 ">To:</label>
+                        <input
+                            type="text"
+                            placeholder="Recipients"
+                            className="flex-1 w-[80%] px-3 py-2 text-sm md:mt-0 mt-2 text-gray-900 placeholder:text-gray-400 bg-gray-50 border border-transparent rounded-lg focus:outline-none focus:bg-white focus:border-gray-300 transition-colors"
+                        />
+
+                    </div>
+                    <div className="flex items-center gap-2 mt-2 md:mt-0 justify-end">
                         <button className=" transition-colors">
                             Cc
                         </button>
@@ -106,12 +121,12 @@ export default function ComposeEmail() {
                 </div>
 
                 {/* Subject Field */}
-                <div className="flex items-center gap-4 py-4 border-b border-gray-100">
-                    <label className="font-medium w-20">Subject:</label>
+                <div className="flex items-center gap-2 md:gap-2 md:py-4 border-b border-gray-100">
+                    <label className="font-medium w-20 ">Subject:</label>
                     <input
                         type="text"
                         placeholder="Email Subject"
-                        className="flex-1 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 bg-gray-50 border border-transparent rounded-lg focus:outline-none focus:bg-white focus:border-gray-300 transition-colors"
+                        className="flex-1 px-3 py-2 text-sm md:mt-0 mt-2 text-gray-900 placeholder:text-gray-400 bg-gray-50 border border-transparent rounded-lg focus:outline-none focus:bg-white focus:border-gray-300 transition-colors"
                     />
                 </div>
 
@@ -126,13 +141,13 @@ export default function ComposeEmail() {
 
                 {/* Footer Actions */}
                 <div className='border border-[#C4CDD5] mt-6' />
-                <div className="flex items-center justify-between mt-6">
-                    <div className="flex items-center gap-3">
+                <div className="md:flex items-center justify-between mt-6 ">
+                    <div className="md:flex items-center gap-3">
                         <button className="flex items-center gap-2 border border-[#C4CDD5]  px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
                             <Image className="w-4 h-4" />
                             Attach Media
                         </button>
-                        <button className="flex items-center  border border-[#C4CDD5]  gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                        <button className="my-3 md:my-0 flex items-center  border border-[#C4CDD5]  gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
                             <Smile className="w-4 h-4" />
                             Emoji
                         </button>

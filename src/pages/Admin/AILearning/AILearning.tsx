@@ -43,8 +43,9 @@ export default function AILearning() {
   };
 
   return (
-    <div className="main-container space-y-8 ">
+    <div className="main-container space-y-8 overflow-hidden">
       {/* Header */}
+      
       <Heading
         heading1="AI Learning Control"
         heading2="Manage training documents, review AI suggestions, and control learning processes"
@@ -63,7 +64,7 @@ export default function AILearning() {
 
         <label
           htmlFor="file-upload"
-          className="border-2 border-dashed border-gray-300 rounded-lg p-10 text-center hover:border-orange-400 transition-colors cursor-pointer block"
+          className="border-2 border-dashed border-gray-300 rounded-lg p-5 md:p-10 text-center hover:border-orange-400 transition-colors cursor-pointer block"
         >
           <input
             id="file-upload"
@@ -89,8 +90,8 @@ export default function AILearning() {
           Manage and categorize your training materials
         </p>
 
-        <div className="overflow-x-auto  border border-gray-200 rounded-xl p-6">
-          <table className="min-w-full text-sm text-left border-collapse">
+        <div className="overflow-hidden border border-gray-200 rounded-xl p-6">
+          <table className="min-w-full text-sm text-left border-collapse overflow-x-auto">
             <thead className="">
               <tr className="text-gray-700 text-base border-b border-[#C4CDD5] ">
                 <th className="pb-3 font-medium">Document</th>

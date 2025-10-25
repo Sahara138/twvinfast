@@ -9,8 +9,16 @@ import { AnalyticsSVG } from "../../public/SVG/AnalyticsSVG";
 import { BillingSVG } from "../../public/SVG/BillingSVG";
 import { CustomerManagementSVG } from "../../public/SVG/CustomerManagementSVG";
 import { PlatfromSettingSVG } from '../../public/SVG/PlatfromSettingSVG';
+import { useState } from "react";
+import { FaBars } from "react-icons/fa";
 
 export default function SuperAdminLayout() {
+      const [sidebarOpen, setSidebarOpen] = useState(true);
+    
+      const handleTogglebar = () =>{
+            setSidebarOpen(prev => !prev);
+    
+      }
     const menuItems = [
         {
             label: "Dashboard",
@@ -74,13 +82,14 @@ export default function SuperAdminLayout() {
 
     return (
         <div className=" flex  ">
-            {/* Sidebar */}
-            <aside className="w-81 bg-white shadow-md flex flex-col h-screen border-r border-[#C4CDD5] sticky top-0">
-                <header className="flex items-center gap-3 px-6 py-2 border-b border-[#C4CDD5]">
-                    <div className="w-full">
-                        <Logo />
-                    </div>
-                </header>
+           {/* Sidebar */}
+                <aside className={`h-screen bg-white shadow-md flex flex-col border-r border-gray-200 sticky top-0 left-0 transition-all ${sidebarOpen ? "w-81" : "w-[104px]"}`}>
+                   <header className="flex items-center h-22 px-6 py-2 border-b border-gray-200">
+                     <FaBars size={20} onClick={handleTogglebar} className="cursor-pointer" />
+                     <div className="w-full">
+                       <Logo />
+                     </div>
+                   </header>
                 <nav className="flex-1 px-6 py-4 ">
                     <ul className="space-y-2">
                         {menuItems.map((item) => (
@@ -96,7 +105,21 @@ export default function SuperAdminLayout() {
                                     {({ isActive }) => (
                                         <>
                                             {item.renderIcon(isActive)}
+                                            {/* <span>{item.label}</span> */}
+                                            {
+                                                sidebarOpen ?
+                                                (
+                                                <>
+
+                                                    <span>{item.label}</span>
+                                            
+                                                </>
+                                                )
+                                                :
+                                            <span className="absolute left-full ml-2 whitespace-nowrap bg-gray-700 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
                                             <span>{item.label}</span>
+                                            </span>
+                                            }
                                         </>
                                     )}
                                 </NavLink>
@@ -130,8 +153,6 @@ export default function SuperAdminLayout() {
                                 />
                                 <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#6EC075]" />
                             </div>
-
-
                         </div>
                     </div>
                 </header>

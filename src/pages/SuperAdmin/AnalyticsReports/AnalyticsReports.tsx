@@ -1,8 +1,8 @@
 import { useState } from "react";
 import OverviewTab from "../../../components/SuperAdmin/Analytics&Report/OverviewTab";
-import RevenueGrowthTab from "../../../components/SuperAdmin/BillingManagement/component/RevenueGrowthChart";
-import RevenueTab from "../../../components/SuperAdmin/Analytics&Report/RevenueReports";
 import RevenueReports from "../../../components/SuperAdmin/Analytics&Report/RevenueReports";
+import PerformanceTab from "../../../components/SuperAdmin/Analytics&Report/PerformanceTab";
+import GrowthAnalysisTab from "../../../components/SuperAdmin/Analytics&Report/GrowthAnalysisTab";
 
 export default function AnalyticsReports() {
   const [activeTab, setActiveTab] = useState<'Platform Overview' | 'AI Performance' | 'Revenue Reports' | 'Growth Analysis'>('Platform Overview');
@@ -18,7 +18,7 @@ export default function AnalyticsReports() {
       </div>
       {/* Tabs */}
       <div className="flex flex-wrap gap-3 mb-10 mt-[28px]">
-        {["Platform Overview", "AI Performance", "Revenue Reports", "Compliance", "Growth Analysis"].map((tab) => (
+        {["Platform Overview", "AI Performance", "Revenue Reports", "Growth Analysis"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab as any)}
@@ -43,9 +43,9 @@ export default function AnalyticsReports() {
       )}
 
       {/* API Key Management Tab */}
-      {/* {activeTab === 'API Management' && (
-        <ApiManagementTab apikeys={apikeys} />
-          )} */}
+      {activeTab === 'AI Performance' && (
+        <PerformanceTab/>
+          )}
 
       {/* Security Tab */}
       {activeTab === 'Revenue Reports' && (
@@ -53,21 +53,10 @@ export default function AnalyticsReports() {
             />
           )} 
       {/* Compliance Tab */}
-      {/* {activeTab === 'Compliance' && (
-            <ComplianceTab
-            complianceData={compliancedata}
-            complianceSettings={complianceSettings}
-            onComplianceChange={handleComplianceChange}
-            onComplianceToggle={handleComplianceToggle}/>
-          )} */}
-      {/* Payment Tab */}
-      {/* {activeTab === 'System' && (
-            <SystemTab
-            systemData={systemData}
-            systemSettings={systemSettings}
-            onSystemChange={handleSystemChange}
-            onSystemToggle={handleSystemToggle}/>
-          )} */}
+      {activeTab === 'Growth Analysis' && (
+            <GrowthAnalysisTab />
+          )}
+      
     </div>
   )
 }

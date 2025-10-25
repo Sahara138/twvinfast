@@ -12,19 +12,19 @@ export default function CustomerSection() {
     ];
     return (
         <div className="">
-            <div className="flex justify-between gap-x-10 items-center mb-6">
+            <div className="md:flex justify-between gap-x-10 items-center mb-6">
                 <input
                     type="text"
                     placeholder="Search Customers..."
-                    className="w-full p-2 border border-[#C4CDD5] rounded-lg bg-[#F4F6F8]"
+                    className=" p-2 border border-[#C4CDD5] rounded-lg bg-[#F4F6F8]"
                 />
-                <select className="p-2 border rounded border-[#C4CDD5]">
+                <select className="p-2 border rounded border-[#C4CDD5] mt-2 md:mt-0 ">
                     <option>All Status</option>
                 </select>
             </div>
             <h2 className="text-2xl font-semibold">Customer Directory</h2>
             <p className="text-gray-600 mt-2 mb-4">Manage your customer relationships and profiles</p>
-            <div className="overflow-x-auto rounded-lg  border  border-gray-200">
+            <div className="overflow-x-auto rounded-lg  border  border-gray-200 overflow-x-auto">
                 <table className="min-w-full bg-white">
                     <thead className="">
                         <tr className="bg-[#F4F6F8] text-[#6B7280]">

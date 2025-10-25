@@ -58,9 +58,7 @@ export default function AdminDashboard() {
 
 
     return (
-        <div className="min-h-screen ">
-           
-           
+        <div className="min-h-screen overflow-hidden">
 
             {/* Main Content */}
             <main className=" main-container">
@@ -126,7 +124,7 @@ export default function AdminDashboard() {
                         <h3 className="text-2xl font-medium text-gray-900 mb-1">Response Categories</h3>
                         <p className="text-sm text-gray-500 mb-6">Distribution of response types</p>
 
-                        <div className="flex flex-col px-4 gap-8">
+                        <div className="flex flex-col px-0 md:px-4 gap-8">
                             <div className="w-56 h-56 ml-0 justify-center lg:ml-6 relative">
                                 <Doughnut data={chartData} options={chartOptions} />
                             </div>

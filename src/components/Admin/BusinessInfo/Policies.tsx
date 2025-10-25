@@ -24,8 +24,8 @@ export default function Policies() {
                     >
                         <h3 className="text-base font-semibold text-gray-900 mb-2">{policy.title}</h3>
                         <p className="text-xs text-gray-500 mb-4">Last updated: {policy.lastUpdated}</p>
-                        <div className="flex gap-3">
-                            <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors">
+                        <div className="md:flex gap-3">
+                            <button className="flex items-center gap-1.5 mb-2 md:mb-0 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors">
                                 <Edit size={14} />
                                 Edit
                             </button>

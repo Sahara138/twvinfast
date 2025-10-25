@@ -5,3 +5,11 @@ export type Performance = {
   revenue: string;
   rate: string;
 };
+export type performanceData = {
+    id: number,
+    model: string,
+    requests: number,
+    accuracy: number,
+    avgResponse: string,
+    costEfficiency: string,
+};
