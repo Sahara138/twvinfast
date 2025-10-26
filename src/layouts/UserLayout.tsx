@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, NavLink } from "react-router";
 import { Plus } from "lucide-react"; //
 import Logo from "../components/shared/Logo";
@@ -16,12 +16,27 @@ import { FaBars } from "react-icons/fa";
 
 export default function UserLayout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  const handleTogglebar = () =>{
-        setSidebarOpen(prev => !prev);
+ // Automatically adjust sidebar on resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) { // md breakpoint
+        setSidebarOpen(false);
+      } else {
+        setSidebarOpen(true);
+      }
+    };
 
-  }
+    handleResize(); // initialize
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const handleTogglebar = () => {
+    setSidebarOpen(prev => !prev);
+  };
 
   const menuItems = [
     {

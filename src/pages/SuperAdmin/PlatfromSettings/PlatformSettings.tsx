@@ -1,7 +1,7 @@
 import { useState } from "react";
 import WhiteLabelingTab from "../../../components/SuperAdmin/PlatformSettings/WhiteLabelingTab";
 import ApiManagementTab from "../../../components/SuperAdmin/PlatformSettings/ApiManagementTab";
-import type { APIKey, ComplianceData, ComplianceProps, ComplianceSettings, PlatformSecuritySettings, SystemData, SystemSettings } from "../../../types/SuperAdmin/PlatformSettings";
+import type { APIKey, ComplianceData, ComplianceSettings, PlatformSecuritySettings, SystemData, SystemSettings } from "../../../types/SuperAdmin/PlatformSettings";
 import SecurityTab from "../../../components/SuperAdmin/PlatformSettings/SecurityTab";
 import ComplianceTab from "../../../components/SuperAdmin/PlatformSettings/ComplianceTab";
 import SystemTab from "../../../components/SuperAdmin/PlatformSettings/SystemTab";
@@ -13,7 +13,7 @@ export default function PlatformSettings() {
   const [whiteLabels, setWhiteLabels] = useState([])
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-
+console.log("setWhiteLabels",setWhiteLabels)
   const [compliancedata, setComplianceData] = useState<ComplianceData>({
         privacyPolicyUrl: "http://platform.com/privacy",
         serviceUrl: "https://platform.com/terms",
@@ -119,7 +119,7 @@ const handleSystemChange = (field: keyof SystemData, value: string) => {
   return (
     <div>
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="md:flex justify-between items-center">
         <div className="">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Platform Settings</h1>
           <p className="text-gray-600">Manage your platform with complete administrative control</p>
@@ -128,7 +128,7 @@ const handleSystemChange = (field: keyof SystemData, value: string) => {
           activeTab !== "White-labeling" && (
               <button
               onClick={() => setIsModalOpen(true)}
-              className="px-[28px] py-[9px] bg-primary text-white rounded hover:bg-primary-dark transition text-xl font-medium"
+              className="px-[28px] py-[9px] mt-4 md:mt-0 bg-primary text-white rounded hover:bg-primary-dark transition md:text-xl font-medium"
             >
               Generate API Keys
             </button>
@@ -138,12 +138,12 @@ const handleSystemChange = (field: keyof SystemData, value: string) => {
       <hr className="my-[28px] border-[#C4CDD5]" />
     
       {/* Tabs */}
-      <div className="flex flex-wrap gap-3 mb-6">
+      <div className="md:flex flex-wrap md:flex-row gap-3 mb-6">
         {["White-labeling", "API Management", "Security", "Compliance", "System"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab as any)}
-            className={`px-5 py-2 rounded-lg font-medium transition-colors ${activeTab === tab
+            className={`block mb-3 md:mb-0  px-5 py-2 rounded-lg font-medium transition-colors ${activeTab === tab
                 ? "bg-primary text-white"
                 : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
               }`}
@@ -152,6 +152,8 @@ const handleSystemChange = (field: keyof SystemData, value: string) => {
           </button>
         ))}
       </div>
+      
+
       
         
 

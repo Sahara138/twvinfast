@@ -40,15 +40,29 @@ const Customers = () => {
   };
 
   return (
-    <div className="min-h-screen main-container overflow-hidden">
-      <div className="flex items-start justify-between mb-6">
-        <Heading
-          heading1="Customer Management"
-          heading2="Manage customer relationships, email threads, and lead pipeline"
-        />
-      </div>
+    <div className="min-h-screen main-container ">
+      {
+        activeTab !== "leadPipeline" &&
 
-      <div className="border-b my-8 border-[#C4CDD5]" />
+        <div className="flex items-start justify-between border-b border-[#C4CDD5] mb-6 w-[35%] sm:w-[50%] md:w-[84%] lg:w-[95%] xl:w-[100%]">
+          <Heading
+            heading1="Customer Management"
+            heading2="Manage customer relationships, email threads, and lead pipeline"
+          />
+        </div>
+      }
+      {
+        activeTab === "leadPipeline" &&
+
+        <div className="flex items-start justify-between border-b border-[#C4CDD5] mb-6 ">
+          <Heading
+            heading1="Customer Management"
+            heading2="Manage customer relationships, email threads, and lead pipeline"
+          />
+        </div>
+      }
+
+      {/* <div className="border-b my-8 border-[#C4CDD5]" /> */}
       <div className="md:flex  space-x-4 my-10">
         {tabs.map((tab) => (
           <button

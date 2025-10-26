@@ -1,8 +1,7 @@
-import { FaChartBar, FaUser } from "react-icons/fa";
+import { FaChartBar } from "react-icons/fa";
 import StatsGrid from "../../../shared/StatsGrid";
 import StatsCard from "../../../shared/StatsCard";
 import { TbMoneybag } from "react-icons/tb";
-import { RiShieldUserFill } from "react-icons/ri";
 import { FaChartLine } from "react-icons/fa6";
 export default function RevenueStatsCard() {
   const stats = [

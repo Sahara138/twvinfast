@@ -91,9 +91,9 @@ export default function SuperAdminDashboard() {
         <StatsCards />
 
         {/* Charts Row */}
-        <div className="grid grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {/* Customer Segments */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <div className="bg-white  rounded-lg border border-gray-200 p-6">
             <Heading2
               heading1="Customer Segments"
               heading2="Distribution by subscription plan"
@@ -151,7 +151,7 @@ export default function SuperAdminDashboard() {
           </div>
 
           {/* Top Performing Businesses */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6 col-span-2">
+          <div className="bg-white w-[99%] md:w-[100%] rounded-lg border border-gray-200 p-6 col-span-2">
             <Heading2
               heading1=" Top Performing Businesses"
               heading2="   Highest revenue generating customers"
@@ -188,7 +188,7 @@ export default function SuperAdminDashboard() {
         </div>
 
         {/* Recent Customers */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <div className="bg-white w-[99%] md:w-[100%] rounded-lg border border-gray-200 p-6">
           <Heading2
             heading1="            Recent Customers
 "
@@ -200,7 +200,7 @@ export default function SuperAdminDashboard() {
             {recentCustomers.map((customer, idx) => (
               <div
                 key={idx}
-                className="flex items-center justify-between py-4 border-b border-gray-100 last:border-0"
+                className="md:flex items-center justify-between py-4 border-b border-gray-100 last:border-0"
               >
                 {/* Customer Info */}
                 <div className="flex items-center gap-3 flex-1">
@@ -221,7 +221,7 @@ export default function SuperAdminDashboard() {
                 </div>
 
                 {/* Badge and Actions */}
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 my-4 md:mt-0">
                   {/* Badge */}
                   <span
                     className={`text-sm font-semibold px-3 py-1.5 rounded-xl ${
@@ -236,7 +236,7 @@ export default function SuperAdminDashboard() {
                   </span>
 
                   {/* Action Buttons */}
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 ">
                     {customer.actions.map((action, i) => (
                       <button
                         key={i}

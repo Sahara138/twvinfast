@@ -25,29 +25,25 @@ export default function InvoicesTab({
       ? 'bg-red-500 text-white'
       : 'bg-gray-100 text-gray-700';
 
-    const filteredInvoices = invoices.filter((invoice)=>{
-        const matchesStatus = statusFilter === 'All Status' || invoice.status === statusFilter;
-        return matchesStatus;
-    }); // Add filtering logic if needed
 
   return (
-    <div className=" overflow-hidden">
+    <div className="w-[42%] sm:w-[50%] md:w-[84%] lg:w-[95%] xl:w-[100%]">
             
 
       {/* Table */}
-      <div className='border border-[#DFE3E8] p-6 rounded-lg '>
+      <div className='border border-[#DFE3E8] p-6 rounded-lg md:w-full '>
         <div className="headerBox mb-5">
-            <div className="flex justify-between items-center gap-2">
+            <div className="md:flex justify-between items-center gap-2">
                 <div >
                     <h6 className='text-lg font-normal mt-1'>Invoice Datasets</h6>
                     <p className='text-sm font-normal text-gray-500'>Manage and monitor all invoice datasets</p>
                 </div>
                 {/* Filters */}
-                <div className="flex flex-col md:flex-row gap-3 mb-6">
+                <div className="flex flex-col md:flex-row gap-3 mb-6 mt-4 md:mt-0">
                     <select
                         value={statusFilter}
                         onChange={(e) => setStatusFilter(e.target.value)}
-                        className="px-4 py-2 border min-w-sm border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 bg-white"
+                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 bg-white"
                     >
                         <option>Paid</option>
                         <option>Pending</option>
@@ -59,7 +55,7 @@ export default function InvoicesTab({
 
         <InvoiceManagementStatsCards />
 
-        <div className="w-full overflow-x-auto rounded-lg ">
+        <div className="w-full overflow-x-auto rounded-lg">
         <table className="w-full  rounded-lg ">
           <thead>
             <tr className="border-b border-gray-200 bg-gray-50">

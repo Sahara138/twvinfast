@@ -121,28 +121,43 @@ export default function AdminDashboard() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                     {/* Response Categories - Donut Chart */}
                     <div className="bg-white rounded-xl p-6 border border-gray-200">
-                        <h3 className="text-2xl font-medium text-gray-900 mb-1">Response Categories</h3>
-                        <p className="text-sm text-gray-500 mb-6">Distribution of response types</p>
+  <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-1">
+    Response Categories
+  </h3>
+  <p className="text-sm text-gray-500 mb-6">
+    Distribution of response types
+  </p>
 
-                        <div className="flex flex-col px-0 md:px-4 gap-8">
-                            <div className="w-56 h-56 ml-0 justify-center lg:ml-6 relative">
-                                <Doughnut data={chartData} options={chartOptions} />
-                            </div>
+  {/* Responsive layout */}
+  <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8">
+    {/* Donut Chart */}
+    <div className="flex justify-center items-center w-48 h-48 md:w-56 md:h-56 relative">
+      <Doughnut data={chartData} options={chartOptions} />
+    </div>
 
-                            <div className="flex-1 space-y-3">
-                                {responseCategories.map((category, index) => (
-                                    <div key={index} className="flex items-center gap-3">
-                                        <div
-                                            className="w-5 h-5 rounded-full"
-                                            style={{ backgroundColor: category.color }}
-                                        ></div>
-                                        <span className="text-sm text-gray-600 flex gap-x-3">{category.label}</span>
-                                        <span className="text-sm font-semibold text-gray500">{category.percentage}%</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
+    {/* Category list */}
+    <div className="flex-1 w-full lg:w-auto space-y-3">
+      {responseCategories.map((category, index) => (
+        <div
+          key={index}
+          className="flex items-center gap-3 lg:justify-start lg:gap-4"
+        >
+          <div className="flex items-center gap-3">
+            <div
+              className="w-4 h-4 rounded-full"
+              style={{ backgroundColor: category.color }}
+            ></div>
+            <span className="text-sm text-gray-700">{category.label}</span>
+          </div>
+          <span className="text-sm  text-gray-600">
+            {category.percentage}%
+          </span>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
 
                     {/* Knowledge Base Status */}
                     <div className="bg-white rounded-xl p-6 border border-gray-200">

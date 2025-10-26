@@ -406,22 +406,32 @@ export default function BusinessControl() {
   ]);
 
   return (
-    <div>
+    <div className="w-[42%] sm:w-[70%] md:w-[94%] lg:w-[100%]">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Business Control Management</h1>
-        <p className="text-gray-600">Manage your platform with complete administrative control</p>
-      </div>
+      {
+        activeTab !== "Audit Logs" &&
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Business Control Management</h1>
+            <p className="text-gray-600">Manage your platform with complete administrative control</p>
+          </div>
+      }
+      {
+        activeTab === "Audit Logs" &&
+          <div className="mb-8 w-[78%] md:w-[100%]">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Business Control Management</h1>
+            <p className="text-gray-600">Manage your platform with complete administrative control</p>
+          </div>
+      }
       {activeTab === "Datasets" &&
         <StatsCards />
       }
       {/* Tabs */}
-        <div className="flex flex-wrap gap-3 mb-6">
+        <div className="md:flex flex-wrap gap-3 mb-6">
           {["Business Account", "Datasets", "Audit Logs"].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab as any)}
-              className={`px-5 py-2 rounded-lg font-medium transition-colors ${
+              className={`block mt-2 md:mt-0 px-5 py-2 rounded-lg font-medium transition-colors ${
                 activeTab === tab
                   ? "bg-primary text-white"
                   : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"

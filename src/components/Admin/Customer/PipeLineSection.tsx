@@ -13,7 +13,7 @@ export default function PipeLineSection() {
         activeLeads: 25,
     };
     return (
-        <div className="p-4">
+        <div className="">
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
                 <div className="bg-white p-4 space-y-2 rounded-lg border border-[#DFE3E8] ">

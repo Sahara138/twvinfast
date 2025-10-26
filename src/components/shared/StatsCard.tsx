@@ -20,7 +20,7 @@ export default function StatsCard({
 }: StatsCardProps) {
   return (
     <div
-      className={`bg-white p-4 md:p-6 rounded-lg border`}
+      className={`bg-white w-[100%] p-4 md:p-6 rounded-lg border`}
       style={{ borderColor }}
     >
       <div className="flex items-center justify-between mb-2">

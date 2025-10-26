@@ -9,16 +9,31 @@ import { AnalyticsSVG } from "../../public/SVG/AnalyticsSVG";
 import { BillingSVG } from "../../public/SVG/BillingSVG";
 import { CustomerManagementSVG } from "../../public/SVG/CustomerManagementSVG";
 import { PlatfromSettingSVG } from '../../public/SVG/PlatfromSettingSVG';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaBars } from "react-icons/fa";
 
 export default function SuperAdminLayout() {
       const [sidebarOpen, setSidebarOpen] = useState(true);
     
-      const handleTogglebar = () =>{
-            setSidebarOpen(prev => !prev);
-    
-      }
+      // Automatically adjust sidebar on resize
+    useEffect(() => {
+        const handleResize = () => {
+        if (window.innerWidth < 768) { // md breakpoint
+            setSidebarOpen(false);
+        } else {
+            setSidebarOpen(true);
+        }
+        };
+
+        handleResize(); // initialize
+        window.addEventListener("resize", handleResize);
+
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    const handleTogglebar = () => {
+        setSidebarOpen(prev => !prev);
+    };
     const menuItems = [
         {
             label: "Dashboard",
@@ -81,7 +96,7 @@ export default function SuperAdminLayout() {
     ];
 
     return (
-        <div className=" flex  ">
+        <div className=" flex">
            {/* Sidebar */}
                 <aside className={`h-screen bg-white shadow-md flex flex-col border-r border-gray-200 sticky top-0 left-0 transition-all ${sidebarOpen ? "w-81" : "w-[104px]"}`}>
                    <header className="flex items-center h-22 px-6 py-2 border-b border-gray-200">
@@ -133,9 +148,9 @@ export default function SuperAdminLayout() {
             {/* Main content area */}
             <div className="flex-1 flex flex-col">
                 {/* Top navbar for admin pages */}
-                <header className="bg-white h-[89px] sticky top-0 z-10 px-6 py-5 border-b  border-[#C4CDD5]">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
+                <header className="bg-white md:h-[89px] sticky top-0 z-10 px-6 py-5 border-b  border-[#C4CDD5]">
+                    <div className="md:flex items-center justify-between">
+                        <div className="flex items-center gap-3 mb-4 md:mb-0">
                             <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
                                 <img src="https://i.pravatar.cc/40?img=5" className="h-full w-full rounded-full" />
                             </div>
@@ -144,8 +159,8 @@ export default function SuperAdminLayout() {
                                 <p className="text-sm text-[#6A6A6A]">Platform Owner</p>
                             </div>
                         </div>
-                        <div className="flex items-center gap-4">
-                            <div className="relative min-w-sm">
+                        <div className="flex items-center gap-4 ">
+                            <div className="relative">
                                 <input
                                     type="text"
                                     placeholder="Search..."

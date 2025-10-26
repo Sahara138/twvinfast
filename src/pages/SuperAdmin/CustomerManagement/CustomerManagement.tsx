@@ -101,17 +101,17 @@ export default function CustomerManagement() {
   });
 
   return (
-    <div className="">
+    <div className="w-[28%] sm:w-[47%] md:w-[70%] lg:w-[90%] xl:w-[100%]">
       <div className=" mx-auto">
         {/* Header */}
-        <div className="flex justify-between items-start">
+        <div className="md:flex justify-between items-start">
           <Heading
             heading1="Customer Management"
             heading2="Manage your platform with complete administrative control"
           />
           <button
             onClick={() => setIsModalOpen(true)}
-            className="px-6 py-2 bg-primary hover:bg-orange-400 text-white rounded-lg font-medium transition-colors"
+            className="px-6 py-2 bg-primary mb-6 md:mb-0 hover:bg-orange-400 text-white rounded-lg font-medium transition-colors"
           >
             Create Account
           </button>
@@ -128,7 +128,7 @@ export default function CustomerManagement() {
               heading2="Manage all business accounts and their administrators"
             />
 
-            <div className="flex gap-4 w-xl">
+            <div className="md:flex gap-4">
               <div className="flex-1 relative bg-[#F4F6F8] ">
                 <Search
                   size={18}
@@ -145,7 +145,7 @@ export default function CustomerManagement() {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-primary bg-white"
+                className="px-4 py-2 my-3 md:my-0 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-primary bg-white"
               >
                 <option>All Status</option>
                 <option>Active</option>

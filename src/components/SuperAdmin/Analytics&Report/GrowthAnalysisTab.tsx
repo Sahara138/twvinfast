@@ -10,7 +10,6 @@ import {
     Tooltip,
     Legend,
 } from "chart.js";
-import { CiServer } from "react-icons/ci";
 import GrowthAnalysisStatsCard from "./component/GrowthAnalysisStatsCard";
 
 

@@ -19,7 +19,7 @@ export default function AllAuditLogsTab({
 }: AllAuditLogTabProps) {
 
   return (
-    <div className=" overflow-hidden">    
+    <div className=" overflow-hidden w-[75%] sm:w-[70%] md:w-[94%] lg:w-[100%]">    
 
       {/* Table */}
       <div className='border border-[#DFE3E8] p-6 rounded-lg '>

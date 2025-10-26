@@ -28,7 +28,7 @@ export function AiReplySection({ onClose }: { onClose: () => void }) {
 
 
             <div className='md:flex gap-x-4 mt-6'>
-                <button className='bg-primary2 mb-2 md:mb-0 px-2 md:px-6 py-2 text-white rounded-lg hover:bg-[#D88009] transition-colors'>
+                <button className='bg-primary2 mr-2 md:mr-0 mb-2 md:mb-0 px-2 md:px-6 py-2 text-white rounded-lg hover:bg-[#D88009] transition-colors'>
                     <p className="text-sm md:text-base font-normal">Use This Reply</p>
                 </button>
                 <button className='px-2 md:px-6 py-2 text-gray-700 border border-[#DFE3E8] rounded-lg hover:bg-gray-50 transition-colors'>

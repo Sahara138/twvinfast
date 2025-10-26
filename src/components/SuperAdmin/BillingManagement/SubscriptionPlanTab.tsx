@@ -40,7 +40,7 @@ export default function SubscriptionPlanTab({
 }: SubscriptionPlanTabProps) {
    
   return (
-    <div className=" overflow-hidden">
+    <div className="overflow-hidden ">
        {/* Filters */}
         <div className="flex flex-col md:flex-row gap-3 mb-6">      
 

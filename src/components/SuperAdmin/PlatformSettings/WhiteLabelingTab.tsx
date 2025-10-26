@@ -1,7 +1,5 @@
-import { Button } from "antd";
-import { Upload as UploadIcon } from "lucide-react";  
 import { useState } from 'react';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { LoadingOutlined } from '@ant-design/icons';
 import { TbCloudUpload } from "react-icons/tb";
 import {  message, Upload } from 'antd';
 import type { GetProp, UploadProps } from 'antd';
@@ -49,7 +47,7 @@ const beforeUpload = (file: FileType) => {
 
 
 export default function WhiteLabelingTab({
-  whiteLabels
+
 }: WhiteLabelingTabProps) {
 
     const [loading, setLoading] = useState(false);
@@ -101,7 +99,7 @@ const handleChange: UploadProps['onChange'] =(info) => {
             <p className='text-sm font-normal text-gray-500'>Access and manage all business admin dashboards</p>
         </div>
 
-            <div className="grid grid-cols-2 items-end gap-6 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 items-end gap-6 mb-12">
                 <div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-3">
@@ -159,7 +157,7 @@ const handleChange: UploadProps['onChange'] =(info) => {
                 </div>
             </div>
             <hr  className="w-full border-[#C4CDD5] mb-6"/>
-            <div className="grid grid-cols-3 items-center justify-between gap-[21px]">
+            <div className="grid grid-cols-1 md:grid-cols-3 items-center justify-between gap-[21px]">
               <div >
                   <label className="text-[16px] font-normal">Primary Colour</label>
                   <div className="flex justify-between items-center border border-[#C4CDD5] rounded-[8px] p-2 mt-4">

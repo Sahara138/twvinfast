@@ -7,10 +7,8 @@ import SubscriptionPlanTab from "../../../components/SuperAdmin/BillingManagemen
 import { pricingPlans } from "../../../components/SuperAdmin/BillingManagement/component/pricingData";
 import PaymentTab from "../../../components/SuperAdmin/BillingManagement/PaymentTab";
 import { mockPayments } from "../../../components/SuperAdmin/BillingManagement/component/paymentData";
-import { mockInvoices } from "../../../components/SuperAdmin/BillingManagement/component/invoicesData";
 import InvoicesTab from "../../../components/SuperAdmin/BillingManagement/InvoicesTab";
 import AddPlanModal from "../../../components/SuperAdmin/BillingManagement/component/AddPlan";
-import AddUserModal from "../../../components/Admin/UserManagement/AddUserModal";
 
 export default function BillingSubscription() {
   const segmentData = [
@@ -130,13 +128,11 @@ export default function BillingSubscription() {
     paymentType: "PayPal"
   }
 ]);
-
+const invoices:any=[]
   const [activeTab, setActiveTab] = useState<'Revenue Overview' | 'Subscriptions' | 'Subscription Plans' | 'Invoices' | 'Payment Processing'>('Revenue Overview');
 const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All Status");
   const [payment, setPayment] = useState<Payment[]>(mockPayments);
-  const [invoices, setInvoices] = useState(mockInvoices);
-  const [PricingPlan, setPricingPlan] = useState(pricingPlans);
   const [isModalOpen, setIsModalOpen] = useState(false);
   // const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   interface SegmentPath {
@@ -167,14 +163,15 @@ const [searchQuery, setSearchQuery] = useState("");
   const doughnutSegments = getDoughnutPath();
 
   return (
-    <div>
+    // <div className="w-[100%]">
+    <div className="w-[100%] sm:w-[99%] md:w-[100%] xl:w-[100%]">
       {/* Header */}
-      <div className="flex justify-between flex-start items-center">
+      <div className="md:flex justify-between flex-start items-center ">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Billing & Subscription</h1>
           <p className="text-gray-600">Manage your platform with complete administrative control</p>
         </div>
-        <button onClick={() => setIsModalOpen(true)} className="px-[28px] py-[9px] bg-primary text-white rounded-[8px] hover:bg-primary-dark transition-colors">
+        <button onClick={() => setIsModalOpen(true)} className="px-[28px] py-[9px] bg-primary text-base text-white rounded-[8px] hover:bg-primary-dark transition-colors">
           Add Plan
         </button>
 
@@ -183,12 +180,12 @@ const [searchQuery, setSearchQuery] = useState("");
       
 
       {/* Tabs */}
-      <div className="flex flex-wrap gap-3 mb-6">
+      <div className="md:flex flex-wrap gap-3 mb-6">
         {["Revenue Overview", "Subscriptions", "Subscription Plans", "Invoices", "Payment Processing"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab as any)}
-            className={`px-5 py-2 rounded-lg font-medium transition-colors ${activeTab === tab
+            className={`block mb-3 md:mb-0 px-5 py-2 rounded-lg font-medium transition-colors ${activeTab === tab
                 ? "bg-primary text-white"
                 : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
               }`}
@@ -197,7 +194,7 @@ const [searchQuery, setSearchQuery] = useState("");
           </button>
         ))}
       </div>
-      <div className="grid grid-cols-2 gap-x-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6">
         {
           activeTab === "Revenue Overview" &&
           (

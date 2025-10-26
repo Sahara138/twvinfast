@@ -47,7 +47,7 @@ export default function Calendar() {
   ]);
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <div className="bg-white w-[95%] md:w-[100%] rounded-lg shadow-sm border border-gray-200 p-6">
       <h2 className="text-lg font-medium text-gray-900 mb-1">
         Calendar Integrations
       </h2>
@@ -121,7 +121,7 @@ export default function Calendar() {
                   </div>
                 )}
 
-                <div className="flex gap-2">
+                <div className="md:flex gap-2">
                   {integration.showConfigure && (
                     <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors">
                       <Settings size={14} />

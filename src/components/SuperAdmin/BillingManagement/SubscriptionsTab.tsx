@@ -48,9 +48,9 @@ export default function AllSubscriptionTab({
   });
 
   return (
-    <div className=" overflow-hidden">
+    <div className="w-[33%] sm:w-[70%] md:w-[95%] lg:w-[100%]">
        {/* Filters */}
-        <div className="flex flex-col md:flex-row gap-3 mb-6">
+        <div className="flex flex-col md:flex-row w-[100%] gap-3 mb-6">
           <div className="flex-1 relative ">
             <Search size={18} className="absolute left-3 top-3 text-gray-400" />
             <input
@@ -64,7 +64,7 @@ export default function AllSubscriptionTab({
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-2 border min-w-sm border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 bg-white"
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 bg-white"
           >
             <option>All Status</option>
             <option>Active</option>
@@ -73,9 +73,9 @@ export default function AllSubscriptionTab({
         </div>      
 
       {/* Table */}
-      <div className='border border-[#DFE3E8] p-6 rounded-lg '>
+      <div className='border border-[#DFE3E8] p-6 rounded-lg w-[100%]'>
         <div className="w-full overflow-x-auto rounded-lg ">
-        <table className="w-full  rounded-lg ">
+        <table className="w-full rounded-lg ">
           <thead>
             <tr className="border-b border-gray-200 bg-gray-50">
               <th className="text-left px-6 py-4 text-[#6B7280]">Company</th>

@@ -43,7 +43,7 @@ export default function AILearning() {
   };
 
   return (
-    <div className="main-container space-y-8 overflow-hidden">
+    <div className="main-container space-y-8 w-[60%] sm:w-[100%]">
       {/* Header */}
       
       <Heading
@@ -54,7 +54,7 @@ export default function AILearning() {
       <div className="border-[#C4CDD5] border-t pb-6 " />
 
       {/* Upload Section */}
-      <div className="border border-gray-200 rounded-xl p-6">
+      <div className=" mx-auto border border-gray-200 rounded-xl p-6">
         <h2 className="text-lg font-medium text-gray-800 mb-4">
           Upload Training Documents
         </h2>
@@ -90,7 +90,7 @@ export default function AILearning() {
           Manage and categorize your training materials
         </p>
 
-        <div className="overflow-hidden border border-gray-200 rounded-xl p-6">
+        <div className="overflow-x-auto border border-gray-200 rounded-xl p-6">
           <table className="min-w-full text-sm text-left border-collapse overflow-x-auto">
             <thead className="">
               <tr className="text-gray-700 text-base border-b border-[#C4CDD5] ">
@@ -100,7 +100,7 @@ export default function AILearning() {
                 <th className="pb-3 font-medium">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#C4CDD5]">
+            <tbody className="divide-y divide-[#C4CDD5] ">
               {documents.map((doc, idx) => (
                 <tr key={idx} className="hover:bg-orange-50">
                   <td className="py-4 flex items-center gap-3">

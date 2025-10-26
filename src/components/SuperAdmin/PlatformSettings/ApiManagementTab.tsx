@@ -32,19 +32,19 @@ const getStatusColor = (status: string) =>
 
 
   return (
-    <div className=" overflow-hidden">    
+    <div className="overflow-hidden">    
 
       {/* API Key Management */}
 
-      <div className='border border-[#DFE3E8] p-6 rounded-lg '>
+      <div className='border border-[#DFE3E8] w-[36%] md:w-[100%] p-6 rounded-lg '>
         <div className="headerBox mb-5">
             <h6 className='text-lg font-normal mt-1'>API Key Management</h6>
             <p className='text-sm font-normal text-gray-500'>Manage API keys for platform integrations</p>
         </div>
         {/* Table */}
-              <div className='border border-[#DFE3E8] p-6 rounded-lg '>
+              <div className='border border-[#DFE3E8] p-6 rounded-lg w-[100%]'>
                 <div className="w-full overflow-x-auto rounded-lg ">
-                <table className="w-full rounded-lg ">
+                <table className="w-full rounded-lg">
                   <thead>
                     <tr className="border-b border-gray-200 bg-gray-50">
                       <th className="text-left px-6 py-4 text-[#6B7280]">Name</th>
