@@ -108,7 +108,7 @@ const BrandingSection: React.FC<BrandingProps> = ({
             </div>
           </div>
              {/* Color Inputs Row */}
-              <div className="grid grid-cols-3 gap-4 gap-x-8 xl:gap-x-20 w-full mt-6">
+              <div className="grid lg:grid-cols-3 gap-4 gap-x-8 xl:gap-x-20 w-full mt-6">
                 {["primaryColor", "secondaryColor", "accentColor"].map((colorKey) => (
                   <div className="" key={colorKey}>
                     <label className="label">

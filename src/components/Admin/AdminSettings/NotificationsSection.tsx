@@ -11,7 +11,7 @@ const NotificationsSection: React.FC<NotificationsProps> = ({
 }) => (
   <div className="space-y-8">
     {/* Notification Rules */}
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 w-[58%] sm:w-[50%] md:w-[84%] lg:w-[95%] xl:w-[100%]">
       <div className="p-6 border-b border-gray-200 flex items-center justify-between">
         <Heading
           heading1="Notification Rules"
@@ -43,7 +43,7 @@ const NotificationsSection: React.FC<NotificationsProps> = ({
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-white divide-y divide-gray-200 ">
             {notificationRules.map((rule) => (
               <tr key={rule.id} className="hover:bg-gray-50 transition-colors">
                 <td className="px-6 py-4">
@@ -86,7 +86,7 @@ const NotificationsSection: React.FC<NotificationsProps> = ({
     </div>
 
     {/* Global Notification Settings */}
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 w-[58%] sm:w-[50%] md:w-[84%] lg:w-[95%] xl:w-[100%]">
       <Heading
         heading1="Global Notification Settings"
         heading2="Configure system-wide notification preferences"

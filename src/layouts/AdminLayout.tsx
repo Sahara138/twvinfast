@@ -194,8 +194,6 @@ export default function AdminLayout() {
                                 />
                                 <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#6EC075]" />
                             </div>
-
-
                         </div>
                     </div>
                 </header>

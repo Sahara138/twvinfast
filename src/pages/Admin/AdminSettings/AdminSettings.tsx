@@ -185,14 +185,26 @@ const AdminSettings: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen ">
       <div className="main-container">
-        <div className="mb-6">
-          <Heading
-            heading1="Admin Settings"
-            heading2="Configure system settings, branding, notifications, and access permissions"
-          />
-        </div>
+        {
+          activeTab === "notifications" &&
+          <div className="mb-6 w-[58%] md:w-full">
+            <Heading
+              heading1="Admin Settings"
+              heading2="Configure system settings, branding, notifications, and access permissions"
+            />
+          </div>
+        }
+        {
+          activeTab !== "notifications" &&
+          <div className="mb-6">
+            <Heading
+              heading1="Admin Settings"
+              heading2="Configure system settings, branding, notifications, and access permissions"
+            />
+          </div>
+        }
 
         {/* Tabs */}
         <div className="flex gap-2 gap-x-4 mb-6 ">
