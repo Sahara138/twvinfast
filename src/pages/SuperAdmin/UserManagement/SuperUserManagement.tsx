@@ -125,7 +125,7 @@ export default function SuperUserManagement() {
   };
 
   return (
-    <div className="w-[37%] sm:w-[50%] md:w-[91%] lg:w-[100%]">
+    <div className={`${activeTab === "Security" ? "" :"w-[37%] sm:w-[50%] md:w-[91%] lg:w-[100%]"}`}>
       <div className="">
         {/* Header */}
         <Heading heading1="User Management" heading2="Manage your platform with complete administrative control"/>

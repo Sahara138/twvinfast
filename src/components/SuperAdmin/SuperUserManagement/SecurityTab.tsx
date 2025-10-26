@@ -22,7 +22,7 @@ export default function SecurityTab({
   setSessionTimeout,
 }: SecurityTabProps) {
   return (
-    <div className=" rounded-lg border border-[#DFE3E8] p-6">
+    <div className="rounded-lg border border-[#DFE3E8] p-6">
       <Heading2
         heading1="Platform Security Settings"
         heading2="Enforce security policies across all accounts"
@@ -39,12 +39,12 @@ export default function SecurityTab({
         </div>
         <button
           onClick={() => setTwoFaEnabled(!twoFaEnabled)}
-          className={`relative w-14 h-8 rounded-full ${
+          className={`relative w-14 h-7 rounded-full ${
             twoFaEnabled ? "bg-primary" : "bg-gray-300"
           }`}
         >
           <div
-            className={`absolute w-6 h-6 bg-white rounded-full top-1 transition-transform ${
+            className={`absolute w-5 h-5 bg-white rounded-full top-1 transition-transform ${
               twoFaEnabled ? "translate-x-7" : "translate-x-1"
             }`}
           ></div>
@@ -52,7 +52,7 @@ export default function SecurityTab({
       </div>
 
       {/* Timeout */}
-      <div className="flex items-center justify-between pb-6 border-b border-gray-200">
+      <div className="flex items-center justify-between pb-6 border-b border-gray-200 mt-4">
         <div>
           <h3 className="font-medium text-gray-900">Admin Session Timeout</h3>
           <p className="text-sm text-gray-600 mt-1">
@@ -72,7 +72,7 @@ export default function SecurityTab({
       </div>
 
       {/* Failed Login Monitoring */}
-      <div className="flex items-center justify-between pb-6 border-b border-gray-200">
+      <div className="flex items-center justify-between pb-6 border-b border-gray-200 mt-4">
         <div>
           <h3 className="font-medium text-gray-900">Failed Login Monitoring</h3>
           <p className="text-sm text-gray-600 mt-1">
@@ -81,12 +81,12 @@ export default function SecurityTab({
         </div>
         <button
           onClick={() => setFailedLoginAlert(!failedLoginAlert)}
-          className={`relative w-14 h-8 rounded-full ${
+          className={`relative w-14 h-7 rounded-full ${
             failedLoginAlert ? "bg-primary" : "bg-gray-300"
           }`}
         >
           <div
-            className={`absolute w-6 h-6 bg-white rounded-full top-1 transition-transform ${
+            className={`absolute w-5 h-5 bg-white rounded-full top-1 transition-transform ${
               failedLoginAlert ? "translate-x-7" : "translate-x-1"
             }`}
           ></div>
@@ -96,19 +96,19 @@ export default function SecurityTab({
       {/* IP Whitelist */}
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="font-medium text-gray-900">IP Whitelist for Admins</h3>
+          <h3 className="font-medium text-gray-900 mt-4">IP Whitelist for Admins</h3>
           <p className="text-sm text-gray-600 mt-1">
             Restrict admin access to specific IP ranges
           </p>
         </div>
         <button
           onClick={() => setIpWhitelist(!ipWhitelist)}
-          className={`relative w-14 h-8 rounded-full ${
+          className={`relative w-14 h-7 rounded-full ${
             ipWhitelist ? "bg-primary" : "bg-gray-300"
           }`}
         >
           <div
-            className={`absolute w-6 h-6 bg-white rounded-full top-1 transition-transform ${
+            className={`absolute w-5 h-5 bg-white rounded-full top-1 transition-transform ${
               ipWhitelist ? "translate-x-7" : "translate-x-1"
             }`}
           ></div>
