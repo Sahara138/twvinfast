@@ -16,25 +16,25 @@ import { FaBars } from "react-icons/fa";
 
 export default function UserLayout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
  // Automatically adjust sidebar on resize
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) { // md breakpoint
-        setSidebarOpen(false);
-      } else {
-        setSidebarOpen(true);
-      }
-    };
+    useEffect(() => {
+        const handleResize = () => {
+        if (window.innerWidth < 768) { // md breakpoint
+            setSidebarOpen(false);
+        } else {
+            setSidebarOpen(true);
+        }
+        };
 
-    handleResize(); // initialize
-    window.addEventListener("resize", handleResize);
+        handleResize(); // initialize
+        window.addEventListener("resize", handleResize);
 
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
-  const handleTogglebar = () => {
+    const handleTogglebar = () => {
     setSidebarOpen(prev => !prev);
   };
 

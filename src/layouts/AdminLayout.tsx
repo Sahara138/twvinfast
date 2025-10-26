@@ -185,7 +185,7 @@ export default function AdminLayout() {
                             </div>
                         </div>
                         <div className="flex items-center gap-4 
-                         mt-4 md:mt-0 w-[30%] sm:w-[50%] md:w-[84%] lg:w-[95%] xl:w-[100%]">
+                         mt-4 md:mt-0 w-[30%] sm:w-[50%] md:w-fit ">
                             <div className=" w-full relative">
                                 <input
                                     type="text"
