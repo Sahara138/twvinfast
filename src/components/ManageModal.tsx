@@ -1,55 +1,91 @@
-import { CircleAlert, Clock, Mars, NotepadTextDashed, Tag } from "lucide-react";
+import { Clock, FileTextIcon, Loader, Mars, PenTool, Tag, TriangleAlert } from "lucide-react";
 import { useState } from "react";
+import {  useDeleteLabelMutation, useGetLabelByMailboxQuery } from "../redux/dashboardApi/user/label/labelApi";
+import type { LabelType } from "../types/User/Label";
+import CreateLabelModal from "./user/CreateLabelModal";
+import UpdateLabelModal from "./user/UpdateLabelModal";
+import { useGetMailboxInfoQuery } from "../redux/dashboardApi/user/mail/mailApi";
 type MyModalProps = {
   isModalOpen: boolean;
   setIsModalOpen: (isOpen: boolean) => void;
+};
+
+const ICONS = [<PenTool size={18} />, <Clock size={18} />, <TriangleAlert size={18} />, <FileTextIcon size={18} />, <Tag size={18} />,<Mars size={18}/>];
+
+const COLORS = [
+  "bg-blue-100 border-blue-300 text-blue-600",
+  "bg-green-100 border-green-300 text-green-600",
+  "bg-red-100 border-red-300 text-red-600",
+  "bg-teal-100 border-teal-300 text-teal-600",
+  "bg-purple-100 border-purple-300 text-purple-600",
+];
+
+export const getRandomIcon = (labelName: string) => {
+  const index = labelName.length % ICONS.length;
+  return ICONS[index];
+};
+
+export const getRandomColor = (labelName: string) => {
+  const index = labelName.length % COLORS.length;
+  return COLORS[index];
 };
 export default function ManageModal({
   isModalOpen,
   setIsModalOpen,
 }: MyModalProps) {
-  const [labels, setLabels] = useState([
-    {
-      id: 1,
-      name: "General",
-      count: 12,
-      icon: <Mars size={18} />,
-      color: "bg-blue-100 text-blue-600",
-    },
-    {
-      id: 2,
-      name: "Follow Up",
-      count: 23,
-      icon: <Clock size={18} />,
-      color: "bg-green-100 text-green-600",
-    },
-    {
-      id: 3,
-      name: "Urgent",
-      count: 12,
-      icon: <CircleAlert size={18} />,
-      color: "bg-red-100 text-red-600",
-    },
-    {
-      id: 4,
-      name: "Draft",
-      count: 23,
-      icon: <NotepadTextDashed size={18} />,
-      color: "bg-teal-100 text-teal-600",
-    },
-  ]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [searchQuery, setSearchQuery] = useState("");
+  
+  const { data: mailbox } = useGetMailboxInfoQuery();
+  const mailboxId = mailbox?.id;
+  // console.log(mailboxId);
 
-  const filteredLabels = labels.filter((label) =>
-    label.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Labels //
+  const { data: labels = [], isLoading: isLabelsLoading } = useGetLabelByMailboxQuery(mailboxId!, {
+  skip: !mailboxId,
+}) as { data: LabelType[], isLoading: boolean };
 
-  const handleDelete = (id: Number) => {
-    setLabels(labels.filter((label) => label.id !== id));
+
+  const [deleteLabel] = useDeleteLabelMutation();
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [isUpdateOpen, setIsUpdateOpen] = useState(false);
+  const [selectedLabel, setSelectedLabel] = useState<LabelType | null>(null);
+
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [labelToDelete, setLabelToDelete] = useState<LabelType | null>(null);
+
+  const handleDeleteClick = (label: LabelType) => {
+    setLabelToDelete(label);
+    setDeleteConfirmOpen(true);
   };
 
+  const confirmDelete = async () => {
+    if (labelToDelete) {
+      try {
+        setIsLoading(true);
+        await deleteLabel(labelToDelete.id).unwrap();
+        setDeleteConfirmOpen(false);
+        setLabelToDelete(null);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+  };
+}
+
+  // Search Query //
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredLabels = (labels ?? []).filter(label =>
+    label.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  
   if (!isModalOpen) return null;
+
+  if (isLabelsLoading) {
+  return <Loader />;
+}
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
@@ -107,7 +143,9 @@ export default function ManageModal({
         </div>
 
         {/* Create New Label Button */}
-        <button className="w-full mb-6 px-4 py-2.5 border-2  border-gray-300 rounded-lg text-gray-700 font-medium hover:border-gray-400 hover:bg-gray-50 transition flex items-center justify-center gap-2">
+        <button
+        onClick={() => setIsCreateOpen(true)}
+        className="w-full mb-6 px-4 py-2.5 border-2  border-gray-300 rounded-lg text-gray-700 font-medium hover:border-gray-400 hover:bg-gray-50 transition flex items-center justify-center gap-2">
           <span className="text-lg">+</span>
           Create New Label
         </button>
@@ -115,14 +153,18 @@ export default function ManageModal({
         {/* Labels Count */}
         <div className="mb-4">
           <p className=" font-medium text-gray-900">
-            Your Labels ({labels.length})
+            Your Labels ({labels?.length})
           </p>
         </div>
 
         {/* Labels List */}
         <div className="space-y-3 max-h-96 overflow-y-auto">
-          {filteredLabels.length > 0 ? (
-            filteredLabels.map((label) => (
+          {filteredLabels?.length > 0 ? (
+            filteredLabels.map((label: LabelType) =>{
+                const icon = label.icon || getRandomIcon(label.name);
+                const color = label.color || getRandomColor(label.name);
+
+             return(
               <div
                 key={label.id}
                 className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition"
@@ -131,21 +173,32 @@ export default function ManageModal({
                   <div
                     className={`w-8 h-8 rounded flex items-center justify-center text-lg `}
                   >
-                    {label.icon}
+                    {/* {label.icon} */}
+                    {icon}
                   </div>
                   <div>
                     <span
-                      className={`inline-block px-2.5 py-1 rounded-full text-xs font-medium ${label.color}`}
+                      className={`inline-block px-2.5 py-1 rounded-full text-xs font-medium capitalize border  ${color}`}
                     >
                       {label.name}
                     </span>
                   </div>
-                  <span className="text-sm text-gray-600 ml-auto mr-4">
-                    {label.count} emails
-                  </span>
+                  <div>
+                  {/* {
+                    label?.count && */}
+                      <span className="text-sm text-gray-600 ml-auto mr-4">
+                        12 {label.count} emails
+                      </span>
+                      
+
+                  {/* } */}
+
+                  </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button className="p-1.5 text-gray-400 hover:text-gray-600 transition hover:bg-gray-200 rounded">
+                  <button
+                  onClick={() => { setSelectedLabel(label); setIsUpdateOpen(true); }}
+                   className="p-1.5 text-gray-400 hover:text-gray-600 transition hover:bg-gray-200 rounded">
                     <svg
                       className="w-6 h-6"
                       fill="none"
@@ -161,8 +214,8 @@ export default function ManageModal({
                     </svg>
                   </button>
                   <button
-                    onClick={() => handleDelete(label.id)}
-                    className="p-1.5 text-gray-400 hover:text-red-600 transition hover:bg-red-50 rounded"
+                    onClick={() => handleDeleteClick(label)}
+                    className="p-1.5 text-gray-400 hover:text-red-600 transition hover:bg-red-50 rounded cursor-pointer"
                   >
                     <svg
                       className="w-6 h-6"
@@ -180,13 +233,42 @@ export default function ManageModal({
                   </button>
                 </div>
               </div>
-            ))
+            )})
           ) : (
             <div className="text-center py-6 text-gray-500">
               <p className="text-sm">No labels found</p>
             </div>
           )}
         </div>
+        {deleteConfirmOpen && (
+          
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+
+          <div className="bg-white rounded-lg w-96 p-6 shadow-lg">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Delete Label</h3>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to delete <span className="capitalize">"{labelToDelete?.name}"</span>? This action cannot be undone.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setDeleteConfirmOpen(false)}
+                className="px-4 py-2 bg-gray-200 rounded-lg cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg cursor-pointer"
+                disabled={isLoading}
+              >
+                {isLoading ? "Deleting..." : "Delete"}
+              </button>
+
+            </div>
+          </div>
+        </div>
+      )}
+
 
         {/* Done Button */}
         <div className="mt-6 flex justify-end">
@@ -198,6 +280,8 @@ export default function ManageModal({
           </button>
         </div>
       </div>
+      <CreateLabelModal isOpen={isCreateOpen} onClose={() => setIsCreateOpen(false)} mailboxId={mailboxId!} existingLabels={labels}/>
+      <UpdateLabelModal isOpen={isUpdateOpen} onClose={() => setIsUpdateOpen(false)} label={selectedLabel} existingLabels={labels} />
     </div>
   );
 }

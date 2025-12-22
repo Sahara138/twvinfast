@@ -1,5 +1,5 @@
-import { Outlet, NavLink } from "react-router";
-import { ShieldUser, Search } from 'lucide-react';
+import { Outlet, NavLink, useNavigate } from "react-router";
+import { ShieldUser, Search, LogOut } from 'lucide-react';
 import Logo from "../components/shared/Logo";
 import { DashboardSVG } from "../../public/SVG/DashboardSVG";
 import { BusinessInfoSVG } from "../../public/SVG/BusinessInfoSVG";
@@ -12,10 +12,17 @@ import { SettingSVG } from "../../public/SVG/SettingSVG";
 import { UserManagementSVG } from "../../public/SVG/UserManagementSVG";
 import { useEffect, useState } from "react";
 import { FaBars } from "react-icons/fa";
+import { useAppDispatch } from "../redux/hooks";
+import { logout } from "../redux/featuresAPI/auth/auth.slice";
+import LogoutModal from "../pages/Admin/Logout/LogoutModal";
 
 
 export default function AdminLayout() {
     const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [logoutOpen, setLogoutOpen] = useState(false);
+    const dispatch = useAppDispatch()
+    const navigate = useNavigate();
+
 
     // Automatically adjust sidebar on resize
     useEffect(() => {
@@ -36,6 +43,12 @@ export default function AdminLayout() {
   const handleTogglebar = () => {
     setSidebarOpen(prev => !prev);
   };
+  const handleLogout = () => {
+    dispatch(logout())
+    // localStorage.clear(); // or remove token only
+    navigate("/", { replace: true });
+    };
+
     const menuItems = [
         {
             label: "Dashboard",
@@ -86,6 +99,20 @@ export default function AdminLayout() {
                 < IntegrationsSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
             ),
         },
+        {
+            label: "Settings",
+            path: "admin-settings",
+            renderIcon: (isActive: boolean) => (
+                <SettingSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
+            ),
+        },
+        {
+            label: "Logout",
+            path: "settings",
+            renderIcon: (isActive: boolean) => (
+                <LogOut color={isActive ? "#000000" : "#454F5B"} />
+            ),
+        },
 
     ];
 
@@ -100,43 +127,45 @@ export default function AdminLayout() {
                 </header>
                 <nav className="flex-1 px-6 py-4 ">
                     <ul className="space-y-2">
-                        {menuItems.map((item) => (
-                            <li key={item.path}>
-                                <NavLink
-                                    to={item.path}
-                                    end={item.path === "/admin"}
-                                    className={({ isActive }) =>
-                                        `flex items-center px-4 py-2 gap-x-4 rounded transition text-lg  ${isActive ? "  font-semibold  bg-[#F9DFB3] text-[#000000]" : " text-[#454F5B]  hover:bg-gray-100"
-                                        }`
-                                    }
-                                >
-                                    {({ isActive }) => (
-                                        <>
-                                            {item.renderIcon(isActive)}
-                                            {/* <span>{item.label}</span> */}
-                                            {
-                                                sidebarOpen ?
-                                                    (
-                                                        <>
+                        {menuItems.map((item) =>
+  item.label === "Logout" ? (
+    <li key={item.label}>
+      <button
+        onClick={() => setLogoutOpen(true)}
+        className="flex items-center w-full px-4 py-2 gap-x-4 rounded text-lg text-[#454F5B] hover:bg-gray-100"
+      >
+        <LogOut />
+        {sidebarOpen && <span>Logout</span>}
+      </button>
+    </li>
+  ) : (
+    <li key={item.path}>
+      <NavLink
+        to={item.path}
+        end={item.path === "/admin"}
+        className={({ isActive }) =>
+          `flex items-center px-4 py-2 gap-x-4 rounded text-lg ${
+            isActive
+              ? "font-semibold bg-[#F9DFB3] text-black"
+              : "text-[#454F5B] hover:bg-gray-100"
+          }`
+        }
+      >
+        {({ isActive }) => (
+          <>
+            {item.renderIcon(isActive)}
+            {sidebarOpen && <span>{item.label}</span>}
+          </>
+        )}
+      </NavLink>
+    </li>
+  )
+)}
 
-                                                            <span>{item.label}</span>
-
-                                                        </>
-                                                    )
-                                                    :
-                                                    <span className="absolute left-full ml-2 whitespace-nowrap bg-gray-700 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
-                                                        <span>{item.label}</span>
-                                                    </span>
-                                            }
-                                        </>
-                                    )}
-                                </NavLink>
-                            </li>
-                        ))}
                     </ul>
                 </nav>
                 {/* Settings link fixed at bottom of sidebar */}
-                <div className={`mt-auto border-t border-gray-200 px-6 py-3 ${!sidebarOpen && "mx-auto"} `}>
+                {/* <div className={`mt-auto border-t border-gray-200 px-6 py-3 ${!sidebarOpen && "mx-auto"} `}>
                     <NavLink
                         to="admin-settings"
                         end
@@ -148,7 +177,7 @@ export default function AdminLayout() {
                         {({ isActive }) => (
                             <>
                                 <SettingSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
-                                {/* <span>Settings</span> */}
+                               
                                 {
                                     sidebarOpen ?
                                         (
@@ -167,7 +196,7 @@ export default function AdminLayout() {
                             </>
                         )}
                     </NavLink>
-                </div>
+                </div> */}
             </aside>
 
             {/* Main content area */}
@@ -203,6 +232,12 @@ export default function AdminLayout() {
                     <Outlet />
                 </main>
             </div>
+            <LogoutModal
+                open={logoutOpen}
+                onClose={() => setLogoutOpen(false)}
+                onConfirm={handleLogout}
+            />
+
         </div>
     );
 }

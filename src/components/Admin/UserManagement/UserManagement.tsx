@@ -1,66 +1,68 @@
 import { useState } from 'react';
 import { Search } from 'lucide-react';
 import AddUserModal from './AddUserModal';
-import type { TeamMember, UserFormData } from '../../../types/Admin/UserManagement';
+import type { GetUserResponse, TeamMember, UserFormData } from '../../../types/Admin/UserManagement';
 import Heading from '../Heading';
+import { useGetUserByBusinessQuery } from '../../../redux/dashboardApi/admin/user/userApi';
 
-const initialTeamMembers: TeamMember[] = [
-    {
-        id: '1',
-        full_name: 'John Smith',
-        email: 'john.smith@techcorp.com',
-        phone_number: '+1-555-0101',
-        company: 'TechCorp Inc.',
-        role: 'Admin',
-        status: 'Active',
-        location: 'New York, US',
-        last_login: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-    },
-    {
-        id: '2',
-        full_name: 'Sarah Johnson',
-        email: 'sarah@startupxyz.com',
-        phone_number: '+1-555-0102',
-        company: 'StartupXYZ',
-        role: 'User',
-        status: 'Active',
-        location: 'San Francisco, US',
-        last_login: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
-    },
-    {
-        id: '3',
-        full_name: 'Mike Chen',
-        email: 'mike.chen@globaltech.com',
-        phone_number: '+1-555-0103',
-        company: 'GlobalTech',
-        role: 'User',
-        status: 'Suspended',
-        location: 'London, UK',
-        last_login: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
-    },
-    {
-        id: '4',
-        full_name: 'Lisa Wang',
-        email: 'lisa.wang@innovate.com',
-        phone_number: '+1-555-0104',
-        company: 'InnovateNow',
-        role: 'User',
-        status: 'Active',
-        location: 'Sydney, AU',
-        last_login: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
-    },
-    {
-        id: '5',
-        full_name: 'David Miller',
-        email: 'david@techcorp.com',
-        phone_number: '+1-555-0105',
-        company: 'TechCorp Inc.',
-        role: 'Admin',
-        status: 'Active',
-        location: 'New York, US',
-        last_login: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-    },
-];
+
+// const initialTeamMembers: TeamMember[] = [
+//     {
+//         id: '1',
+//         full_name: 'John Smith',
+//         email: 'john.smith@techcorp.com',
+//         phone_number: '+1-555-0101',
+//         company: 'TechCorp Inc.',
+//         role: 'Admin',
+//         status: 'Active',
+//         location: 'New York, US',
+//         last_login: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+//     },
+//     {
+//         id: '2',
+//         full_name: 'Sarah Johnson',
+//         email: 'sarah@startupxyz.com',
+//         phone_number: '+1-555-0102',
+//         company: 'StartupXYZ',
+//         role: 'User',
+//         status: 'Active',
+//         location: 'San Francisco, US',
+//         last_login: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
+//     },
+//     {
+//         id: '3',
+//         full_name: 'Mike Chen',
+//         email: 'mike.chen@globaltech.com',
+//         phone_number: '+1-555-0103',
+//         company: 'GlobalTech',
+//         role: 'User',
+//         status: 'Suspended',
+//         location: 'London, UK',
+//         last_login: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
+//     },
+//     {
+//         id: '4',
+//         full_name: 'Lisa Wang',
+//         email: 'lisa.wang@innovate.com',
+//         phone_number: '+1-555-0104',
+//         company: 'InnovateNow',
+//         role: 'User',
+//         status: 'Active',
+//         location: 'Sydney, AU',
+//         last_login: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
+//     },
+//     {
+//         id: '5',
+//         full_name: 'David Miller',
+//         email: 'david@techcorp.com',
+//         phone_number: '+1-555-0105',
+//         company: 'TechCorp Inc.',
+//         role: 'Admin',
+//         status: 'Active',
+//         location: 'New York, US',
+//         last_login: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+//     },
+// ];
 
 const recentActivities = [
     { id: 1, text: 'Sarah Johnson Uploaded new FAQ document', time: '3 hours ago' },
@@ -71,22 +73,65 @@ const recentActivities = [
 ];
 
 export default function UserManagement() {
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const [teamMembers, setTeamMembers] = useState<TeamMember[]>(initialTeamMembers);
+    const businessId = 22; 
+    const { data, isLoading, error } = useGetUserByBusinessQuery(businessId);
+
+
+    
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    // const [teamMembers, setTeamMembers] = useState<TeamMember[]>(initialTeamMembers);
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
     const [roleFilter, setRoleFilter] = useState('all');
+    const [currentPage, setCurrentPage] = useState(1);
 
-    const handleAddUser = async (userData: UserFormData): Promise<void> => {
-        const newUser: TeamMember = {
-            id: Date.now().toString(),
-            ...userData,
-            status: 'Active',
-            last_login: new Date().toISOString(),
-        };
-        setTeamMembers([newUser, ...teamMembers]);
-    };
+    const apiTeamMembers: TeamMember[] = data?.map((user: GetUserResponse) => ({
+        id: user.id.toString(),
+        full_name: user.name,
+        email: user.email,
+        phone_number: user.phone ?? '',
+        company: '—',
+        role: user.role?.name,
+        status: user.status === 'ACTIVE' ? 'Active' : 'Inactive',
+        location: '—',
+        last_login_at: user.last_login_at ?? undefined, 
+        })) || [];
+
+if (error) {
+  console.error("Failed to fetch users", error);
+}
+
+
+        const filteredMembers = apiTeamMembers.filter((member) => {
+        const matchesSearch =
+            member.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            member.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            member.company?.toLowerCase().includes(searchQuery.toLowerCase());
+
+        const matchesStatus = statusFilter === 'all' || member.status === statusFilter;
+        const matchesRole = roleFilter === 'all' || member.role === roleFilter;
+
+        return matchesSearch && matchesStatus && matchesRole;
+    });
+
+
+    const pageSize = 10;
+    const totalPages = Math.ceil(filteredMembers.length / pageSize);
+    const paginatedMembers = filteredMembers.slice(
+        (currentPage - 1) * pageSize,
+        currentPage * pageSize
+    );
+
+    // const handleAddUser = async (userData: UserFormData): Promise<void> => {
+    //     const newUser: TeamMember = {
+    //         id: Date.now().toString(),
+    //         ...userData,
+    //         status: 'Active',
+    //         last_login_at: new Date().toISOString(),
+    //     };
+    //     setTeamMembers([newUser, ...teamMembers]);
+    // };
 
     const getTimeAgo = (dateString: string | undefined) => {
         if (!dateString) return 'Never';
@@ -102,17 +147,23 @@ export default function UserManagement() {
         return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
     };
 
-    const filteredMembers = teamMembers.filter((member) => {
-        const matchesSearch =
-            member.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            member.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            member.company?.toLowerCase().includes(searchQuery.toLowerCase());
 
-        const matchesStatus = statusFilter === 'all' || member.status === statusFilter;
-        const matchesRole = roleFilter === 'all' || member.role === roleFilter;
+    const handleAddUser = async (userData: UserFormData): Promise<void> => {
+        console.log('Adding user:', userData);
+        setIsModalOpen(false);
+        // Ideally call createUser mutation here
+    };
 
-        return matchesSearch && matchesStatus && matchesRole;
-    });
+    const handleEdit = (member: TeamMember) => {
+        console.log('Edit user', member);
+        // Open modal with user info
+    };
+
+    const handleSuspend = (member: TeamMember) => {
+        console.log('Suspend user', member);
+        // Call suspend API
+    };
+
 
     return (
         <div className="min-h-screen overflow-hidden w-[53%] sm:w-[70%] md:w-[100%]">
@@ -189,10 +240,18 @@ export default function UserManagement() {
                                     <th className="text-left px-4 py-3 text-xs font-medium text-gray-600 uppercase tracking-wider">
                                         Location
                                     </th>
+                                    <th className="text-left px-4 py-3 text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                        Actions
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200">
-                                {filteredMembers.map((member) => (
+                                {isLoading ? (
+                                <tr><td colSpan={7} className="text-center py-6">Loading...</td></tr>
+                            ) : paginatedMembers.length === 0 ? (
+                                <tr><td colSpan={7} className="text-center py-6 text-gray-500">No users found.</td></tr>
+                            ) : (
+                                filteredMembers.map((member) => (
                                     <tr key={member.id} className="hover:bg-gray-50 transition-colors">
                                         <td className="px-4 py-3">
                                             <div className="flex items-center gap-3">
@@ -220,11 +279,30 @@ export default function UserManagement() {
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-sm text-gray-700">
-                                            {getTimeAgo(member.last_login)}
+                                            {getTimeAgo(member.last_login_at)}
                                         </td>
                                         <td className="px-4 py-3 text-sm text-gray-700">{member.location || '-'}</td>
+                                        <td>
+                                            {/** Role-based actions **/}
+                                            {/* {isAdmin && ( */}
+                                                <div className="flex gap-2">
+                                                    <button
+                                                        onClick={() => handleEdit(member)}
+                                                        className="text-blue-600 text-sm"
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleSuspend(member)}
+                                                        className="text-red-600 text-sm"
+                                                    >
+                                                        Suspend
+                                                    </button>
+                                                </div>
+                                            {/* )} */}
+                                        </td>
                                     </tr>
-                                ))}
+                                )))}
                             </tbody>
                         </table>
                     </div>
@@ -298,6 +376,26 @@ export default function UserManagement() {
                         ))}
                     </div>
                 </div>
+                {/* Pagination */}
+                {totalPages > 1 && (
+                    <div className="flex justify-end gap-2 mt-4">
+                        <button
+                            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                            disabled={currentPage === 1}
+                            className="px-3 py-1 border rounded disabled:opacity-50"
+                        >
+                            Prev
+                        </button>
+                        <span className="px-2 py-1">{currentPage} / {totalPages}</span>
+                        <button
+                            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                            disabled={currentPage === totalPages}
+                            className="px-3 py-1 border rounded disabled:opacity-50"
+                        >
+                            Next
+                        </button>
+                    </div>
+                )}
             </main>
 
 

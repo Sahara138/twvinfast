@@ -1,61 +1,93 @@
 import { useState } from 'react';
-import type { UserFormData } from '../../../types/Admin/UserManagement';
+import z from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useCreateUserMutation } from '../../../redux/dashboardApi/admin/user/userApi';
+
+
+const userSchema = z.object({
+    full_name: z.string().min(2, "Full name must be at least 2 characters"),
+    email: z.string().email("Please enter a valid email address"),
+    password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
+type UserFormData = z.infer<typeof userSchema>;
+
 interface AddUserModalProps {
     isOpen: boolean;
     onClose: () => void;
     onSubmit: (userData: UserFormData) => Promise<void>;
 }
 
+export default function AddUserModal({ isOpen, onClose}: AddUserModalProps) {
+   const [createUser] = useCreateUserMutation();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<UserFormData>({
+    resolver: zodResolver(userSchema),
+  });
 
-export default function AddUserModal({ isOpen, onClose, onSubmit }: AddUserModalProps) {
-    const [formData, setFormData] = useState<UserFormData>({
-        full_name: '',
-        email: '',
-        phone_number: '',
-        role: ''
-    });
-    const [isSubmitting, setIsSubmitting] = useState(false);
+  if (!isOpen) return null;
 
-    if (!isOpen) return null;
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsSubmitting(true);
-        try {
-            await onSubmit(formData);
-
-            setFormData({
-                full_name: '',
-                email: '',
-                phone_number: '',
-                role: '',
-            });
-            console.log('Form submitted:', formData);
-            onClose();
-        } catch (error) {
-            console.error('Error submitting form:', error);
-        } finally {
-            setIsSubmitting(false);
-        }
+    const handleCreateUser = async (data: UserFormData) => {
+    setIsSubmitting(true);
+    try {
+        const payload = {
+        name: data.full_name,
+        email: data.email,
+        password: data.password,
     };
+      await createUser(payload).unwrap();
+      onClose();
+    } catch (error) {
+      console.error("Error creating user:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
-    };
+
+    // const handleSubmit = async (e: React.FormEvent) => {
+    //     e.preventDefault();
+    //     setIsSubmitting(true);
+    //     try {
+    //         await onSubmit(formData);
+
+    //         setFormData({
+    //             full_name: '',
+    //             email: '',
+    //             phone_number: '',
+    //             role: '',
+    //         });
+    //         console.log('Form submitted:', formData);
+    //         onClose();
+    //     } catch (error) {
+    //         console.error('Error submitting form:', error);
+    //     } finally {
+    //         setIsSubmitting(false);
+    //     }
+    // };
+
+    // const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    //     setFormData({
+    //         ...formData,
+    //         [e.target.name]: e.target.value,
+    //     });
+    // };
 
     return (
-        <div className="fixed inset-0   flex items-center justify-center z-50 p-4">
+<div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30 backdrop-blur-sm">
             <div className="bg-white bg-opacity-80 rounded-lg max-w-xl w-full max-h-[90vh] overflow-y-auto">
                 <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
                     <h2 className="text-xl font-medium text-gray-900">Add New User</h2>
 
                 </div>
 
-                <form onSubmit={handleSubmit} className="p-6">
+                <form onSubmit={handleSubmit(handleCreateUser)} className="p-6">
                     <p className="text-sm text-gray-600 mb-6">
                         Invite a new team member to join your workspace
                     </p>
@@ -67,13 +99,11 @@ export default function AddUserModal({ isOpen, onClose, onSubmit }: AddUserModal
                             </label>
                             <input
                                 type="text"
-                                name="full_name"
-                                value={formData.full_name}
-                                onChange={handleChange}
                                 placeholder="Enter name..."
-                                required
+                               {...register('full_name')}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
                             />
+                            <p className="text-red-500 text-xs mt-1">{errors.full_name?.message}</p>
                         </div>
 
                         <div>
@@ -82,51 +112,25 @@ export default function AddUserModal({ isOpen, onClose, onSubmit }: AddUserModal
                             </label>
                             <input
                                 type="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleChange}
                                 placeholder="Enter email address"
-                                required
+                                {...register('email')}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
                             />
+                            <p className="text-red-500 text-xs mt-1">{errors.email?.message}</p>
                         </div>
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                                Phone Number
+                                Password
                             </label>
                             <input
-                                type="tel"
-                                name="phone_number"
-                                value={formData.phone_number}
-                                onChange={handleChange}
-                                placeholder="Enter phone number"
+                                type="text"
+                                {...register('password')}
+                                placeholder="Enter password"
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
                             />
+                            <p className="text-red-500 text-xs mt-1">{errors.password?.message}</p>
                         </div>
-
-
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                                Role
-                            </label>
-                            <select
-                                name="role"
-                                value={formData.role}
-                                onChange={handleChange}
-                                required
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all bg-white"
-                            >
-                                <option value="">Select Role</option>
-                                <option value="Admin">Admin</option>
-                                <option value="User">User</option>
-                                <option value="Manager">Manager</option>
-                                <option value="Developer">Developer</option>
-                            </select>
-                        </div>
-
-
                     </div>
 
                     <div className="flex justify-end gap-3 mt-6 pt-6 border-t border-gray-200">

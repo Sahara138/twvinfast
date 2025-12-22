@@ -1,21 +1,74 @@
 
 import { useForm } from "react-hook-form";
-import type { SubmitHandler } from "react-hook-form";
-import type { LoginFormInputs } from "../../types/Types";
 import Logo from "../../components/shared/Logo";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useLoginMutation } from "../../redux/featuresAPI/auth/auth.api";
+import { useAppDispatch } from "../../redux/hooks";
+import { setUser } from "../../redux/featuresAPI/auth/auth.slice";
+import { toast } from "react-toastify";
+import { Link, useNavigate } from "react-router";
+import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
+import { useState } from "react";
 
+const loginSchema = z.object({
+    email: z.string().email("Please enter a valid email address").nonempty("Email is required"),
+    password: z.string().min(6, "Password must be at least 6 characters").nonempty("Password is required"),
+});
+ type LoginFormData = z.infer<typeof loginSchema>;
 
-export default function Login() {
+const Login: React.FC = () => {
+    const navigate = useNavigate();
+    const [userLogin] = useLoginMutation();
+    const dispatch = useAppDispatch();
+    const [showPassword, setShowPassword] = useState(false);
+    const [isLoading,setIsLoading] = useState(false);
+
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<LoginFormInputs>();
+    } = useForm<LoginFormData>({
+        resolver: zodResolver(loginSchema),
+    });
 
-    const onSubmit: SubmitHandler<LoginFormInputs> = (data) => {
-        console.log("Form Data:", data);
+    const onSubmit = async (data: LoginFormData) => {
+        try {
+            setIsLoading(true);
+            const res = await userLogin(data).unwrap();
+            console.log("Login successful:", res);
+            if(res?.accessToken){
+                dispatch(
+                    setUser({
+                        user: res?.user,
+                        accessToken: res?.accessToken,
+                    }));
+                    toast.success(res?.message);
+                    console.log("User Role:", res);
+                    if (res?.user?.role === "SUPER_ADMIN") {
+                    navigate("/super-admin");
+                    } else if (res?.user?.role === "USER") {
+                    navigate("/user");
+                    } else if (res?.user?.role === "ADMIN") {
+                    navigate("/admin");
+                    }
 
-    };
+            }
+            if(res){
+                console.log("Login Response:", res);
+            }
+        } catch (error: any) {
+            console.error("Login failed:", error);
+            toast.error(error?.status === 404 ? "User not found" : "Invalid credentials. Please try again.");
+            console.log("Login Error:", error.status);
+            return;
+        }
+        finally{
+            setIsLoading(false)
+        }
+        // console.log("Login Data:", data);
+        
+    }
 
     return (
         <div className="min-h-screen bg-[#F9FAFB]">
@@ -41,10 +94,7 @@ export default function Login() {
                             placeholder="input email / phone number here...."
                             className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.email ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-teal-400"
                                 }`}
-                            {...register("email", {
-                                required: "Email or phone number is required",
-                                minLength: { value: 3, message: "Too short" },
-                            })}
+                             {...register("email")}
                         />
                         {errors.email && (
                             <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
@@ -56,29 +106,47 @@ export default function Login() {
                         <label className="block  font-medium mb-1.5">
                             Password
                         </label>
-                        <input
-                            type="password"
-                            placeholder="input Password here...."
-                            className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.password ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-teal-400"
-                                }`}
-                            {...register("password", {
-                                required: "Password is required",
-                                minLength: { value: 6, message: "Password must be at least 6 characters" },
-                            })}
-                        />
-                        {errors.password && (
-                            <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
-                        )}
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                placeholder="input Password here...."
+                                className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${errors.password ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-teal-400"
+                                    }`}
+                                {...register("password")}
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-lg cursor-pointer"
+                            >
+                                {showPassword ? <IoEyeOutline /> : <IoEyeOffOutline />}
+                            </button>
+
+                        </div>
+                                {errors.password && (
+                                    <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+                                )}
                     </div>
 
                     <button
                         type="submit"
                         className="w-full py-2 bg-primary2 text-white font-medium text-xl rounded-md hover:bg-teal-600 transition-colors"
                     >
-                        Sign In
+                        {isLoading? "Signing In..." : "Sign In" }
                     </button>
                 </form>
+                <p className="text-center text-sm text-gray-400 mt-6">
+                    Don't have an account?{" "}
+                    <Link
+                    to="/signup"
+                    className="text-primary2 hover:underline font-medium cursor-pointer"
+                    >
+                    Sign Up
+                    </Link>
+                </p>
             </div>
         </div>
     );
 }
+export default Login;
+

@@ -33,24 +33,33 @@ import BillingSubscription from "../pages/SuperAdmin/BillingSubscription/Billing
 import PlatformSettings from "../pages/SuperAdmin/PlatfromSettings/PlatformSettings.tsx";
 import AnalyticsReports from "../pages/SuperAdmin/AnalyticsReports/AnalyticsReports.tsx";
 import AIModelManagement from "../pages/SuperAdmin/AIModelManagement/AIModelManagement.tsx";
+import ProtectedRoute from "./ProtectedRoute.tsx";
+import GuestRoute from "./GuestRoute.tsx";
+import Register from "../pages/Auth/Register.tsx";
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        Component: MainLayout,
+        element: (
+            <GuestRoute>
+            <MainLayout />
+            </GuestRoute>
+        ),
         errorElement: <Error />,
         children: [
-            { index: true, Component: Login },
-        ]
+            { index: true, element: <Login /> },
+            { path: "signup", element: <Register /> },
+        ],
     },
+
     //user layout routes
     {
         path: "/user",
         Component: UserLayout,
         errorElement: <Error />,
         children: [
-            { index: true, Component: Inbox },
-            { path: "view-email/:id", Component: ViewEmail },
+            {index: true, Component: Inbox },
+            {path: "view-email/:id", Component: ViewEmail },
             {path:"compose",Component:ComposeEmail},
             {path:"starred",Component:Starred},
             {path:"archive",Component:Archive},
@@ -82,18 +91,22 @@ export const router = createBrowserRouter([
     },
     //super admin layout routes
     {
-        path: "/super-admin",
-        Component: SuperAdminLayout,
-        errorElement: <Error />,
-        children: [
-            {index: true, Component: SuperAdminDashboard },
-            {path:"customer-management",Component:CustomerManagement},
-            {path:"user-management",Component:SuperUserManagement},
-            {path:"ai-model-management",Component:AIModelManagement},
-            {path:"business-control",Component:BusinessControl},
-            {path:"billing-subscription",Component:BillingSubscription},
-            {path:"platfrom-settings",Component:PlatformSettings},
-            {path:"analytics-reports",Component:AnalyticsReports}        ]
+    path: "/super-admin",
+    element: (
+        <ProtectedRoute role="SUPER_ADMIN">
+        <SuperAdminLayout />
+        </ProtectedRoute>
+    ),
+    children: [
+        { index: true, element: <SuperAdminDashboard /> },
+        { path: "customer-management", element: <CustomerManagement /> },
+        { path: "user-management", element: <SuperUserManagement /> },
+        { path: "ai-model-management", element: <AIModelManagement /> },
+        { path: "business-control", element: <BusinessControl /> },
+        { path: "billing-subscription", element: <BillingSubscription /> },
+        { path: "platform-settings", element: <PlatformSettings /> },
+        { path: "analytics-reports", element: <AnalyticsReports /> },
+    ],
     }
 
 ])
