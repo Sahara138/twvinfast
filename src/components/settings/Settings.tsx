@@ -1,24 +1,37 @@
-import { useState } from 'react';
-import { ArrowLeft, Save, User, Bell, Settings as SettingsIcon, Shield, Eye, EyeOff } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { ArrowLeft, Save, User, Bell, Settings as SettingsIcon, Shield, Eye, EyeOff, RotateCcwKey } from 'lucide-react';
 import { Link } from 'react-router';
+import { useChangePasswordMutation, useGetUsersProfileQuery, useUpdateCredentialsMutation, useUpdateNotificationMutation, useUpdateUsersProfileMutation } from '../../redux/featuresAPI/auth/auth.api';
+import { toast } from 'react-toastify';
+import type { UpdateCredentialsPayload } from '../../redux/user.type';
 export default function Settings() {
   const [activeTab, setActiveTab] = useState('profile');
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
 
+  const [changePassword, { isLoading: isChanging }] =
+  useChangePasswordMutation();
+  const { data: user, isLoading } = useGetUsersProfileQuery();
+  const [updateNotification, { isLoading: isUpdatingNotification }] =
+  useUpdateNotificationMutation();
+  const [updateCredentials, { isLoading: isUpdating }] =
+  useUpdateCredentialsMutation();
+  const [updateUsersProfile,{isLoading: isUpdatingProfile}] = useUpdateUsersProfileMutation();
+
+  console.log(user)
   const [profileData, setProfileData] = useState({
-    fullName: 'Tom Latham',
-    email: 'tommy41@gmail.com',
-    phone: '+01 23563 5656',
-    timezone: 'Eastern Time (UTC-5)',
-    signature: 'Best regards,\nJohn Doe\nSenior Manager\nCompany Inc.\nPhone: (555) 123-4567'
+    fullName: user?.name,
+    email: user?.email,
+    phone: user?.phone,
+    location: user?.location,
+    signature: user?.email_signature,
   });
 
   const [notifications, setNotifications] = useState({
-    emailAlerts: true,
-    desktopNotifications: true,
-    soundNotifications: false,
-    weekendNotifications: false,
-    urgentOnly: false
+    emailAlerts: user?.notificationSetting?.email_alert_enabled,
+    loginAlerts: user?.notificationSetting?.login_alert_enabled,
+    // soundNotifications: false,
+    // weekendNotifications: false,
+    // urgentOnly: false
   });
 
   const [preferences, setPreferences] = useState({
@@ -32,10 +45,148 @@ export default function Settings() {
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
-    twoFactorAuth: true,
+    twoFactorAuth: user?.twoFAEnabled,
     sessionTimeout: '08h',
-    loginAlerts: false
+    loginAlerts: user?.notificationSetting?.login_alert_enabled
   });
+const [credentialsData, setCredentialsData] = useState<UpdateCredentialsPayload>({
+  provider: '',
+  email_address: '',
+  smtp_host: '',
+  smtp_port: 0,
+  smtp_password: '',
+  imap_host: '',
+  imap_port: 0,
+  imap_password: '',
+  is_ssl: false,
+});
+
+useEffect(() => {
+  if (user?.mailboxes?.length) {
+    const mailbox = user.mailboxes[0];
+    setCredentialsData({
+      provider: mailbox.provider || '',
+      email_address: mailbox.email_address || '',
+      smtp_host: mailbox.smtp_host || '',
+      smtp_port: Number(mailbox.smtp_port) || 0, // convert to number
+      smtp_password: mailbox.smtp_password || '',
+      imap_host: mailbox.imap_host || '',
+      imap_port: Number(mailbox.imap_port) || 0, // convert to number
+      imap_password: mailbox.imap_password || '',
+      is_ssl: mailbox.is_ssl || false,
+    });
+  }
+}, [user]);
+
+
+
+  useEffect(() => {
+  if (user) {
+    setNotifications({
+      emailAlerts: user.notificationSetting?.email_alert_enabled ?? false,
+      loginAlerts: user.notificationSetting?.login_alert_enabled ?? false,
+    });
+
+    setSecurity((prev) => ({
+      ...prev,
+      loginAlerts: user.notificationSetting?.login_alert_enabled ?? false,
+      twoFactorAuth: user.twoFAEnabled,
+    }));
+
+    setProfileData({
+      fullName: user.name,
+      email: user.email,
+      phone: user.phone,
+      location: user.location,
+      signature: user.email_signature,
+    });
+  }
+}, [user]);
+
+  const handleChangePassword = async () => {
+  const { currentPassword, newPassword, confirmPassword } = security;
+
+  // Basic validation
+  if (!currentPassword || !newPassword || !confirmPassword) {
+    toast.error("All password fields are required");
+    return;
+  }
+
+  if (newPassword !== confirmPassword) {
+    toast.error("New password and confirm password do not match");
+    return;
+  }
+
+  try {
+    await changePassword({
+      currentPassword,
+      newPassword,
+      confirmPassword,
+    }).unwrap();
+
+    toast.success("Password changed successfully");
+
+    // Clear fields
+    setSecurity((prev) => ({
+      ...prev,
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    }));
+  } catch (error: any) {
+    toast.error(error?.data?.message || "Failed to change password");
+  }
+};
+const handleSaveProfile = async () => {
+  try {
+    await updateUsersProfile({
+      name: profileData.fullName,
+      phone: profileData.phone,
+      location: profileData.location,
+      email_signature: profileData.signature,
+    }).unwrap();
+
+    toast.success("Profile updated successfully");
+  } catch (error: any) {
+    toast.error(error?.data?.message || "Failed to update profile");
+  }
+};
+
+const handleSaveCredentials = async () => {
+  try {
+    await updateCredentials({
+      ...credentialsData,
+      smtp_port: Number(credentialsData.smtp_port),
+      imap_port: Number(credentialsData.imap_port),
+    }).unwrap();
+
+    toast.success("Credentials updated successfully");
+  } catch (error: any) {
+    toast.error(error?.data?.message || "Failed to update credentials");
+  }
+};
+
+const handleSaveNotifications = async () => {
+  try {
+    await updateNotification({
+      email_alert_enabled: notifications.emailAlerts,
+      login_alert_enabled: notifications.loginAlerts,
+    }).unwrap();
+
+    toast.success("Notification settings updated");
+  } catch (error: any) {
+    toast.error(error?.data?.message || "Failed to update notifications");
+  }
+};
+if (isLoading) {
+    // Show loader while data is loading
+    return (
+      <div style={{ textAlign: "center", marginTop: "50px" }}>
+        <div className="loader"></div>
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   const renderContent = () => {
     switch (activeTab) {
@@ -83,18 +234,14 @@ export default function Settings() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Timezone
+                  Location
                 </label>
-                <select
-                  value={profileData.timezone}
-                  onChange={(e) => setProfileData({ ...profileData, timezone: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary2 focus:border-transparent outline-none transition-all bg-white"
-                >
-                  <option>Eastern Time (UTC-5)</option>
-                  <option>Central Time (UTC-6)</option>
-                  <option>Mountain Time (UTC-7)</option>
-                  <option>Pacific Time (UTC-8)</option>
-                </select>
+                 <input
+                  type="tel"
+                  value={profileData.location}
+                  onChange={(e) => setProfileData({ ...profileData, location: e.target.value })}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary2 focus:border-transparent outline-none transition-all"
+                />
               </div>
             </div>
 
@@ -135,24 +282,24 @@ export default function Settings() {
                 </button>
               </div>
 
-              <div className="flex items-start justify-between py-3 border-b border-gray-100">
+              <div className="flex items-start justify-between py-3 ">
                 <div className='w-[30%] md:w-[50%]'>
-                  <h3 className="font-medium text-gray-900 text-sm md:text-base mb-1">Desktop Notifications</h3>
-                  <p className="text-xs md:text-sm text-gray-500">Show desktop notifications for new emails</p>
+                  <h3 className="font-medium text-gray-900 text-sm md:text-base mb-1">Login Alerts</h3>
+                  <p className="text-xs md:text-sm text-gray-500">Receive notifications for new login</p>
                 </div>
                 <button
-                  onClick={() => setNotifications({ ...notifications, desktopNotifications: !notifications.desktopNotifications })}
-                  className={`relative inline-flex h-4 w-9 md:h-6 md:w-11 items-center rounded-full transition-colors ${notifications.desktopNotifications ? 'bg-primary2' : 'bg-gray-300'
+                  onClick={() => setNotifications({ ...notifications, loginAlerts: !notifications.loginAlerts })}
+                  className={`relative inline-flex h-4 w-9 md:h-6 md:w-11 items-center rounded-full transition-colors ${notifications.loginAlerts ? 'bg-primary2' : 'bg-gray-300'
                     }`}
                 >
                   <span
-                    className={`inline-block h-3 w-3 md:h-4 md:w-4 transform rounded-full bg-white transition-transform ${notifications.desktopNotifications ? 'translate-x-6' : 'translate-x-1'
+                    className={`inline-block h-3 w-3 md:h-4 md:w-4 transform rounded-full bg-white transition-transform ${notifications.loginAlerts ? 'translate-x-6' : 'translate-x-1'
                       }`}
                   />
                 </button>
               </div>
 
-              <div className="flex items-start justify-between py-3 border-b border-gray-100">
+              {/* <div className="flex items-start justify-between py-3 border-b border-gray-100">
                 <div className='w-[30%] md:w-[50%]'>
                   <h3 className="font-medium text-gray-900 text-sm md:text-base mb-1">Sound Notifications</h3>
                   <p className="text-xs md:text-sm text-gray-500">Play sound when new emails arrive</p>
@@ -201,7 +348,7 @@ export default function Settings() {
                       }`}
                   />
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
         );
@@ -300,7 +447,6 @@ export default function Settings() {
                     type={showCurrentPassword ? 'text' : 'password'}
                     value={security.currentPassword}
                     onChange={(e) => setSecurity({ ...security, currentPassword: e.target.value })}
-                    placeholder="Eastern Time (UTC-5)"
                     className="w-full px-4 py-2.5 text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary2 focus:border-transparent outline-none transition-all pr-10"
                   />
                   <button
@@ -395,6 +541,145 @@ export default function Settings() {
             </div>
           </div>
         );
+      case 'credential':
+        return (
+          <div className="bg-white rounded-lg p-3 overflow-x-auto">
+            <h2 className="text-lg font-semibold mb-6">User Credentials</h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Provider
+                </label>
+                <input
+                  type="text"
+                  value={credentialsData.provider}
+                  onChange={(e) => setCredentialsData({ ...
+                    credentialsData, provider: e.target.value })}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary2 focus:border-transparent outline-none transition-all"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  value={credentialsData.email_address}
+                  onChange={(e) => setCredentialsData({ ...credentialsData, email_address: e.target.value })}
+                  readOnly
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary2 focus:border-transparent outline-none transition-all"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  SMTP Host
+                </label>
+                <input
+                  type="email"
+                  value={credentialsData.smtp_host}
+                  onChange={(e) => setCredentialsData({ ...credentialsData, smtp_host: e.target.value })}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary2 focus:border-transparent outline-none transition-all"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  SMTP Port
+                </label>
+                 <input
+                  type="number"
+                  value={credentialsData.smtp_port}
+                  onChange={(e) =>
+                    setCredentialsData({
+                      ...credentialsData,
+                      smtp_port: Number(e.target.value),
+                    })
+                  }
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary2 focus:border-transparent outline-none transition-all"
+                />
+              </div> 
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  SMTP Password
+                </label>
+                 <input
+                  type="text"
+                  value={credentialsData.smtp_password}
+                  onChange={(e) => setCredentialsData({ ...credentialsData, smtp_password: e.target.value })}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary2 focus:border-transparent outline-none transition-all"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  IMAP Host
+                </label>
+                <input
+                  type="email"
+                  value={credentialsData.imap_host}
+                  onChange={(e) => setCredentialsData({ ...credentialsData, imap_host: e.target.value })}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary2 focus:border-transparent outline-none transition-all"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  IMAP Port
+                </label>
+                 <input
+                  type="number"
+                  value={credentialsData.imap_port}
+                  onChange={(e) =>
+                    setCredentialsData({
+                      ...credentialsData,
+                      imap_port: Number(e.target.value),
+                    })
+                  }
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary2 focus:border-transparent outline-none transition-all"
+                />
+              </div> 
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  IMAP Password
+                </label>
+                 <input
+                  type="text"
+                  value={credentialsData.imap_password}
+                  onChange={(e) => setCredentialsData({ ...credentialsData, imap_password: e.target.value })}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary2 focus:border-transparent outline-none transition-all"
+                />
+              </div>
+            </div>
+            <div className="flex items-center justify-between py-3 border-t border-gray-200 mt-4">
+                <div className='w-[30%] md:w-[50%]'>
+                  <h3 className="font-medium text-gray-900 text-sm md:text-base mb-1">SSL</h3>
+                  <p className="text-xs md:text-sm text-gray-500">Get notified of SSL attempts</p>
+                </div>
+                <button
+                  onClick={() =>
+                    setCredentialsData({
+                      ...credentialsData,
+                      is_ssl: !credentialsData.is_ssl,
+                    })
+                  }
+                  className={`relative inline-flex h-4 w-9 md:h-6 md:w-11 items-center rounded-full transition-colors ${
+                    credentialsData.is_ssl ? 'bg-teal-500' : 'bg-gray-300'
+                  }`}
+                >
+                  <span
+                    className={`inline-block w-3 h-3 md:h-4 md:w-4 transform rounded-full bg-white transition-transform ${
+                      credentialsData.is_ssl ? 'translate-x-6' : 'translate-x-1'
+                    }`}
+                  />
+                </button>
+
+              </div>
+
+            
+          </div>
+        );
 
       default:
         return null;
@@ -412,10 +697,45 @@ export default function Settings() {
             <h1 className="text-lg md:text-xl font-semibold text-gray-900">Settings</h1>
           </div>
 
-          <button className="flex items-center gap-2 bg-primary2 hover:bg-orange-600 text-white px-4 py-2.5 rounded-lg transition-colors font-medium">
+          {/* <button className="flex items-center gap-2 bg-primary2 hover:bg-orange-600 text-white px-4 py-2.5 rounded-lg transition-colors font-medium">
             <Save size={18} />
             <p className='hidden md:block'>Save Changes</p>
-          </button>
+          </button> */}
+          {/* <button
+            onClick={activeTab === 'security' ? handleChangePassword : undefined}
+            disabled={isChanging}
+            className="flex items-center gap-2 bg-primary2 hover:bg-orange-600 text-white px-4 py-2.5 rounded-lg transition-colors font-medium disabled:opacity-50"
+          >
+            <Save size={18} />
+            <p className="hidden md:block">
+              {isChanging ? "Saving..." : "Save Changes"}
+            </p>
+          </button> */}
+          <button
+              onClick={() => {
+                if (activeTab === "profile") handleSaveProfile();
+                if (activeTab === "security") handleChangePassword();
+                if (activeTab === "notification") handleSaveNotifications();
+                if (activeTab === "credential") handleSaveCredentials();
+              }}
+              disabled={
+                isChanging ||
+                isUpdatingNotification ||
+                isUpdating ||
+                isUpdatingProfile
+              }
+              className="flex items-center gap-2 bg-primary2 hover:bg-orange-600 text-white px-4 py-2.5 rounded-lg transition-colors font-medium disabled:opacity-50"
+            >
+              <Save size={18} />
+              <p className="hidden md:block">
+                {isChanging || isUpdatingNotification || isUpdating || isUpdatingProfile
+                  ? "Saving..."
+                  : "Save Changes"}
+              </p>
+            </button>
+
+
+
         </div>
       </header>
 
@@ -466,6 +786,16 @@ export default function Settings() {
           >
             <Shield size={18} />
             Security
+          </button>
+          <button
+            onClick={() => setActiveTab('credential')}
+            className={`flex items-center gap-2 px-4 py-2.5 font-medium transition-all relative ${activeTab === 'credential'
+                ? 'bg-primary2 text-white rounded-lg'
+                : 'text-gray-600 hover:text-gray-900 border border-[#DFE3E8] rounded-lg'
+              }`}
+          >
+            <RotateCcwKey size={18} />
+            Credential 
           </button>
         </div>
 

@@ -13,35 +13,66 @@ import { DraftSVG } from "../../public/SVG/DraftSVG";
 import { UrgentSVG } from "../../public/SVG/UrgentSVG";
 import ManageModal from "../components/ManageModal";
 import { FaBars } from "react-icons/fa";
+import { useGetMailboxInfoQuery, useGetThreadCountsQuery } from "../redux/dashboardApi/user/mail/mailApi";
+import type { LabelType } from "../types/User/Label";
+import { useGetLabelByMailboxQuery } from "../redux/dashboardApi/user/label/labelApi";
 
 export default function UserLayout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
- // Automatically adjust sidebar on resize
-    useEffect(() => {
-        const handleResize = () => {
-        if (window.innerWidth < 768) { // md breakpoint
-            setSidebarOpen(false);
-        } else {
-            setSidebarOpen(true);
-        }
-        };
+  const { data: mailbox } = useGetMailboxInfoQuery();
+  const mailboxId = mailbox?.id;
+  // console.log(mailboxId);
+  const { data: counts } = useGetThreadCountsQuery(mailboxId!, {
+    skip: !mailboxId,
+  });
 
-        handleResize(); // initialize
-        window.addEventListener("resize", handleResize);
+  // Labels //
+  const { data: labels = [], isLoading: isLabelsLoading } = useGetLabelByMailboxQuery(mailboxId!, {
+    skip: !mailboxId,
+  }) as { data: LabelType[], isLoading: boolean };
 
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
+  // Automatically adjust sidebar on resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) { // md breakpoint
+        setSidebarOpen(false);
+      } else {
+        setSidebarOpen(true);
+      }
+    };
 
-    const handleTogglebar = () => {
+    handleResize(); // initialize
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const handleTogglebar = () => {
     setSidebarOpen(prev => !prev);
   };
+  const getLabelIcon = (labelName: string, isActive: boolean) => {
+    const color = isActive ? "#000000" : "#454F5B";
 
+    switch (labelName.toLowerCase()) {
+      case "urgent":
+        return <UrgentSVG strokeColor={color} />;
+      case "draft":
+        return <DraftSVG strokeColor={color} />;
+      case "follow up":
+        return <FollowUpSVG strokeColor={color} />;
+      case "general":
+        return <GeneralSVG strokeColor={color} />;
+      default:
+        return <InboxSVG strokeColor={color} />;
+    }
+  };
   const menuItems = [
     {
       label: "Inbox",
       path: "/user",
+      count: counts?.inbox,
       renderIcon: (isActive: boolean) => (
         <InboxSVG strokeColor={isActive ? "#58D5D3" : "#454F5B"} />
       ),
@@ -49,6 +80,7 @@ export default function UserLayout() {
     {
       label: "Starred",
       path: "starred",
+      count: counts?.starred,
       renderIcon: (isActive: boolean) => (
         <StarSVG strokeColor={isActive ? "#58D5D3" : "#454F5B"} />
       ),
@@ -56,6 +88,7 @@ export default function UserLayout() {
     {
       label: "Archive",
       path: "archive",
+      count: counts?.archived,
       renderIcon: (isActive: boolean) => (
         <ArchiveSVG strokeColor={isActive ? "#58D5D3" : "#454F5B"} />
       ),
@@ -63,42 +96,74 @@ export default function UserLayout() {
     {
       label: "Trash",
       path: "trash",
+      count: counts?.trash,
       renderIcon: (isActive: boolean) => (
         <TrashSVG strokeColor={isActive ? "#58D5D3" : "#454F5B"} />
       ),
     },
   ];
 
-  const triageItems = [
-    {
-      label: "Follow up",
-      path: "follow-up",
-      renderIcon: (isActive: boolean) => (
-        <FollowUpSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
-      ),
-    },
-    {
-      label: "Drafts",
-      path: "drafts",
-      renderIcon: (isActive: boolean) => (
-        <DraftSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
-      ),
-    },
-    {
-      label: "Urgent",
-      path: "urgent",
-      renderIcon: (isActive: boolean) => (
-        <UrgentSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
-      ),
-    },
-    {
-      label: "General",
-      path: "general",
-      renderIcon: (isActive: boolean) => (
-        <GeneralSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
-      ),
-    },
-  ];
+  // const menuItems = [
+  //   {
+  //     label: "Inbox",
+  //     path: "/user",
+  //     renderIcon: (isActive: boolean) => (
+  //       <InboxSVG strokeColor={isActive ? "#58D5D3" : "#454F5B"} />
+  //     ),
+  //   },
+  //   {
+  //     label: "Starred",
+  //     path: "starred",
+  //     renderIcon: (isActive: boolean) => (
+  //       <StarSVG strokeColor={isActive ? "#58D5D3" : "#454F5B"} />
+  //     ),
+  //   },
+  //   {
+  //     label: "Archive",
+  //     path: "archive",
+  //     renderIcon: (isActive: boolean) => (
+  //       <ArchiveSVG strokeColor={isActive ? "#58D5D3" : "#454F5B"} />
+  //     ),
+  //   },
+  //   {
+  //     label: "Trash",
+  //     path: "trash",
+  //     renderIcon: (isActive: boolean) => (
+  //       <TrashSVG strokeColor={isActive ? "#58D5D3" : "#454F5B"} />
+  //     ),
+  //   },
+  // ];
+
+  // const triageItems = [
+  //   {
+  //     label: "Follow up",
+  //     path: "follow-up",
+  //     renderIcon: (isActive: boolean) => (
+  //       <FollowUpSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
+  //     ),
+  //   },
+  //   {
+  //     label: "Drafts",
+  //     path: "drafts",
+  //     renderIcon: (isActive: boolean) => (
+  //       <DraftSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
+  //     ),
+  //   },
+  //   {
+  //     label: "Urgent",
+  //     path: "urgent",
+  //     renderIcon: (isActive: boolean) => (
+  //       <UrgentSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
+  //     ),
+  //   },
+  //   {
+  //     label: "General",
+  //     path: "general",
+  //     renderIcon: (isActive: boolean) => (
+  //       <GeneralSVG strokeColor={isActive ? "#000000" : "#454F5B"} />
+  //     ),
+  //   },
+  // ];
 
   return (
     <div className="min-h-screen flex bg-gray-100 text-gray-900 overflow-hidden">
@@ -120,10 +185,9 @@ export default function UserLayout() {
                   to={item.path}
                   end={item.path === "/user"}
                   className={({ isActive }) =>
-                    `relative flex items-center px-4 py-2 gap-x-4 rounded transition text-lg ${
-                      isActive
-                        ? "font-medium text-lg bg-white shadow text-[#000000]"
-                        : "text-[#454F5B] hover:bg-gray-100"
+                    `relative flex items-center px-4 py-2 gap-x-4 rounded transition text-lg ${isActive
+                      ? "font-medium text-lg bg-white shadow text-[#000000]"
+                      : "text-[#454F5B] hover:bg-gray-100"
                     }`
                   }
                 >
@@ -135,34 +199,35 @@ export default function UserLayout() {
                       <span>{item.renderIcon(isActive)}</span>
                       {
                         sidebarOpen ?
-                        (
-                          <>
+                          (
+                            <>
 
+                              <span>{item.label}</span>
+                              {
+                                item.count > 0 &&
+                                <span
+                                  className={`mr-2 text-sm ${isActive
+                                      ? "ml-auto p-1 px-1.5 text-[#58D5D3] text-xs rounded-full bg-[#58D5D31A]"
+                                      : "ml-auto p-1 px-1.5 text-[#6A7282] text-xs rounded-full bg-[#F3F4F6]"
+                                    }`}
+                                >
+                                  {item.count}
+                                </span>
+                               } 
+                            </>
+                          )
+                          :
+                          <span className="absolute left-full ml-2 whitespace-nowrap bg-gray-700 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
                             <span>{item.label}</span>
-                      <span
-                        className={`mr-2 text-sm ${
-                          isActive
-                            ? "ml-auto p-1 px-1.5 text-[#58D5D3] text-xs rounded-full bg-[#58D5D31A]"
-                            : "ml-auto p-1 px-1.5 text-[#6A7282] text-xs rounded-full bg-[#F3F4F6]"
-                        }`}
-                      >
-                        12
-                      </span>
-                        </>
-                        )
-                        :
-                      <span className="absolute left-full ml-2 whitespace-nowrap bg-gray-700 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
-                       <span>{item.label}</span>
-                      <span
-                        className={`mr-2 text-sm ${
-                          isActive
-                            ? "ml-auto p-1 px-1.5 text-[#58D5D3] text-xs rounded-full bg-[#58D5D31A]"
-                            : "ml-auto p-1 px-1.5 text-[#6A7282] text-xs rounded-full bg-[#F3F4F6]"
-                        }`}
-                      >
-                        12
-                      </span>
-                      </span>
+                            <span
+                              className={`mr-2 text-sm ${isActive
+                                  ? "ml-auto p-1 px-1.5 text-[#58D5D3] text-xs rounded-full bg-[#58D5D31A]"
+                                  : "ml-auto p-1 px-1.5 text-[#6A7282] text-xs rounded-full bg-[#F3F4F6]"
+                                }`}
+                            >
+                              12
+                            </span>
+                          </span>
                       }
 
                     </>
@@ -173,7 +238,7 @@ export default function UserLayout() {
           </ul>
 
           {/* Triage */}
-          <div className="border-t border-gray-200 my-4 mt-4"></div>
+          {/* <div className="border-t border-gray-200 my-4 mt-4"></div>
           <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">
             Triage
           </h3>
@@ -234,18 +299,64 @@ export default function UserLayout() {
                 </NavLink>
               </li>
             ))}
+          </ul> */}
+
+          {/* Triage */}
+          <div className="border-t border-gray-200 my-4 mt-4"></div>
+          <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">
+            Triage
+          </h3>
+
+          <ul className="space-y-2">
+            {isLabelsLoading && (
+              <li className="text-sm text-gray-400 px-4">Loading labels...</li>
+            )}
+
+            {!isLabelsLoading &&
+              labels.map((label) => (
+                <li key={label.id}>
+                  <NavLink
+                    to={`/user/label/${label.name.replace(/\s+/g, "-")}`}
+                    className={({ isActive }) =>
+                      `relative flex items-center px-4 py-2 gap-x-4 rounded transition text-lg ${isActive
+                        ? "font-medium bg-white shadow text-black"
+                        : "text-[#454F5B] hover:bg-gray-100"
+                      }`
+                    }
+                  >
+                    {({ isActive }) => (
+                      <>
+                        {isActive && (
+                          <span className="absolute left-0 top-0 h-full w-1 bg-[#58D5D3] shadow-[4px_0_6px_#58D5D3] rounded-r" />
+                        )}
+
+                        <span>{getLabelIcon(label.name, isActive)}</span>
+
+                        {sidebarOpen ? (
+                          <span className="capitalize">{label.name}</span>
+                        ) : (
+                          <span className="absolute left-full ml-2 whitespace-nowrap bg-gray-700 text-white text-xs px-2 py-1 rounded">
+                            {label.name}
+                          </span>
+                        )}
+
+                      </>
+                    )}
+                  </NavLink>
+                </li>
+              ))}
           </ul>
+
 
           {/* Manage Labels */}
           <div className="border-t border-gray-200 my-4"></div>
           <ul className="space-y-2">
             <button
               onClick={() => setIsModalOpen(true)}
-              className={`relative flex items-center px-4 py-2 gap-x-4 rounded transition text-lg w-full ${
-                isModalOpen
+              className={`relative flex items-center px-4 py-2 gap-x-4 rounded transition text-lg w-full ${isModalOpen
                   ? "font-medium text-lg bg-white shadow text-[#000000]"
                   : "text-[#454F5B] hover:bg-gray-100"
-              }`}
+                }`}
             >
               {isModalOpen && (
                 <span className="absolute left-0 top-0 h-full w-1 bg-[#58D5D3] shadow-[4px_0_6px_#58D5D3] rounded-r"></span>
@@ -254,19 +365,19 @@ export default function UserLayout() {
                 <Plus />
               </span>
               {
-                        sidebarOpen ?
-                        (
-                          <>
+                sidebarOpen ?
+                  (
+                    <>
 
-                            <span>Manage Labels</span>
-                      
-                        </>
-                        )
-                        :
-                      <span className="absolute left-full ml-2 whitespace-nowrap bg-gray-700 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
-                       <span>Manage Labels</span>
-                      </span>
-                      }
+                      <span>Manage Labels</span>
+
+                    </>
+                  )
+                  :
+                  <span className="absolute left-full ml-2 whitespace-nowrap bg-gray-700 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
+                    <span>Manage Labels</span>
+                  </span>
+              }
               {/* <span>Manage Labels</span> */}
             </button>
           </ul>
@@ -278,10 +389,9 @@ export default function UserLayout() {
             to="/user/settings"
             end
             className={({ isActive }) =>
-              `relative flex items-center px-4 py-2 gap-x-4 rounded transition text-lg ${
-                isActive
-                  ? "font-medium text-lg bg-white shadow text-[#000000]"
-                  : "text-[#454F5B] hover:bg-gray-100"
+              `relative flex items-center px-4 py-2 gap-x-4 rounded transition text-lg ${isActive
+                ? "font-medium text-lg bg-white shadow text-[#000000]"
+                : "text-[#454F5B] hover:bg-gray-100"
               }`
             }
           >
@@ -292,21 +402,19 @@ export default function UserLayout() {
                 )}
                 <SettingSVG strokeColor={isActive ? "#3BCBC8" : "#454F5B"} />
                 {
-                        sidebarOpen ?
-                        (
-                          <>
+                  sidebarOpen ?
+                    (
+                      <>
 
-                            <span>Settings</span>
-                      
-                        </>
-                        )
-                        :
-                      <span className="absolute left-full ml-2 whitespace-nowrap bg-gray-700 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
-                       <span>Settings</span>
-                      </span>
-                      }
+                        <span>Settings</span>
 
-                
+                      </>
+                    )
+                    :
+                    <span className="absolute left-full ml-2 whitespace-nowrap bg-gray-700 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
+                      <span>Settings</span>
+                    </span>
+                }
               </>
             )}
           </NavLink>

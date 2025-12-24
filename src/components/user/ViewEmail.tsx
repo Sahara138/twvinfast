@@ -255,12 +255,12 @@ export default function ViewEmail() {
   const subject = data?.subject || "UnKnown";
   const createdDate = data;
   console.log(createdDate)
-  // const emailBodyHtml = data?.emails?.[0]?.body_html || "";
+  // const emailBodyHtml = data?.emails?.[0]?.body_text || "";
   const senderName = "Mike Johnson"; // You can replace with dynamic if you have sender info
   const senderEmail = "sarah@company.com"; // Replace with dynamic if available
   const recipientEmail = data?.emails?.[0]?.from_address
     || "you@company.com"; // Replace with dynamic if available
-  const emailBodyHtml = DOMPurify.sanitize(data?.emails?.[0]?.body_html || "");
+  const emailBodyHtml = DOMPurify.sanitize(data?.emails?.[0]?.body_text || "");
 
 if (isLoading) {
     // Show loader while data is loading

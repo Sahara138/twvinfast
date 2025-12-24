@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
-import { useArchiveMailMutation, useGetMailboxByMailboxIdQuery, useGetMailboxInfoQuery, useReadMailMutation, useStarredMailMutation } from "../../redux/dashboardApi/user/mail/mailApi";
+import { useArchiveMailMutation, useGetArchivedMailByMailboxIdQuery, useGetMailboxInfoQuery, useReadMailMutation, useStarThreadBulkMutation, useTrashMailMutation, useUnReadMailMutation, useUnstarThreadBulkMutation } from "../../redux/dashboardApi/user/mail/mailApi";
 import { useAppDispatch } from "../../redux/hooks";
 import { logout } from "../../redux/featuresAPI/auth/auth.slice";
 import LogoutModal from "../Admin/Logout/LogoutModal";
@@ -32,6 +32,7 @@ export interface ThreadLabel {
 export interface LabelType {
   id: number;
   name: string;
+  label:string;
   count: number;
   icon?: React.ReactNode;
   color?: string;
@@ -49,12 +50,11 @@ export interface UIMail {
   replies: number;
   avatar: string;
   starred: boolean;
+  is_read: boolean;
   customer: {
     name: string;
   };
 }
-
-
 
 export function formatMailTime(dateString: string): string {
   const now = new Date();
@@ -95,23 +95,28 @@ export default function Starred() {
   const [starOverrides, setStarOverrides] = useState<Record<number, boolean>>({});
   const [currentPage, setCurrentPage] = useState(1);
   const [logoutOpen, setLogoutOpen] = useState(false);
+    const [readOverrides, setReadOverrides] = useState<Record<number, boolean>>({});
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+    const [statusFilter, setStatusFilter] = useState<UIStatus | "ALL">("ALL");
 
-  const { data: mailbox } = useGetMailboxInfoQuery();
-  const mailboxId = mailbox?.id;
-  console.log(mailboxId);
+ const { data: mailbox } = useGetMailboxInfoQuery();
+       const mailboxId = mailbox?.id;
+       console.log(mailboxId);
+ 
+ 
+     const { data, isLoading } = useGetArchivedMailByMailboxIdQuery(
+       { mailboxId: mailboxId!, page: currentPage, folder: "starred" }, 
+       { skip: !mailboxId }
+     );
+ 
+     const { data: allLabels } = useGetLabelByMailboxQuery(mailboxId!, { skip: !mailboxId });
+   
+     const [archiveMailMutation] = useArchiveMailMutation();
+     const [trashMailMutation] = useTrashMailMutation();
 
-
-  const { data, isLoading } = useGetMailboxByMailboxIdQuery(
-    { mailboxId: mailboxId!, page: currentPage },
-    { skip: !mailboxId }
-  );
-
-  const { data: allLabels } = useGetLabelByMailboxQuery(mailboxId!, { skip: !mailboxId });
-
-  const [archiveMailMutation] = useArchiveMailMutation();
   // const [assignThreadLabel] = useAssignThreadLabelMutation();
   const threadId = useParams();
   const threadIdNumber = threadId ? Number(threadId.id) : undefined;
@@ -136,28 +141,27 @@ export default function Starred() {
   //   starred: mail.is_starred,
   // }));
   const uiMails: UIMail[] = mails.map((mail) => ({
-  id: mail.id,
-  name: mail.customer?.name || "Unknown",
-  message: mail.subject || "",
-  status: "New",
-  // labels: Array.isArray(mail.labels)
-  //   ? mail.labels.map((l) => ({
-  //       thread_id: l.thread_id,
-  //       label_id: l.label_id,
-  //       label: l.label || { id: 0, mailbox_id: 0, name: "None", created_at: "" },
-  //     }))
-  //   : [],
-  labels: mail.labels || [],
-  time: mail.last_message_at ? formatMailTime(mail.last_message_at) : "",
-  replies: 0,
-  avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(mail.customer?.name || "Unknown")}`,
-  starred: !!mail.is_starred,
-  customer: { name: mail.customer?.name || "Unknown" }, // ✅ Add this
-}));
+      id: mail.id,
+      name: mail.customer?.name || "Unknown",
+      message: mail.subject || "",
+      status: "New",
+      // labels: Array.isArray(mail.labels)
+      //   ? mail.labels.map((l) => ({
+      //       thread_id: l.thread_id,
+      //       label_id: l.label_id,
+      //       label: l.label || { id: 0, mailbox_id: 0, name: "None", created_at: "" },
+      //     }))
+      //   : [],
+      labels: mail.labels?.map((l) => l.label) ?? [],
 
-
-
-
+      // labels: mail.labels?.map((l) => l.label) || [],
+      time: mail.last_message_at ? formatMailTime(mail.last_message_at) : "",
+      replies: 0,
+      avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(mail.customer?.name || "Unknown")}`,
+      starred: !!mail.is_starred,
+      is_read: readOverrides[mail.id] ?? !!mail.is_read,
+      customer: { name: mail.customer?.name || "Unknown" }, // ✅ Add this
+    }))
 
   const [selectedEmails, setSelectedEmails] = useState<Set<number>>(new Set());
 
@@ -172,19 +176,18 @@ export default function Starred() {
   };
   console.log(selectedEmails)
 
-  //const [toggleStarMutation] = useToggleStarMutation();
-
-  // const toggleStar = (id: number) => {
-  //   toggleStarMutation({ threadId: id });
-  // };
-  
-
-
   const archiveSelectedEmails = () => {
     selectedEmails.forEach((id) => {
       archiveMailMutation({ threadId: id });
     });
-    setSelectedEmails(new Set()); // clear selection after
+    setSelectedEmails(new Set()); 
+  };
+
+  const trashSelectedEmails = () => {
+    selectedEmails.forEach((id) => {
+      trashMailMutation({ threadId: id });
+    });
+    setSelectedEmails(new Set());
   };
 
   const toggleAllSelect = () => {
@@ -194,6 +197,7 @@ export default function Starred() {
       setSelectedEmails(new Set(uiMails.map((e) => e.id)));
     }
   };
+
 
   const TAG_COLORS = [
     "bg-blue-100 text-blue-700",
@@ -218,35 +222,62 @@ export default function Starred() {
     return colors[status];
   };
 
-   const [markAsRead] = useReadMailMutation();
-  //  const [markAsUnread] = useUnReadMailMutation();
-   const [starred] = useStarredMailMutation();
+  const [markAsRead] = useReadMailMutation();
+  const [markAsUnread] = useUnReadMailMutation();
+  const [starThreadBulk] = useStarThreadBulkMutation();
+  const [unstarThreadBulk] = useUnstarThreadBulkMutation();
+  const selectedMailObjects = uiMails.filter((mail) =>
+    selectedEmails.has(mail.id)
+  );
 
-  // Thread
-   const handleMarkThreadAsRead = () => {
-      selectedEmails.forEach((id) => {
-        markAsRead({ threadId:[ id ]})
-      });
-      setSelectedEmails(new Set()); // clear selection after
+  const allRead = selectedMailObjects.length > 0 && selectedMailObjects.every((mail) => mail.is_read);
 
-      toast.success("Mark as Read")
-    };
+  const handleToggleRead = () => {
+  const ids = Array.from(selectedEmails);
+  if (ids.length === 0) return;
+
+  // Optimistic UI update
+  setReadOverrides((prev) => {
+    const updated = { ...prev };
+    ids.forEach((id) => {
+      updated[id] = !allRead; // mark read or unread
+    });
+    return updated;
+  });
+
+  // API call
+  if (allRead) {
+    markAsUnread({ threadId: ids });
+    toast.success("Marked as Unread");
+  } else {
+    markAsRead({ threadId: ids });
+    toast.success("Marked as Read");
+  }
+
+  setSelectedEmails(new Set());
+};
 
   const toggleStar = (id: number) => {
-  // Update UI immediately
-  setStarOverrides((prev) => ({
-    ...prev,
-    [id]: !prev[id],
-  }));
+    const nextValue =
+      !(starOverrides[id] ?? uiMails.find(m => m.id === id)?.starred);
+    console.log(nextValue)
 
-  // Call backend API
-    selectedEmails.forEach((id) => {
-      starred({ threadId: [id] });
-    });
-    setSelectedEmails(new Set()); // clear selection after
-    toast.success("Starred")
+    // Optimistic UI update
+    setStarOverrides((prev) => ({
+      ...prev,
+      [id]: nextValue,
+    }));
 
-};
+    // API call
+    // Call correct API
+    if (nextValue) {
+      starThreadBulk({ ids: [id] });
+    } else {
+      unstarThreadBulk({ ids: [id] });
+    }
+
+  };
+
  
     // const handleMarkThreadAsUnread = () => {
     //   selectedEmails.forEach((id) => {
@@ -270,6 +301,18 @@ export default function Starred() {
     return `${TAG_COLORS[index]} px-2 py-1 rounded-xl text-xs`;
   };
 
+  const filteredMails = uiMails.filter((mail) => {
+  // Search filter
+  const matchesSearch =
+    mail.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    mail.message.toLowerCase().includes(searchQuery.toLowerCase());
+
+  // Status filter
+  const matchesStatus =
+    statusFilter === "ALL" || mail.status === statusFilter;
+
+  return matchesSearch && matchesStatus;
+});
 
   const handleLogout = () => {
     dispatch(logout())
@@ -309,17 +352,25 @@ export default function Starred() {
               <input
                 type="text"
                 placeholder="Search Emails..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-9 pr-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-teal-500 bg-gray-50"
               />
             </div>
-            <select className="px-3 py-2 my-3 lg:my-0 border border-gray-200 rounded-lg text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-teal-500 bg-white">
-              <option>All Status</option>
-              <option>New</option>
-              <option>Opened</option>
-              <option>Won</option>
-              <option>Replied</option>
-              <option>Lost</option>
-            </select>
+            <select
+                value={statusFilter}
+                onChange={(e) =>
+                  setStatusFilter(e.target.value as UIStatus | "ALL")
+                }
+                className="px-3 py-2 my-3 lg:my-0 border border-gray-200 rounded-lg text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-teal-500 bg-white"
+              >
+                <option value="ALL">All Status</option>
+                <option value="New">New</option>
+                <option value="Opened">Opened</option>
+                <option value="Won">Won</option>
+                <option value="Replied">Replied</option>
+                <option value="Lost">Lost</option>
+</select>
           </div>
           <div className="hidden md:block md:ml-auto">
 
@@ -372,20 +423,19 @@ export default function Starred() {
                 </span>
                 <span>Archive</span>
               </button>
-              <button className="flex items-center gap-1 gap-x-2 px-3 py-2 bg-white border border-[#0000001A] rounded-lg transition text-gray-700">
+              <button onClick={trashSelectedEmails} className="flex items-center gap-1 gap-x-2 px-3 py-2 bg-white border border-[#0000001A] rounded-lg transition text-gray-700">
                 <span>
                   <Trash2 size={18} />
                 </span>
                 <span>Delete</span>
               </button>
-              {
-
-              }
-              <button onClick={handleMarkThreadAsRead} className="flex items-center gap-1 gap-x-2 px-3 py-2 bg-white border border-[#0000001A] rounded-lg transition text-gray-700">
-                <span>
-                  <Mail size={18} />
-                </span>
-                <span>Mark as Read</span>
+             
+              <button
+                onClick={handleToggleRead}
+                className="flex items-center gap-2 px-3 py-2 bg-white border border-[#0000001A] rounded-lg transition text-gray-700"
+              >
+                <Mail size={18} />
+                <span>{allRead ? "Mark as Unread" : "Mark as Read"}</span>
               </button>
               <ActionBarTagButton
                 selectedEmails={Array.from(selectedEmails)}
@@ -405,7 +455,8 @@ export default function Starred() {
 
         {/* Emails List */}
         <div className="space-y-2 overflow-x-auto ">
-          {uiMails.map((email) => {
+          {filteredMails.map((email) => {
+
             const isStarred =
               starOverrides[email.id] ?? email.starred;
             return (
@@ -423,14 +474,16 @@ export default function Starred() {
 
                   <button
                     onClick={() => toggleStar(email.id)}
-                    // onClick={() => toggleStar(email.id)}
-                    className="text-gray-400 hover:text-teal-500 transition flex-shrink-0"
+                    className="transition flex-shrink-0"
                   >
-                      <Star
-                        size={18}
-                        className={isStarred ? "text-teal-400" : "text-gray-400"}
-                      />
-
+                    <Star
+                      size={18}
+                      className={
+                        isStarred
+                          ? "text-teal-500 fill-teal-500"
+                          : "text-gray-400"
+                      }
+                    />
                   </button>
 
                   <img
@@ -441,19 +494,36 @@ export default function Starred() {
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium text-gray-900 ">
+                      {/* <span className="font-medium text-gray-900 ">
+                        {email.name}
+                      </span> */}
+                      <span
+                        className={`${
+                          email.is_read ? "font-bold text-gray-900" : "font-normal text-gray-700"
+                        }`}
+                      >
                         {email.name}
                       </span>
+
                       <span className=" text-xs text-gray-400 bg-gray-50 px-6 py-2 md:px-3 rounded-xl">
                         {email.replies} replies
                       </span>
                     </div>
-                    <Link
+                    {/* <Link
                       to={`view-email/${email.id}`}
                       className=" text-sm text-gray-400 truncate"
                     >
                       {email.message}
+                    </Link> */}
+                    <Link
+                      to={`view-email/${email.id}`}
+                      className={`truncate ${
+                        email.is_read ? "font-bold text-gray-900" : "text-gray-400"
+                      }`}
+                    >
+                      {email.message}
                     </Link>
+
                   </div>
                 </div>
 

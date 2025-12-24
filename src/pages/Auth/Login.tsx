@@ -45,6 +45,7 @@ const Login: React.FC = () => {
                     }));
                     toast.success(res?.message);
                     console.log("User Role:", res);
+                    
                     if (res?.user?.role === "SUPER_ADMIN") {
                     navigate("/super-admin");
                     } else if (res?.user?.role === "USER") {

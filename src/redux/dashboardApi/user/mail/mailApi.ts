@@ -25,15 +25,6 @@ const mailboxApi = baseAPI.injectEndpoints({
       }),
       providesTags: ["Thread"],
     }),
-
-
-    //   toggleStar: build.mutation<void, { threadId: number }>({
-    //   query: ({ threadId }) => ({
-    //     url: `/threads/${threadId}/star`,
-    //     method: "PATCH",
-    //   }),
-    //   invalidatesTags: ["Mailbox"],
-    // }),
     composeEmail: build.mutation<any, any>({
       query: (body) => ({
         url: "/mail/smtp/send",
@@ -90,6 +81,20 @@ const mailboxApi = baseAPI.injectEndpoints({
       }),
       invalidatesTags: ["Mailbox"],
     }),
+    trashMail: build.mutation<void, { threadId: number }>({
+      query: ({ threadId }) => ({
+        url: `/threads/${threadId}/trash`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["Mailbox"],
+    }),
+    untrashMail: build.mutation<void, { threadId: number }>({
+      query: ({ threadId }) => ({
+        url: `/threads/${threadId}/restore`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["Mailbox"],
+    }),
     assignThreadLabel: build.mutation({
       query: ({ thread_id, label_id }: { thread_id: number; label_id: number }) => ({
         url: `/thread-labels/assign`,
@@ -111,20 +116,36 @@ const mailboxApi = baseAPI.injectEndpoints({
       }),
       invalidatesTags: ["Mailbox"],
     }),
-    starredMail: build.mutation<void, { threadId: number[] }>({
-      query: () => ({
-        url: `/threads/bulk`,
+    starThreadBulk: build.mutation<void, { ids: number[] }>({
+      query: (body) => ({
+        url: "/threads/bulk/star",
         method: "PATCH",
+        body,
       }),
       invalidatesTags: ["Mailbox"],
     }),
-    unStarredMail: build.mutation<void, { threadId: number[] }>({
-      query: ({ threadId }) => ({
-        url: `/threads/${threadId}/unread`,
+    unstarThreadBulk: build.mutation<void, { ids: number[] }>({
+      query: (body) => ({
+        url: "/threads/bulk/unstar",
         method: "PATCH",
+        body,
       }),
       invalidatesTags: ["Mailbox"],
     }),
+    // mailApi.ts
+    getThreadCounts: build.query<
+      {
+        inbox: number;
+        starred: number;
+        archived: number;
+        trash: number;
+        unread: number;
+      },
+      number
+    >({
+      query: (mailboxId) => `/threads/counts?mailbox_id=${mailboxId}`,
+    }),
+
   }),
 
 });
@@ -142,7 +163,10 @@ export const {
   useSaveDraftMutation,
   useReadMailMutation,
   useUnReadMailMutation,
-  useStarredMailMutation,
-  useUnStarredMailMutation,
-  useAssignThreadLabelMutation
+  useStarThreadBulkMutation,
+  useUnstarThreadBulkMutation,
+  useTrashMailMutation,
+  useUntrashMailMutation,
+  useAssignThreadLabelMutation,
+  useGetThreadCountsQuery,
 } = mailboxApi;

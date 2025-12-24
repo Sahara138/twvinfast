@@ -63,11 +63,13 @@ export interface CustomerMailboxInfo {
   is_archived: boolean;
   is_deleted: boolean;
   is_starred: boolean;
+  is_read: boolean;
 
   deleted_at: string | null;
   opportunity_stage: string | null;
 
   labels: LabelType[];
+  emails: Email[];
 
   customer: Customer;
 }

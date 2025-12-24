@@ -8,17 +8,17 @@ import {
   // Tag,
   Trash2,
 } from "lucide-react";
-import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router";
-import { useArchiveMailMutation, useGetMailboxByMailboxIdQuery, useGetMailboxInfoQuery, useReadMailMutation, useStarredMailMutation } from "../../redux/dashboardApi/user/mail/mailApi";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router";
+import { useArchiveMailMutation, useGetMailboxByMailboxIdQuery, useGetMailboxInfoQuery, useGetThreadByTreadIdQuery, useReadMailMutation, useStarThreadBulkMutation, useTrashMailMutation, useUnReadMailMutation, useUnstarThreadBulkMutation } from "../../redux/dashboardApi/user/mail/mailApi";
 import { useAppDispatch } from "../../redux/hooks";
 import { logout } from "../../redux/featuresAPI/auth/auth.slice";
 import LogoutModal from "../Admin/Logout/LogoutModal";
 import { useGetLabelByMailboxQuery } from "../../redux/dashboardApi/user/label/labelApi";
 import ActionBarTagButton from "../../components/user/ActionBarTagButton";
 import { toast } from "react-toastify";
-// import { skipToken } from "@reduxjs/toolkit/query/react";
-
+import { io } from "socket.io-client";
+import { baseAPI } from "../../redux/baseAPI/baseApi";
 
 type UIStatus = "New" | "Opened" | "Won" | "Replied" | "Lost";
 // type Tag = string;
@@ -37,24 +37,51 @@ export interface LabelType {
   color?: string;
   created_at: string;
 }
+export interface Email {
+  id: number;
+  from_address: string | null;
+  to_addresses: string[] | null;
+  subject: string | null;
+  body_text: string | null;
+  body_html: string | null;
+  created_at: string;
+  is_read: boolean;
+}
 
 export interface UIMail {
   id: number;
   name: string;
   message: string;
   status: UIStatus;
-  // labels: ThreadLabel[];
-  labels: LabelType[]; // <-- just array of LabelType
+  labels: LabelType[];
   time: string;
   replies: number;
   avatar: string;
   starred: boolean;
+  is_read: boolean;
   customer: {
     name: string;
   };
+  emails: []; // ✅ added
 }
 
 
+// export interface UIMail {
+//   id: number;
+//   name: string;
+//   message: string;
+//   status: UIStatus;
+//   // labels: ThreadLabel[];
+//   labels: LabelType[];
+//   time: string;
+//   replies: number;
+//   avatar: string;
+//   starred: boolean;
+//   is_read: boolean;
+//   customer: {
+//     name: string;
+//   };
+// }
 
 export function formatMailTime(dateString: string): string {
   const now = new Date();
@@ -98,6 +125,10 @@ export default function Inbox() {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<UIStatus | "ALL">("ALL");
+  const [readOverrides, setReadOverrides] = useState<Record<number, boolean>>({});
+
 
   const { data: mailbox } = useGetMailboxInfoQuery();
   const mailboxId = mailbox?.id;
@@ -109,51 +140,121 @@ export default function Inbox() {
     { skip: !mailboxId }
   );
 
+  // const threadId = useParams();
+  // const threadIdNumber = threadId ? Number(threadId.id) : undefined;
+  // console.log(threadIdNumber);
+ 
+
+useEffect(() => {
+  if (!mailboxId) return;
+
+  // Connect to backend socket
+  const socket = io("http://localhost:3000", {
+    transports: ["websocket"], // ensures websocket connection
+  });
+
+  // Connection success
+  socket.on("connect", () => {
+    console.log("🔗 Socket connected frontend:", socket.id);
+
+    // Join mailbox room
+    socket.emit("join-mailbox", mailboxId);
+    console.log(`Joined mailbox room: ${mailboxId}`);
+  });
+
+  // Listen for new emails
+  socket.on("new-email", (email) => {
+    console.log("📧 New email received:", email);
+
+    // Update Redux or refetch query
+    dispatch(baseAPI.util.invalidateTags(["Mailbox"]));
+
+    // Optionally, you can also do optimistic UI update
+    // e.g., add email to local state if needed
+  });
+
+  // Handle connection errors
+  socket.on("connect_error", (err) => {
+    console.error("⚠️ Socket connection error:", err.message);
+  });
+
+  // Cleanup on component unmount
+  return () => {
+    socket.disconnect();
+    console.log("Socket disconnected");
+  };
+}, [mailboxId]);
+
+
+
+
   const { data: allLabels } = useGetLabelByMailboxQuery(mailboxId!, { skip: !mailboxId });
 
   const [archiveMailMutation] = useArchiveMailMutation();
+  const [trashMailMutation] = useTrashMailMutation();
   // const [assignThreadLabel] = useAssignThreadLabelMutation();
-  const threadId = useParams();
-  const threadIdNumber = threadId ? Number(threadId.id) : undefined;
-  console.log(threadIdNumber);
+
 
   const mails = data?.data ?? [];
   const pagination = data?.pagination;
   console.log(mails)
   console.log(pagination);
 
-  // const uiMails: UIMail[] = mails.map((mail) => ({
-  //   id: mail.id,
-  //   name: mail.customer.name,
-  //   message: mail.subject,
-  //   status: "New",
-  //   labels: mail.labels.map((l) => l.label.name), // ✅ FIX
-  //   time: formatMailTime(mail.last_message_at),
-  //   replies: 0,
-  //   avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(
-  //     mail.customer.name
-  //   )}`,
-  //   starred: mail.is_starred,
-  // }));
   const uiMails: UIMail[] = mails.map((mail) => ({
-  id: mail.id,
-  name: mail.customer?.name || "Unknown",
-  message: mail.subject || "",
-  status: "New",
-  // labels: Array.isArray(mail.labels)
-  //   ? mail.labels.map((l) => ({
-  //       thread_id: l.thread_id,
-  //       label_id: l.label_id,
-  //       label: l.label || { id: 0, mailbox_id: 0, name: "None", created_at: "" },
-  //     }))
-  //   : [],
-  labels: mail.labels || [],
-  time: mail.last_message_at ? formatMailTime(mail.last_message_at) : "",
-  replies: 0,
-  avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(mail.customer?.name || "Unknown")}`,
-  starred: !!mail.is_starred,
-  customer: { name: mail.customer?.name || "Unknown" }, // ✅ Add this
-}));
+    id: mail.id,
+    name: mail.customer?.name || "Unknown",
+    message: mail.subject || "",
+    status: "New",
+    labels: mail.labels.map((l) => l.name) || [],
+    time: mail.last_message_at ? formatMailTime(mail.last_message_at) : "",
+    replies: 0,
+    avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(mail.customer?.name || "Unknown")}`,
+    starred: !!mail.is_starred,
+    is_read: readOverrides[mail.id] ?? !!mail.is_read,
+    customer: { name: mail.customer?.name || "Unknown" }, // ✅ Add this
+    emails:mail.emails.map((email) => email) || []
+  }));
+
+// const uiMails: UIMail[] = mails.flatMap((mail) => {
+//   const emails = mail.emails || []; // use the correct key
+
+//   if (emails.length === 0) {
+//     return [{
+//       id: mail.id,
+//       name: mail.customer?.name || "Unknown",
+//       message: mail.subject || "(no subject)",
+//       status: mail.status || "New",
+//       labels: mail.labels?.map(l => l.label) || [],
+//       time: mail.last_message_at ? formatMailTime(mail.last_message_at) : "",
+//       replies: 0,
+//       avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(mail.customer?.name || "Unknown")}`,
+//       starred: !!mail.is_starred,
+//       is_read: readOverrides[mail.id] ?? !!mail.is_read,
+//       customer: { name: mail.customer?.name || "Unknown" },
+//       emails: [],
+//     }];
+//   }
+
+//   return emails.map((email) => ({
+//     id: email.id,
+//     threadId: mail.id, // save thread id
+//     name: mail.customer?.name || "Unknown",
+//     message: email.subject || "(no subject)",
+//     status: mail.status || "New",
+//     labels: mail.labels?.map(l => l.label) || [],
+//     time: email.created_at ? formatMailTime(email.created_at) : "",
+//     replies: emails.length,
+//     avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(mail.customer?.name || "Unknown")}`,
+//     starred: !!mail.is_starred,
+//     is_read: readOverrides[email.id] ?? !!email.is_read,
+//     customer: { name: mail.customer?.name || "Unknown" },
+//     emails: [email],
+//   }));
+// });
+
+
+
+
 
 
 
@@ -172,19 +273,17 @@ export default function Inbox() {
   };
   console.log(selectedEmails)
 
-  //const [toggleStarMutation] = useToggleStarMutation();
-
-  // const toggleStar = (id: number) => {
-  //   toggleStarMutation({ threadId: id });
-  // };
-  
-
-
   const archiveSelectedEmails = () => {
     selectedEmails.forEach((id) => {
       archiveMailMutation({ threadId: id });
     });
-    setSelectedEmails(new Set()); // clear selection after
+    setSelectedEmails(new Set());
+  };
+  const trashSelectedEmails = () => {
+    selectedEmails.forEach((id) => {
+      trashMailMutation({ threadId: id });
+    });
+    setSelectedEmails(new Set());
   };
 
   const toggleAllSelect = () => {
@@ -218,43 +317,63 @@ export default function Inbox() {
     return colors[status];
   };
 
-   const [markAsRead] = useReadMailMutation();
-  //  const [markAsUnread] = useUnReadMailMutation();
-   const [starred] = useStarredMailMutation();
+  const [markAsRead] = useReadMailMutation();
+  const [markAsUnread] = useUnReadMailMutation();
+  const [starThreadBulk] = useStarThreadBulkMutation();
+  const [unstarThreadBulk] = useUnstarThreadBulkMutation();
+  const selectedMailObjects = uiMails.filter((mail) =>
+  selectedEmails.has(mail.id)
+);
 
-  // Thread
-   const handleMarkThreadAsRead = () => {
-      selectedEmails.forEach((id) => {
-        markAsRead({ threadId:[ id ]})
-      });
-      setSelectedEmails(new Set()); // clear selection after
+  const allRead = selectedMailObjects.length > 0 && selectedMailObjects.every((mail) => mail.is_read);
 
-      toast.success("Mark as Read")
-    };
+  const handleToggleRead = () => {
+  const ids = Array.from(selectedEmails);
+  if (ids.length === 0) return;
+
+  // Optimistic UI update
+  setReadOverrides((prev) => {
+    const updated = { ...prev };
+    ids.forEach((id) => {
+      updated[id] = !allRead; // mark read or unread
+    });
+    return updated;
+  });
+
+  // API call
+  if (allRead) {
+    markAsUnread({ threadId: ids });
+    toast.success("Marked as Unread");
+  } else {
+    markAsRead({ threadId: ids });
+    toast.success("Marked as Read");
+  }
+
+  setSelectedEmails(new Set());
+};
+
+
 
   const toggleStar = (id: number) => {
-  // Update UI immediately
-  setStarOverrides((prev) => ({
-    ...prev,
-    [id]: !prev[id],
-  }));
+    const nextValue =
+      !(starOverrides[id] ?? uiMails.find(m => m.id === id)?.starred);
+    console.log(nextValue)
 
-  // Call backend API
-    selectedEmails.forEach((id) => {
-      starred({ threadId: [id] });
-    });
-    setSelectedEmails(new Set()); // clear selection after
-    toast.success("Starred")
+    // Optimistic UI update
+    setStarOverrides((prev) => ({
+      ...prev,
+      [id]: nextValue,
+    }));
 
-};
- 
-    // const handleMarkThreadAsUnread = () => {
-    //   selectedEmails.forEach((id) => {
-    //     markAsUnread({ threadId:[ id ]})
-    //   });
-    //   setSelectedEmails(new Set());
-    //   toast.success("Mark as Read");
-    // };
+    // API call
+    // Call correct API
+    if (nextValue) {
+      starThreadBulk({ ids: [id] });
+    } else {
+      unstarThreadBulk({ ids: [id] });
+    }
+
+  };
 
   const getTagColor = (tag?: string) => {
     if (!tag) {
@@ -270,12 +389,25 @@ export default function Inbox() {
     return `${TAG_COLORS[index]} px-2 py-1 rounded-xl text-xs`;
   };
 
-
   const handleLogout = () => {
     dispatch(logout())
     // localStorage.clear(); // or remove token only
     navigate("/", { replace: true });
   };
+
+  const filteredMails = uiMails.filter((mail) => {
+  // Search filter
+  const matchesSearch =
+    mail.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    mail.message.toLowerCase().includes(searchQuery.toLowerCase());
+
+  // Status filter
+  const matchesStatus =
+    statusFilter === "ALL" || mail.status === statusFilter;
+
+  return matchesSearch && matchesStatus;
+});
+
   if (isLoading) {
     // Show loader while data is loading
     return (
@@ -309,17 +441,26 @@ export default function Inbox() {
               <input
                 type="text"
                 placeholder="Search Emails..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-9 pr-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-teal-500 bg-gray-50"
               />
             </div>
-            <select className="px-3 py-2 my-3 lg:my-0 border border-gray-200 rounded-lg text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-teal-500 bg-white">
-              <option>All Status</option>
-              <option>New</option>
-              <option>Opened</option>
-              <option>Won</option>
-              <option>Replied</option>
-              <option>Lost</option>
+            <select
+                value={statusFilter}
+                onChange={(e) =>
+                  setStatusFilter(e.target.value as UIStatus | "ALL")
+                }
+                className="px-3 py-2 my-3 lg:my-0 border border-gray-200 rounded-lg text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-teal-500 bg-white"
+              >
+                <option value="ALL">All Status</option>
+                <option value="New">New</option>
+                <option value="Opened">Opened</option>
+                <option value="Won">Won</option>
+                <option value="Replied">Replied</option>
+                <option value="Lost">Lost</option>
             </select>
+
           </div>
           <div className="hidden md:block md:ml-auto">
 
@@ -372,7 +513,7 @@ export default function Inbox() {
                 </span>
                 <span>Archive</span>
               </button>
-              <button className="flex items-center gap-1 gap-x-2 px-3 py-2 bg-white border border-[#0000001A] rounded-lg transition text-gray-700">
+              <button onClick={trashSelectedEmails} className="flex items-center gap-1 gap-x-2 px-3 py-2 bg-white border border-[#0000001A] rounded-lg transition text-gray-700">
                 <span>
                   <Trash2 size={18} />
                 </span>
@@ -381,18 +522,24 @@ export default function Inbox() {
               {
 
               }
-              <button onClick={handleMarkThreadAsRead} className="flex items-center gap-1 gap-x-2 px-3 py-2 bg-white border border-[#0000001A] rounded-lg transition text-gray-700">
+              {/* <button onClick={handleMarkThreadAsRead} className="flex items-center gap-1 gap-x-2 px-3 py-2 bg-white border border-[#0000001A] rounded-lg transition text-gray-700">
                 <span>
                   <Mail size={18} />
                 </span>
                 <span>Mark as Read</span>
+              </button> */}
+              <button
+                onClick={handleToggleRead}
+                className="flex items-center gap-2 px-3 py-2 bg-white border border-[#0000001A] rounded-lg transition text-gray-700"
+              >
+                <Mail size={18} />
+                <span>{allRead ? "Mark as Unread" : "Mark as Read"}</span>
               </button>
+
               <ActionBarTagButton
                 selectedEmails={Array.from(selectedEmails)}
                 allLabels={allLabels}
               />
-
-
               <button className="flex items-center gap-1 gap-x-2 px-3 py-2 bg-white border border-[#0000001A] rounded-lg transition text-gray-700">
                 <span>Won</span>
               </button>
@@ -405,9 +552,10 @@ export default function Inbox() {
 
         {/* Emails List */}
         <div className="space-y-2 overflow-x-auto ">
-          {uiMails.map((email) => {
+          {filteredMails.map((email) => {
             const isStarred =
               starOverrides[email.id] ?? email.starred;
+
             return (
               <div
                 key={email.id}
@@ -423,15 +571,18 @@ export default function Inbox() {
 
                   <button
                     onClick={() => toggleStar(email.id)}
-                    // onClick={() => toggleStar(email.id)}
-                    className="text-gray-400 hover:text-teal-500 transition flex-shrink-0"
+                    className="transition flex-shrink-0"
                   >
-                      <Star
-                        size={18}
-                        className={isStarred ? "text-teal-400" : "text-gray-400"}
-                      />
-
+                    <Star
+                      size={18}
+                      className={
+                        isStarred
+                          ? "text-teal-500 fill-teal-500"
+                          : "text-gray-400"
+                      }
+                    />
                   </button>
+
 
                   <img
                     src={email.avatar}
@@ -441,19 +592,36 @@ export default function Inbox() {
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium text-gray-900 ">
+                      {/* <span className="font-medium text-gray-900 ">
+                        {email.name}
+                      </span> */}
+                      <span
+                        className={`${
+                          email.is_read ? "font-bold text-gray-900" : "font-normal text-gray-700"
+                        }`}
+                      >
                         {email.name}
                       </span>
+
                       <span className=" text-xs text-gray-400 bg-gray-50 px-6 py-2 md:px-3 rounded-xl">
                         {email.replies} replies
                       </span>
                     </div>
-                    <Link
+                    {/* <Link
                       to={`view-email/${email.id}`}
                       className=" text-sm text-gray-400 truncate"
                     >
                       {email.message}
+                    </Link> */}
+                    <Link
+                      to={`view-email/${email.id}`}
+                      className={`truncate ${
+                        email.is_read ? "font-bold text-gray-900" : "text-gray-400"
+                      }`}
+                    >
+                      {email.message}
                     </Link>
+
                   </div>
                 </div>
 
@@ -468,18 +636,24 @@ export default function Inbox() {
                     </span>
                   </div>
                   <div className="flex flex-wrap gap-1 items-center w-full capitalize">
-                    {/* {(email.labels.length > 0 ? email.labels : ["None"]).map((label, i) => (
-                      <span key={i} className={`px-2 py-1 rounded-xl text-xs font-medium whitespace-nowrap  ${label === "None" ? "bg-gray-200 text-gray-500" : getTagColor(label)}`}>
-                        {label}
-                      </span>
-                    ))} */}
-                    {(email.labels.length > 0 ? email.labels : [{ name: "None" }]).map((label, i) => (
-                      <span key={i} className={getTagColor(label.name)}>
-                        {label.name}
-                      </span>
-                    ))}
+                    {(email.labels.length > 0 ? email.labels : [{ name: "None" }]).map(
+                      (label, i) => {
+                        const isNone = label.name === "None";
 
-
+                        return (
+                          <span
+                            key={i}
+                            className={
+                              isNone
+                                ? "bg-gray-200 text-gray-500 px-2 py-1 rounded-xl text-xs"
+                                : getTagColor(label.name)
+                            }
+                          >
+                            {label.name}
+                          </span>
+                        );
+                      }
+                    )}
                   </div>
 
                   <span className="flex justify-end items-center text-xs text-gray-500 whitespace-nowrap w-16 text-right">
@@ -516,8 +690,8 @@ export default function Inbox() {
             }
             disabled={currentPage === pagination?.totalPages}
             className={`flex items-center gap-2 p-2 lg:px-4 lg:py-3 bg-white border border-[#0000001A] rounded-lg transition ${currentPage === pagination?.totalPages
-                ? "opacity-50 cursor-not-allowed"
-                : "hover:bg-gray-50"
+              ? "opacity-50 cursor-not-allowed"
+              : "hover:bg-gray-50"
               }`}
           >
             <span>Next</span>
