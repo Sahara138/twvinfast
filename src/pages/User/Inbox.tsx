@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { useArchiveMailMutation, useGetMailboxByMailboxIdQuery, useGetMailboxInfoQuery, useGetThreadByTreadIdQuery, useReadMailMutation, useStarThreadBulkMutation, useTrashMailMutation, useUnReadMailMutation, useUnstarThreadBulkMutation } from "../../redux/dashboardApi/user/mail/mailApi";
+import { useArchiveMailMutation, useGetMailboxByMailboxIdQuery, useGetMailboxInfoQuery, useReadMailMutation, useStarThreadBulkMutation, useTrashMailMutation, useUnReadMailMutation, useUnstarThreadBulkMutation } from "../../redux/dashboardApi/user/mail/mailApi";
 import { useAppDispatch } from "../../redux/hooks";
 import { logout } from "../../redux/featuresAPI/auth/auth.slice";
 import LogoutModal from "../Admin/Logout/LogoutModal";
@@ -31,12 +31,13 @@ export interface ThreadLabel {
 
 export interface LabelType {
   id: number;
-  name: string;
-  count: number;
+  name?: string;
+  count?: number;
   icon?: React.ReactNode;
   color?: string;
-  created_at: string;
+  created_at?: string;
 }
+
 export interface Email {
   id: number;
   from_address: string | null;
@@ -52,7 +53,7 @@ export interface UIMail {
   id: number;
   name: string;
   message: string;
-  status: UIStatus;
+  status: "New" | "Read" | "Archived";
   labels: LabelType[];
   time: string;
   replies: number;
@@ -62,8 +63,9 @@ export interface UIMail {
   customer: {
     name: string;
   };
-  emails: []; // ✅ added
+  emails: Email[]; 
 }
+
 
 
 // export interface UIMail {
@@ -129,6 +131,7 @@ export default function Inbox() {
   const [statusFilter, setStatusFilter] = useState<UIStatus | "ALL">("ALL");
   const [readOverrides, setReadOverrides] = useState<Record<number, boolean>>({});
 
+  console.log(readOverrides)
 
   const { data: mailbox } = useGetMailboxInfoQuery();
   const mailboxId = mailbox?.id;
@@ -185,10 +188,9 @@ useEffect(() => {
   };
 }, [mailboxId]);
 
-
-
-
-  const { data: allLabels } = useGetLabelByMailboxQuery(mailboxId!, { skip: !mailboxId });
+const { data: allLabels = [] } = useGetLabelByMailboxQuery(mailboxId!, {
+  skip: !mailboxId,
+});
 
   const [archiveMailMutation] = useArchiveMailMutation();
   const [trashMailMutation] = useTrashMailMutation();
@@ -200,65 +202,27 @@ useEffect(() => {
   console.log(mails)
   console.log(pagination);
 
-  const uiMails: UIMail[] = mails.map((mail) => ({
+
+const uiMails: UIMail[] = mails.map((mail) => {
+  const mappedLabels= allLabels.filter(
+    (label) => mail.labels?.includes(label.name )
+  );
+
+  return {
     id: mail.id,
     name: mail.customer?.name || "Unknown",
     message: mail.subject || "",
     status: "New",
-    labels: mail.labels.map((l) => l.name) || [],
-    time: mail.last_message_at ? formatMailTime(mail.last_message_at) : "",
-    replies: 0,
-    avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(mail.customer?.name || "Unknown")}`,
+    labels: mappedLabels, 
+    time: mail.created_at,
+    replies: mail.emails?.length ?? 0,
+    avatar: "",
     starred: !!mail.is_starred,
-    is_read: readOverrides[mail.id] ?? !!mail.is_read,
-    customer: { name: mail.customer?.name || "Unknown" }, // ✅ Add this
-    emails:mail.emails.map((email) => email) || []
-  }));
-
-// const uiMails: UIMail[] = mails.flatMap((mail) => {
-//   const emails = mail.emails || []; // use the correct key
-
-//   if (emails.length === 0) {
-//     return [{
-//       id: mail.id,
-//       name: mail.customer?.name || "Unknown",
-//       message: mail.subject || "(no subject)",
-//       status: mail.status || "New",
-//       labels: mail.labels?.map(l => l.label) || [],
-//       time: mail.last_message_at ? formatMailTime(mail.last_message_at) : "",
-//       replies: 0,
-//       avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(mail.customer?.name || "Unknown")}`,
-//       starred: !!mail.is_starred,
-//       is_read: readOverrides[mail.id] ?? !!mail.is_read,
-//       customer: { name: mail.customer?.name || "Unknown" },
-//       emails: [],
-//     }];
-//   }
-
-//   return emails.map((email) => ({
-//     id: email.id,
-//     threadId: mail.id, // save thread id
-//     name: mail.customer?.name || "Unknown",
-//     message: email.subject || "(no subject)",
-//     status: mail.status || "New",
-//     labels: mail.labels?.map(l => l.label) || [],
-//     time: email.created_at ? formatMailTime(email.created_at) : "",
-//     replies: emails.length,
-//     avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(mail.customer?.name || "Unknown")}`,
-//     starred: !!mail.is_starred,
-//     is_read: readOverrides[email.id] ?? !!email.is_read,
-//     customer: { name: mail.customer?.name || "Unknown" },
-//     emails: [email],
-//   }));
-// });
-
-
-
-
-
-
-
-
+    is_read: !!mail.is_read,
+    customer: mail.customer,
+    emails: mail.emails ?? [],
+  };
+});
 
   const [selectedEmails, setSelectedEmails] = useState<Set<number>>(new Set());
 

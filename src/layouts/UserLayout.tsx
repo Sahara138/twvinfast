@@ -204,7 +204,7 @@ export default function UserLayout() {
 
                               <span>{item.label}</span>
                               {
-                                item.count > 0 &&
+                                (item.count ?? 0) > 0  &&
                                 <span
                                   className={`mr-2 text-sm ${isActive
                                       ? "ml-auto p-1 px-1.5 text-[#58D5D3] text-xs rounded-full bg-[#58D5D31A]"

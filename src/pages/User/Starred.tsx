@@ -31,9 +31,9 @@ export interface ThreadLabel {
 
 export interface LabelType {
   id: number;
-  name: string;
-  label:string;
-  count: number;
+  name?: string;
+  label?:string;
+  count?: number;
   icon?: React.ReactNode;
   color?: string;
   created_at: string;
@@ -152,7 +152,7 @@ export default function Starred() {
       //       label: l.label || { id: 0, mailbox_id: 0, name: "None", created_at: "" },
       //     }))
       //   : [],
-      labels: mail.labels?.map((l) => l.label) ?? [],
+      labels: mail.labels?.map((l) => l?.name) ?? [],
 
       // labels: mail.labels?.map((l) => l.label) || [],
       time: mail.last_message_at ? formatMailTime(mail.last_message_at) : "",

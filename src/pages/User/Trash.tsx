@@ -34,6 +34,7 @@ export interface ThreadLabel {
 export interface LabelType {
   id: number;
   name: string;
+  label?: string;
   count: number;
   icon?: React.ReactNode;
   color?: string;
@@ -46,7 +47,7 @@ export interface UIMail {
   message: string;
   status: UIStatus;
   // labels: ThreadLabel[];
-  labels: LabelType[]; // <-- just array of LabelType
+  labels: LabelType[];
   time: string;
   replies: number;
   avatar: string;
@@ -153,13 +154,13 @@ export default function Trash() {
       //       label: l.label || { id: 0, mailbox_id: 0, name: "None", created_at: "" },
       //     }))
       //   : [],
-      labels: mail.labels.map((l) => l.label) || [],
+      labels: mail.labels.map((l) => l?.name) || [],
       time: mail.last_message_at ? formatMailTime(mail.last_message_at) : "",
       replies: 0,
       avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(mail.customer?.name || "Unknown")}`,
       starred: !!mail.is_starred,
       is_read: readOverrides[mail.id] ?? !!mail.is_read,
-      customer: { name: mail.customer?.name || "Unknown" }, // ✅ Add this
+      customer: { name: mail.customer?.name || "Unknown" },
     }));
 
   const [selectedEmails, setSelectedEmails] = useState<Set<number>>(new Set());
